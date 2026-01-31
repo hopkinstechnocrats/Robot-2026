@@ -1,5 +1,9 @@
 package frc.robot.swerve;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -10,10 +14,12 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.DoubleEntry;
 import frc.robot.Constants;
+import frc.robot.TunableNumber;
 
 public class Swervedrive extends SubsystemBase{
     
@@ -36,6 +42,7 @@ public class Swervedrive extends SubsystemBase{
     DoubleEntry frAnalog;
     DoubleEntry blAnalog;
     DoubleEntry brAnalog;
+    TunableNumber exampleNumber;
 
     SwerveModule fL;
     SwerveModule fR;
@@ -59,7 +66,9 @@ public class Swervedrive extends SubsystemBase{
         m_frontLeftPosition = new Translation2d(Constants.SwerveConstants.frontLeftX, Constants.SwerveConstants.frontLeftY);
         m_frontRightPosition = new Translation2d(Constants.SwerveConstants.frontRightX, Constants.SwerveConstants.frontRightY);
         m_backLeftPosition = new Translation2d(Constants.SwerveConstants.backLeftX, Constants.SwerveConstants.backLeftY);
-        m_backRightPosition = new Translation2d(Constants.SwerveConstants.backRightX, Constants.SwerveConstants.backRightY);
+
+        
+        exampleNumber = new TunableNumber("/Swerve/Example", 0);
 
         fL = new SwerveModule(Constants.SwerveConstants.k_frontLeftDriveCANID, Constants.SwerveConstants.k_frontLeftTurnCANID, 
                 Constants.SwerveConstants.k_flAbsEncoderPort, Constants.SwerveConstants.k_flAbsEncoderOffset);
@@ -123,4 +132,7 @@ public class Swervedrive extends SubsystemBase{
     public Rotation2d getRotation(){
         return gyro.getRotation();
     }
+
+
+
 }
