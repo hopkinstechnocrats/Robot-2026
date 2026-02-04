@@ -43,6 +43,7 @@ public class Swervedrive extends SubsystemBase{
     DoubleEntry blAnalog;
     DoubleEntry brAnalog;
     TunableNumber exampleNumber;
+    DoubleEntry testingTuning;
 
     SwerveModule fL;
     SwerveModule fR;
@@ -66,9 +67,11 @@ public class Swervedrive extends SubsystemBase{
         m_frontLeftPosition = new Translation2d(Constants.SwerveConstants.frontLeftX, Constants.SwerveConstants.frontLeftY);
         m_frontRightPosition = new Translation2d(Constants.SwerveConstants.frontRightX, Constants.SwerveConstants.frontRightY);
         m_backLeftPosition = new Translation2d(Constants.SwerveConstants.backLeftX, Constants.SwerveConstants.backLeftY);
-
+        m_backRightPosition = new Translation2d(Constants.SwerveConstants.backRightX, Constants.SwerveConstants.backRightY);
         
         exampleNumber = new TunableNumber("/Swerve/Example", 0);
+        
+        
 
         fL = new SwerveModule(Constants.SwerveConstants.k_frontLeftDriveCANID, Constants.SwerveConstants.k_frontLeftTurnCANID, 
                 Constants.SwerveConstants.k_flAbsEncoderPort, Constants.SwerveConstants.k_flAbsEncoderOffset);
@@ -90,6 +93,7 @@ public class Swervedrive extends SubsystemBase{
         frAnalog = table.getDoubleTopic("FR Absolute Encoder").getEntry(0);
         blAnalog = table.getDoubleTopic("BL Absolute Encoder").getEntry(0);
         brAnalog = table.getDoubleTopic("BR Absolute Encoder").getEntry(0);
+        testingTuning = table.getDoubleTopic("Testing Tuning").getEntry(0);
     }
 
 
@@ -109,6 +113,8 @@ public class Swervedrive extends SubsystemBase{
         frAnalog.set(fR.getAbsEncoderPositionRot());
         blAnalog.set(bL.getAbsEncoderPositionRot());
         brAnalog.set(bR.getAbsEncoderPositionRot());
+        
+        testingTuning.set(exampleNumber.getAsDouble());
     }
 
     public void Drive(ChassisSpeeds desiredState){
