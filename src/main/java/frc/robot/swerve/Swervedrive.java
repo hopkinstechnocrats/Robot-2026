@@ -42,8 +42,9 @@ public class Swervedrive extends SubsystemBase{
     DoubleEntry frAnalog;
     DoubleEntry blAnalog;
     DoubleEntry brAnalog;
-    TunableNumber exampleNumber;
+    TunableNumber driveKP;
     DoubleEntry testingTuning;
+
 
     SwerveModule fL;
     SwerveModule fR;
@@ -69,7 +70,7 @@ public class Swervedrive extends SubsystemBase{
         m_backLeftPosition = new Translation2d(Constants.SwerveConstants.backLeftX, Constants.SwerveConstants.backLeftY);
         m_backRightPosition = new Translation2d(Constants.SwerveConstants.backRightX, Constants.SwerveConstants.backRightY);
         
-        exampleNumber = new TunableNumber("/Swerve/Example", 0);
+        driveKP = new TunableNumber("/Swerve/DriveKP", 0);
         
         
 
@@ -114,7 +115,7 @@ public class Swervedrive extends SubsystemBase{
         blAnalog.set(bL.getAbsEncoderPositionRot());
         brAnalog.set(bR.getAbsEncoderPositionRot());
         
-        testingTuning.set(exampleNumber.getAsDouble());
+        testingTuning.set(driveKP.getAsDouble());
     }
 
     public void Drive(ChassisSpeeds desiredState){
