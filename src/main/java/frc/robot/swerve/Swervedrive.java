@@ -115,7 +115,9 @@ public class Swervedrive extends SubsystemBase{
         blAnalog.set(bL.getAbsEncoderPositionRot());
         brAnalog.set(bR.getAbsEncoderPositionRot());
         
-        testingTuning.set(driveKP.getAsDouble());
+        if(driveKP.hasChanged(hashCode())){
+            testingTuning.set(driveKP.getAsDouble());
+        }
     }
 
     public void Drive(ChassisSpeeds desiredState){
