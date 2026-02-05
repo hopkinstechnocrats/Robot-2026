@@ -11,7 +11,9 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.networktables.DoubleEntry;
 import frc.robot.Constants;
 
@@ -31,6 +33,8 @@ public class Swervedrive extends SubsystemBase{
 
     StructArrayPublisher<SwerveModuleState> desiredStatePublisher;
     StructArrayPublisher<SwerveModuleState> actualStatePublisher;
+
+    StructPublisher<Pose2d> robotPosition;
 
     DoubleEntry flAnalog;
     DoubleEntry frAnalog;
@@ -81,6 +85,8 @@ public class Swervedrive extends SubsystemBase{
         frAnalog = table.getDoubleTopic("FR Absolute Encoder").getEntry(0);
         blAnalog = table.getDoubleTopic("BL Absolute Encoder").getEntry(0);
         brAnalog = table.getDoubleTopic("BR Absolute Encoder").getEntry(0);
+
+        robotPosition = table.getStructTopic("Robot Position", Pose2d.struct).publish();
     }
 
 
@@ -100,6 +106,7 @@ public class Swervedrive extends SubsystemBase{
         frAnalog.set(fR.getAbsEncoderPositionRot());
         blAnalog.set(bL.getAbsEncoderPositionRot());
         brAnalog.set(bR.getAbsEncoderPositionRot());
+        robotPosition.set(m_pose);
     }
 
     public void Drive(ChassisSpeeds desiredState){
