@@ -9,19 +9,19 @@ import frc.robot.swerve.Swervedrive;
 public class Autos {
 
     // Forward Auto
-    public Command forwardAuto(Swervedrive swerveDrive, double speed) {
+    public Command forwardAuto(Swervedrive swerveDrive, double speedX, double speedY, double speedO) {
         System.out.println("2nd auto cmd ran (forwardAuto)");
         return new SequentialCommandGroup(
-            drive(swerveDrive, speed).withTimeout(10) 
+            drive(swerveDrive, speedX, speedY, speedO).withTimeout(10) 
         );
     }
 
     // Drive command -- speed from -1 to 1
-    public Command drive(Swervedrive swerveDrive, double speed){
+    public Command drive(Swervedrive swerveDrive, double speedX, double speedY, double speedO){
         System.out.println("1st auto cmd ran (drive)");
         return new RunCommand(
             () -> {
-                swerveDrive.Drive(new ChassisSpeeds(0, speed, 0));
+                swerveDrive.Drive(new ChassisSpeeds(speedX, speedY, speedO));
             }, swerveDrive);
     }
 

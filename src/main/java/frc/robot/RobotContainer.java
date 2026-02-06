@@ -24,7 +24,7 @@ public class RobotContainer {
     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     public RobotContainer() {
-        m_chooser.setDefaultOption("forward auto", auto.forwardAuto(m_swerve, 0.3));
+        m_chooser.setDefaultOption("forward auto", auto.forwardAuto(m_swerve, -0.7, -0.7, 0));
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
         );
