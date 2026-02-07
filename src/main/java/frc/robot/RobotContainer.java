@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -17,6 +18,8 @@ public class RobotContainer {
 
     Swervedrive m_swerve = new Swervedrive();
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
+
+    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     public RobotContainer() {
         m_swerve.setDefaultCommand(
@@ -32,6 +35,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+        System.out.println("Auto selected (getAutonomousCommand)");
+        return m_chooser.getSelected();
     }
 }

@@ -15,9 +15,13 @@ import com.ctre.phoenix6.swerve.SwerveModuleConstantsFactory;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.TunableNumber;
 
 public class SwerveModule extends SubsystemBase{
 
@@ -32,12 +36,27 @@ public class SwerveModule extends SubsystemBase{
     
     AnalogEncoder m_absoluteEncoder;
 
+    NetworkTableInstance inst;
+    NetworkTable table;
+
+    TunableNumber kPInput;
+    TunableNumber kIInput;
+    TunableNumber kDInput;
+
     final PositionVoltage m_turnRequest = new PositionVoltage(0).withSlot(0);
     final VelocityVoltage m_driveRequest = new VelocityVoltage(0).withSlot(0);
 
     SwerveModuleState m_moduleState;
 
     SwerveModule(int driveID, int turnID, int absEncoderPort, double absEcoderOffset){
+        inst = NetworkTableInstance.getDefault();
+        table = inst.getTable("Tunable Numbers");
+
+        kPInput = new TunableNumber("/Tunable Numbers/kPInput", Constants.SwerveConstants.k_turnKP);
+        kIInput = new TunableNumber("/Tunable Numbers/kIInput", Constants.SwerveConstants.k_turnKI);
+        kDInput = new TunableNumber("/Tunable Numbers/kDInput", Constants.SwerveConstants.k_turnKD);
+
+
         m_driveMotor = new TalonFX(driveID, new CANBus("GertrudeGreyser"));
         m_turnMotor = new TalonFX(turnID, new CANBus("GertrudeGreyser"));
 
@@ -54,6 +73,8 @@ public class SwerveModule extends SubsystemBase{
         m_turnConfig.kI = Constants.SwerveConstants.k_turnKI;
         m_turnConfig.kD = Constants.SwerveConstants.k_turnKD;
 
+        
+
         m_turnOutputConfigs = new MotorOutputConfigs();
         m_driveOutputConfigs = new MotorOutputConfigs();
 
@@ -61,14 +82,28 @@ public class SwerveModule extends SubsystemBase{
         m_turnOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
         m_driveOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
 
-
         m_driveOutputConfigs.NeutralMode = NeutralModeValue.Brake;
         m_turnOutputConfigs.NeutralMode = NeutralModeValue.Brake;
 
         m_driveMotor.getConfigurator().apply(m_driveConfig);
         m_turnMotor.getConfigurator().apply(m_turnConfig);
 
-        m_turnMotor.getConfigurator().setPosition(m_absoluteEncoder.get()-absEcoderOffset);
+        m_turnMotor.getConfigurator().setPosition((m_absoluteEncoder.get()-absEcoderOffset)*Constants.SwerveConstants.k_turnGearRatio);
+    }
+
+     @Override
+    public void periodic(){
+        if(DriverStation.isTestEnabled() && kPInput.hasChanged(hashCode())){
+            m_turnConfig.kP = kPInput.getAsDouble();
+        }
+
+        if(DriverStation.isTestEnabled() && kIInput.hasChanged(hashCode())){
+            m_turnConfig.kI = kIInput.getAsDouble();
+        }
+
+        if(DriverStation.isTestEnabled() && kDInput.hasChanged(hashCode())){
+            m_turnConfig.kD = kDInput.getAsDouble();
+        }
     }
 
     public void Drive(SwerveModuleState moduleState){
@@ -92,7 +127,7 @@ public class SwerveModule extends SubsystemBase{
     }
 
     public Rotation2d getAngleRotation2d(){
-        return new Rotation2d((m_turnMotor.getPosition().getValueAsDouble() * Math.PI * 2 )/Constants.SwerveConstants.k_turnGearRatio ); 
+        return new Rotation2d((m_turnMotor.getPosition().getValueAsDouble()/Constants.SwerveConstants.k_turnGearRatio) * Math.PI * 2 ); 
     }
 
     public SwerveModulePosition getModulePosition(){
