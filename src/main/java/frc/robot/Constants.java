@@ -67,9 +67,9 @@ public final class Constants{
         public static final int k_gyroID = 15;
     }
 
-           public static final int intakeMotorCANID = 11; //todo
-        public static final int intakeDeployMotorCANID = 12; //todo
-        public static final int intakeDeployMotorFollowerCANID = 12; //todo
+           public static final int intakeMotorCANID = 11; //TODO
+        public static final int intakeDeployMotorCANID = 12; //TODO
+        public static final int intakeDeployMotorFollowerCANID = 12; //TODO
 
 public static final double k_intakeP = 1;
         public static final double k_intakeI = 0;
@@ -81,7 +81,5 @@ public static final double k_intakeP = 1;
         public static final double k_intakeDeployS = 0;
         public static final double k_intakeDeployV = 0;
 
-
-
-
+        public static final double k_IntakePosition = 0;
 }
