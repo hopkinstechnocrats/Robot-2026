@@ -60,11 +60,22 @@ public final class Constants{
         public static final double k_driveControllerDeadband = 0.1;
         public static final double k_operatorControllerDeadband = 0.1;
         public static final int k_driverPort = 0;
+        public static final int operatorXboxControllerPort = 1;
     }
     
     public static final class GyroConstants{
         public static final int k_gyroID = 15;
     }
+
+    public static final class HopperConstants{
+        // // public static final int hopperMotorCANID = 0;
+        // public static final double hopperSpeed = 1;
+        // public static final double reverseHopperSpeed = -1;
+    }
+
+    public static final int hopperMotorCANID = 0;
+    public static final double hopperSpeed = 1;
+    public static final double reverseHopperSpeed = -1;
 
 
 }
