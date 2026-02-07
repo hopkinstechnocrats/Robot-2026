@@ -60,10 +60,21 @@ public final class Constants{
         public static final double k_driveControllerDeadband = 0.1;
         public static final double k_operatorControllerDeadband = 0.1;
         public static final int k_driverPort = 0;
+        public static final int k_operatorPort = 1;
     }
     
     public static final class GyroConstants{
         public static final int k_gyroID = 15;
+    }
+
+    public static final class LauncherConstants{
+        public static final int k_launcherMotorCANID = 11;//TODO: Change CANID
+        public static final double k_launchSpeedRPS = 78; //rotations per second
+        public static final double k_launcherBrakeSpeedRPS = 0;
+        public static final double k_launcherP = 0.3; 
+        public static final double k_launcherI = 0.1;
+        public static final double k_launcherD = 0;
+        public static final double k_feedForward = 1.2/10; 
     }
 
 
