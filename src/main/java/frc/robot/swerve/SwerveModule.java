@@ -95,14 +95,17 @@ public class SwerveModule extends SubsystemBase{
     public void periodic(){
         if(DriverStation.isTestEnabled() && kPInput.hasChanged(hashCode())){
             m_turnConfig.kP = kPInput.getAsDouble();
+            m_turnMotor.getConfigurator().apply(m_turnConfig);
         }
 
         if(DriverStation.isTestEnabled() && kIInput.hasChanged(hashCode())){
             m_turnConfig.kI = kIInput.getAsDouble();
+            m_turnMotor.getConfigurator().apply(m_turnConfig);
         }
 
         if(DriverStation.isTestEnabled() && kDInput.hasChanged(hashCode())){
             m_turnConfig.kD = kDInput.getAsDouble();
+            m_turnMotor.getConfigurator().apply(m_turnConfig);
         }
     }
 
