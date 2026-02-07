@@ -11,20 +11,17 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.swerve.Gyro;
 import frc.robot.swerve.Swervedrive;
-import frc.robot.autos.Autos;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
 
 public class RobotContainer {
 
     Swervedrive m_swerve = new Swervedrive();
-    Autos auto = new Autos();
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
 
     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     public RobotContainer() {
-        m_chooser.setDefaultOption("forward auto", auto.forwardAuto(m_swerve, -0.7, -0.7, 0));
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
         );
