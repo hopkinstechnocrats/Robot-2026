@@ -17,9 +17,17 @@ public class IntakeCommands {
         m_intakeSubsystem);
     }
     public static Command outtake(IntakeSubsystem m_IntakeSubsystem){
-        return Commands.run(()-> {
+        return Commands.run(
+            () -> {
             m_IntakeSubsystem.intake(-Constants.k_intakeSpeedRPS);
         }
     );
+    }
+    public static Command deploy(IntakeSubsystem m_IntakeSubsystem){
+        return Commands.run(
+            () -> {
+            m_IntakeSubsystem.intakeDeploy(0.25);
+            }
+            );
     }
 }
