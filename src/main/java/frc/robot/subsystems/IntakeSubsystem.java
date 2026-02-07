@@ -22,7 +22,7 @@ import frc.robot.Constants;
         Slot1Configs m_intakeDeployConfig;
         MotorOutputConfigs m_intakeOutputConfig;
         MotorOutputConfigs m_intakeDeployOutputConfig;
-        final VelocityVoltage m_intakeRequest = new VelocityVoltage(0).withSlot(0);
+        public final static VelocityVoltage m_intakeRequest = new VelocityVoltage(0).withSlot(0);
         final PositionVoltage m_request = new PositionVoltage(0).withSlot(0);
 
         public IntakeSubsystem(){
@@ -60,14 +60,6 @@ import frc.robot.Constants;
             m_intakeDeployMotorFollower.getConfigurator().apply(m_intakeDeployOutputConfig);
             m_intakeMotor.getConfigurator().apply(m_intakeConfig);
 
- 
-            
-
-   
-
-    m_intakeDeployMotor.setControl(m_request);
-    m_intakeDeployMotorFollower.setControl(m_request);  
-
         }
     
         
@@ -78,4 +70,5 @@ import frc.robot.Constants;
             m_intakeDeployMotor.setControl(m_request.withPosition(m_request.Position).withVelocity(m_request.Velocity));
             m_intakeDeployMotorFollower.setControl(m_request.withPosition(-m_request.Position).withVelocity(-m_request.Velocity));
         }
-            }
+
+}
