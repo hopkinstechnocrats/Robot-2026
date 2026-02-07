@@ -23,11 +23,11 @@ public class IntakeCommands {
         }
     );
     }
-    public static Command deploy(IntakeSubsystem m_IntakeSubsystem){
+    /*public static Command deploy(IntakeSubsystem m_IntakeSubsystem){
         return Commands.run(
             () -> {
-            m_IntakeSubsystem.intakeDeploy(0.25);
+            m_IntakeSubsystem.intakeDeploy(Constants.intakeSetpoint);
             }
             );
-    }
+    }*/
 }
