@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 public final class Constants{
 
     public static final class SwerveConstants{
+        
         public static final int k_frontLeftDriveCANID = 3;
         public static final int k_frontRightDriveCANID = 5;
         public static final int k_backLeftDriveCANID = 9;
@@ -65,6 +66,22 @@ public final class Constants{
     public static final class GyroConstants{
         public static final int k_gyroID = 15;
     }
+
+           public static final int intakeMotorCANID = 11; //todo
+        public static final int intakeDeployMotorCANID = 12; //todo
+        public static final int intakeDeployMotorFollowerCANID = 12; //todo
+
+public static final double k_intakeP = 1;
+        public static final double k_intakeI = 0;
+        public static final double k_intakeD = 0;
+
+        public static final double k_intakeDeployP = 1;
+        public static final double k_intakeDeployI = 0;
+        public static final double k_intakeDeployD = 0;
+        public static final double k_intakeDeployS = 0;
+        public static final double k_intakeDeployV = 0;
+
+
 
 
 }
