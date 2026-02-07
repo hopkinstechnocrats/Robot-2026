@@ -10,14 +10,14 @@ public class HopperCommands {
     public static Command hopper(HopperSubsystem wheel) {
         return Commands.run(
             () -> {
-                wheel.hopper(Constants.hopperSpeed);
+                wheel.hopper(Constants.HopperConstants.k_hopperSpeed);
             },
         wheel);
     }
     public static Command reverseHopper(HopperSubsystem wheel) {
         return Commands.run(
             () -> {
-                wheel.hopper(Constants.reverseHopperSpeed);
+                wheel.hopper(Constants.HopperConstants.k_reverseHopperSpeed);
             },
         wheel);
     }
