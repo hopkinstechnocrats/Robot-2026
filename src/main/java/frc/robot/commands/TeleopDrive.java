@@ -40,7 +40,7 @@ public class TeleopDrive extends Command{
         m_yOut *= Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
         m_omegaOut *= Constants.SwerveConstants.k_maxAngularSpeedRadPerSec;
 
-        ChassisSpeeds speeds = new ChassisSpeeds(m_xOut, m_yOut, m_omegaOut);
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(m_xOut, m_yOut, m_omegaOut, m_swerve.getRotation());
 
         m_swerve.Drive(speeds);
     }
