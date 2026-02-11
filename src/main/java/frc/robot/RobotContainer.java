@@ -12,11 +12,15 @@ import frc.robot.swerve.Gyro;
 import frc.robot.swerve.Swervedrive;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
+import frc.robot.commands.TurretCommands;
+import frc.robot.subsystems.TurretSubsystem;
 
 public class RobotContainer {
 
     Swervedrive m_swerve = new Swervedrive();
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
+    CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorPort);
+    TurretSubsystem turretSubsystem = new TurretSubsystem();
 
     public RobotContainer() {
         m_swerve.setDefaultCommand(
@@ -25,9 +29,17 @@ public class RobotContainer {
         
 
         configureBindings();
+        operatorController.rightBumper().whileTrue(TurretCommands.turret(turretSubsystem));
+        operatorController.leftBumper().whileTrue(TurretCommands.reverseTurret(turretSubsystem));
     }
 
     private void configureBindings() {
+         turretSubsystem.setDefaultCommand(
+          new RunCommand(
+                  () -> {
+                  turretSubsystem.turret(Constants.TurretConstants.k_turretBrakeSpeedRPS);
+                }, turretSubsystem)
+      );
         
     }
 

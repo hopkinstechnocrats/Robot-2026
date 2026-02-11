@@ -60,10 +60,27 @@ public final class Constants{
         public static final double k_driveControllerDeadband = 0.1;
         public static final double k_operatorControllerDeadband = 0.1;
         public static final int k_driverPort = 0;
+        public static final int k_operatorPort = 1;
     }
     
     public static final class GyroConstants{
         public static final int k_gyroID = 15;
+    }
+
+    public static final class TurretConstants{
+        public static final int k_turretMotorCANID = 11;//change later
+        public static final double k_turretSpeedRPS = .1;
+        public static final double k_reverseTurretSpeedRPS = -.1;
+        public static final double k_turretBrakeSpeedRPS = 0;
+
+        public static final double k_turretP = 0;
+        public static final double k_turretI = 0;
+        public static final double k_turretD = 0;
+        public static final double k_turretS = 0;
+        public static final double k_turretV = 0;
+
+        public static final double k_turretPosition = 0;
+        public static final double k_turrretSetpoint = 0;
     }
 
 
