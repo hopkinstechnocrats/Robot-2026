@@ -69,12 +69,13 @@ public final class Constants{
 
     public static final class HopperConstants{
         public static final int k_hopperMotorCANID = 0;
-        public static final double k_hopperSpeed = 1;
-        public static final double k_reverseHopperSpeed = -1;
-        public static final double k_hopperP = 0.3; 
-        public static final double k_hopperI = 0.1;
+        public static final double k_hopperSpeedRPS = 1;
+        public static final double k_reverseHopperSpeedRPS = -1;
+        public static final double k_hopperBrakeSpeedRPS = 0;
+        public static final double k_hopperP = 0.1; 
+        public static final double k_hopperI = 0;
         public static final double k_hopperD = 0;
-        public static final double k_feedForward = 1.2/10; 
+        public static final double k_feedForward = 0.1; 
     }
 
 

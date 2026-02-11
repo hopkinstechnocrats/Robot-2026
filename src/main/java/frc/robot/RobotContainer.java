@@ -34,7 +34,12 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        
+        hopperSubsystem.setDefaultCommand(
+            new RunCommand(
+                    () -> {
+                    hopperSubsystem.hopperBrake(Constants.HopperConstants.k_hopperBrakeSpeedRPS);
+                  }, hopperSubsystem
+      ));
     }
 
     public Command getAutonomousCommand() {
