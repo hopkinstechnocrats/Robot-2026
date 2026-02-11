@@ -83,4 +83,5 @@ public final class Constants{
 
         public static final double k_IntakePosition = 0;
         public static final double k_intakeSpeedRPS = 20;
+        public static final double k_intakeSetpoint = 0.25;
 }
