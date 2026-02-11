@@ -174,10 +174,6 @@ public class Swervedrive extends SubsystemBase{
             {
                 poseEstimator.setVisionMeasurementStdDevs(new Matrix<N3,N1>(VecBuilder.fill(.7,.7,999999)));
                 poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
-                if(mt2.tagCount > 0){
-                    //print out the first april tag's id.
-                    System.out.println(rawFiducials[0].id);
-                }
             }
         }
     }
