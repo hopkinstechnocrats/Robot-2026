@@ -39,9 +39,13 @@ public class SwerveModule extends SubsystemBase{
     NetworkTableInstance inst;
     NetworkTable table;
 
-    TunableNumber kPInput;
-    TunableNumber kIInput;
-    TunableNumber kDInput;
+    TunableNumber kPInputTurn;
+    TunableNumber kIInputTurn;
+    TunableNumber kDInputTurn;
+
+    TunableNumber kPInputDrive;
+    TunableNumber kIInputDrive;
+    TunableNumber kDInputDrive;
 
     final PositionVoltage m_turnRequest = new PositionVoltage(0).withSlot(0);
     final VelocityVoltage m_driveRequest = new VelocityVoltage(0).withSlot(0);
@@ -52,9 +56,13 @@ public class SwerveModule extends SubsystemBase{
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Tunable Numbers");
 
-        kPInput = new TunableNumber("/Tunable Numbers/kPInput", Constants.SwerveConstants.k_turnKP);
-        kIInput = new TunableNumber("/Tunable Numbers/kIInput", Constants.SwerveConstants.k_turnKI);
-        kDInput = new TunableNumber("/Tunable Numbers/kDInput", Constants.SwerveConstants.k_turnKD);
+        kPInputTurn = new TunableNumber("/Tunable Numbers/kPInput Turn", Constants.SwerveConstants.k_turnKP);
+        kIInputTurn = new TunableNumber("/Tunable Numbers/kIInput Turn", Constants.SwerveConstants.k_turnKI);
+        kDInputTurn = new TunableNumber("/Tunable Numbers/kDInput Turn", Constants.SwerveConstants.k_turnKD);
+
+        kPInputDrive = new TunableNumber("/Tunable Numbers/kPInput Drive", Constants.SwerveConstants.k_driveKP);
+        kIInputDrive = new TunableNumber("/Tunable Numbers/kIInput Drive", Constants.SwerveConstants.k_driveKI);
+        kDInputDrive = new TunableNumber("/Tunable Numbers/kDInput Drive", Constants.SwerveConstants.k_driveKD);
 
 
         m_driveMotor = new TalonFX(driveID, new CANBus("GertrudeGreyser"));
@@ -93,16 +101,34 @@ public class SwerveModule extends SubsystemBase{
 
      @Override
     public void periodic(){
-        if(DriverStation.isTestEnabled() && kPInput.hasChanged(hashCode())){
-            m_turnConfig.kP = kPInput.getAsDouble();
+        if(DriverStation.isTestEnabled() && kPInputTurn.hasChanged(hashCode())){
+            m_turnConfig.kP = kPInputTurn.getAsDouble();
+            m_turnMotor.getConfigurator().apply(m_turnConfig);
         }
 
-        if(DriverStation.isTestEnabled() && kIInput.hasChanged(hashCode())){
-            m_turnConfig.kI = kIInput.getAsDouble();
+        if(DriverStation.isTestEnabled() && kIInputTurn.hasChanged(hashCode())){
+            m_turnConfig.kI = kIInputTurn.getAsDouble();
+            m_turnMotor.getConfigurator().apply(m_turnConfig);
         }
 
-        if(DriverStation.isTestEnabled() && kDInput.hasChanged(hashCode())){
-            m_turnConfig.kD = kDInput.getAsDouble();
+        if(DriverStation.isTestEnabled() && kDInputTurn.hasChanged(hashCode())){
+            m_turnConfig.kD = kDInputTurn.getAsDouble();
+            m_turnMotor.getConfigurator().apply(m_turnConfig);            
+        }
+
+        if(DriverStation.isTestEnabled() && kPInputDrive.hasChanged(hashCode())){
+            m_driveConfig.kP = kPInputDrive.getAsDouble();
+            m_driveMotor.getConfigurator().apply(m_driveConfig);
+        }
+
+        if(DriverStation.isTestEnabled() && kIInputDrive.hasChanged(hashCode())){
+            m_driveConfig.kI = kIInputDrive.getAsDouble();
+            m_driveMotor.getConfigurator().apply(m_driveConfig);
+        }
+
+        if(DriverStation.isTestEnabled() && kDInputDrive.hasChanged(hashCode())){
+            m_driveConfig.kD = kDInputDrive.getAsDouble();
+            m_driveMotor.getConfigurator().apply(m_driveConfig);            
         }
     }
 
