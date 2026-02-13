@@ -96,27 +96,6 @@ public class Swervedrive extends SubsystemBase{
 
         robotPosition = table.getStructTopic("Robot Position", Pose2d.struct).publish();
 
-        RobotConfig config;
-
-        public void resetOdometry(Pose2d pose) {
-            odometryLock.
-            ();
-            swerveDrivePoseEstimator.resetPosition(getYaw(), getModulePositions(), pose);
-            if (SwerveDriveTelemetry.isSimulation)
-            {
-            mapleSimDrive.setSimulationWorldPose(pose);
-            }
-            odometryLock.unlock();
-            ChassisSpeeds robotRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(new ChassisSpeeds(0, 0, 0), getYaw());
-            kinematics.toSwerveModuleStates(robotRelativeSpeeds);
-        }
-
-        try {
-            config = RobotConfig.fromGUISettings();
-        } catch (Exception e) {
-            // Handle exception as needed
-            e.printStackTrace();
-        }
 
         // Configure AutoBuilder last
         AutoBuilder.configure(
@@ -184,5 +163,25 @@ public class Swervedrive extends SubsystemBase{
     public Rotation2d getRotation(){
         return gyro.getRotation();
     }
+        
+    public void resetOdometry(Pose2d pose) {
+        m_poseEstimator.resetPosition(gyro.getRotation(), this.getModulePositions(), pose);
+        ChassisSpeeds robotRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(new ChassisSpeeds(0, 0, 0), gyro.getRotation());
+        m_swerveKinematics.toSwerveModuleStates(robotRelativeSpeeds);
+    }
+
+    public SwerveModulePosition[] getModulePositions(){
+        SwerveModulePosition[] positions = new SwerveModulePosition[]{
+            fL.getModulePosition(),
+            fR.getModulePosition(),
+            bL.getModulePosition(),
+            bR.getModulePosition()
+        };
+        
+        return positions;
+    }
+
+
+
 
 }
