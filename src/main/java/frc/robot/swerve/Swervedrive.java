@@ -107,22 +107,14 @@ public class Swervedrive extends SubsystemBase{
             new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
             new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
                 ),
-            RobotConfig(// The robot configuration
+            RobotConfig()// The robot configuration
                 
 
                 // Boolean supplier that controls when the path will be mirrored for the red alliance
                 // This will flip the path being followed to the red side of the field.
                 // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-            var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
-            }
-            return false;
-            },
-            this
-            );
-
+        );
     }
 
 
