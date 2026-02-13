@@ -83,11 +83,11 @@ import frc.robot.TunableNumber;
     	}
         
         public void launcher(double launcherSpeed){
-        	m_launcherMotor.setControl(m_launcherRequest.withVelocity(Constants.LauncherConstants.k_launchSpeedRPS));
+        	m_launcherMotor.setControl(m_launcherRequest.withVelocity(launcherSpeed));
         }
 
         public void launcherBrake(double launcherSpeed){
-        	m_launcherMotor.setControl(m_launcherRequest.withVelocity(Constants.LauncherConstants.k_launcherBrakeSpeedRPS));
+        	m_launcherMotor.setControl(m_launcherRequest.withVelocity(launcherSpeed));
         }
     }
 

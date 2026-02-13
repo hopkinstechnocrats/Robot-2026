@@ -38,8 +38,8 @@ public class SwerveModule extends SubsystemBase{
     SwerveModuleState m_moduleState;
 
     SwerveModule(int driveID, int turnID, int absEncoderPort, double absEcoderOffset){
-        m_driveMotor = new TalonFX(driveID, new CANBus("GertrudeGreyser"));
-        m_turnMotor = new TalonFX(turnID, new CANBus("GertrudeGreyser"));
+        m_driveMotor = new TalonFX(4);//Change CANID
+        m_turnMotor = new TalonFX(5);//Change CANID
 
         m_absoluteEncoder = new AnalogEncoder(absEncoderPort);
 
