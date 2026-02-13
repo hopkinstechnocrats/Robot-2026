@@ -49,10 +49,10 @@ public class FeederSubsystem extends SubsystemBase {
     }
 
     public void feeder(double feederSpeed){
-        m_feederMotor.setControl(m_feederRequest.withVelocity(Constants.FeederConstants.feederSpeedRPS));
+        m_feederMotor.setControl(m_feederRequest.withVelocity(feederSpeed));
     }
 
     public void feederBrake(double feederSpeed){
-        m_feederMotor.setControl(m_feederRequest.withVelocity(Constants.FeederConstants.feederBreakSpeedRPS));
+        m_feederMotor.setControl(m_feederRequest.withVelocity(feederSpeed));
     }
 }
