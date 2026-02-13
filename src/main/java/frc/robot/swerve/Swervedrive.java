@@ -97,37 +97,52 @@ public class Swervedrive extends SubsystemBase{
         robotPosition = table.getStructTopic("Robot Position", Pose2d.struct).publish();
 
         RobotConfig config;
-    try{
-      config = RobotConfig.fromGUISettings();
-    } catch (Exception e) {
-      // Handle exception as needed
-      e.printStackTrace();
-    }
 
-    // Configure AutoBuilder last
-    AutoBuilder.configure(
-        this::m_pose, // Robot pose supplier
-        this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-        m_speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        (speeds, feedforwards) -> Drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-        new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-        new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-            ),
-        config, // The robot configuration
-            () -> {
-              // Boolean supplier that controls when the path will be mirrored for the red alliance
-              // This will flip the path being followed to the red side of the field.
-              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-        return alliance.get() == DriverStation.Alliance.Red;
+        public void resetOdometry(Pose2d pose) {
+            odometryLock.
+            ();
+            swerveDrivePoseEstimator.resetPosition(getYaw(), getModulePositions(), pose);
+            if (SwerveDriveTelemetry.isSimulation)
+            {
+            mapleSimDrive.setSimulationWorldPose(pose);
+            }
+            odometryLock.unlock();
+            ChassisSpeeds robotRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(new ChassisSpeeds(0, 0, 0), getYaw());
+            kinematics.toSwerveModuleStates(robotRelativeSpeeds);
         }
-        return false;
-        },
-        this
-        );
+
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            // Handle exception as needed
+            e.printStackTrace();
+        }
+
+        // Configure AutoBuilder last
+        AutoBuilder.configure(
+            m_poseEstimator, // Robot pose supplier
+            resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+            m_speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            (speeds, feedforwards) -> Drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                ),
+            config, // The robot configuration
+                () -> {
+                // Boolean supplier that controls when the path will be mirrored for the red alliance
+                // This will flip the path being followed to the red side of the field.
+                // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+            return alliance.get() == DriverStation.Alliance.Red;
+            }
+            return false;
+            },
+            this
+            );
+
     }
 
 
@@ -158,7 +173,6 @@ public class Swervedrive extends SubsystemBase{
         bR.Drive(desiredModuleStates[3]);
     }
 
-    
     private void updateActualStates(){
         actualModuleState[0] = new SwerveModuleState(fL.getDriveVelocityMeterPerSec(), fL.getAngleRotation2d());
         actualModuleState[1] = new SwerveModuleState(fR.getDriveVelocityMeterPerSec(), fR.getAngleRotation2d());
@@ -167,7 +181,6 @@ public class Swervedrive extends SubsystemBase{
 
     }
     
-
     public Rotation2d getRotation(){
         return gyro.getRotation();
     }
