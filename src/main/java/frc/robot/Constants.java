@@ -69,7 +69,7 @@ public final class Constants{
 
            public static final int intakeMotorCANID = 11; //TODO
         public static final int intakeDeployMotorCANID = 12; //TODO
-        public static final int intakeDeployMotorFollowerCANID = 12; //TODO
+        public static final int intakeDeployMotorFollowerCANID = 13; //TODO
 
         public static final double k_intakeP = 1;
         public static final double k_intakeI = 0;
@@ -83,5 +83,7 @@ public final class Constants{
 
         public static final double k_IntakePosition = 0;
         public static final double k_intakeSpeedRPS = 20;
-        public static final double k_intakeSetpoint = 0.25;
-}
+        public static final double k_intakeSetpointDeploy = 0.25;
+        public static final double k_intakeSetpointBob = 0.2;
+        public static final double k_intakeSetpointRetract = 0;
+    }

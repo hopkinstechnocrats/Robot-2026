@@ -16,7 +16,7 @@ public class IntakeCommands {
             },
         m_intakeSubsystem);
     }
-    public static Command outtake(IntakeSubsystem m_IntakeSubsystem){
+    public static Command (IntakeSubsystem m_IntakeSubsystem){
         return Commands.run(
             () -> {
             m_IntakeSubsystem.intake(-Constants.k_intakeSpeedRPS);
