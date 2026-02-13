@@ -19,7 +19,6 @@ public class RobotContainer {
     Swervedrive m_swerve = new Swervedrive();
     //Megatag2 megatag2 = new Megatag2();
     //TODO: put in values for the swerveDrivePoseEstimator
-    SwerveDrivePoseEstimator robotPoseEstimator = new SwerveDrivePoseEstimator(null, null, null, null);
 
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
 
