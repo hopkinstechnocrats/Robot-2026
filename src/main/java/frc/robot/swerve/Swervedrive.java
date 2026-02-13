@@ -151,7 +151,6 @@ public class Swervedrive extends SubsystemBase{
         
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
 
-        LimelightHelpers.RawFiducial[] rawFiducials = mt2.rawFiducials;
         /*for(int i = 0; i < mt2.tagCount;i++){
             //loop through all of the april tags that the limelight can see.
             LimelightHelpers.RawFiducial curntAprilTag = rawFiducials[i];

@@ -4,27 +4,30 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.swerve.Gyro;
 import frc.robot.swerve.Swervedrive;
-import frc.robot.commands.DriveCommands;
+//import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
 
 public class RobotContainer {
 
     Swervedrive m_swerve = new Swervedrive();
-    CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
+    //Megatag2 megatag2 = new Megatag2();
+    //TODO: put in values for the swerveDrivePoseEstimator
+    SwerveDrivePoseEstimator robotPoseEstimator = new SwerveDrivePoseEstimator(null, null, null, null);
 
-    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+    CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
 
     public RobotContainer() {
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
         );
+
         
 
         configureBindings();
@@ -35,7 +38,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        System.out.println("Auto selected (getAutonomousCommand)");
-        return m_chooser.getSelected();
+        return Commands.print("No autonomous command configured");
     }
 }
