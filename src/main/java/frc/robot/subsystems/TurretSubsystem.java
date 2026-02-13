@@ -103,7 +103,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void turretBrake(double turretSpeed){
-        m_turretMotor.set(Constants.TurretConstants.k_turretBrakeSpeedRPS);
+        
     }
     
     
