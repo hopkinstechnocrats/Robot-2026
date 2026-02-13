@@ -74,7 +74,7 @@ public final class Constants{
         public static final double k_launcherP = 0.3; 
         public static final double k_launcherI = 0.1;
         public static final double k_launcherD = 0;
-        public static final double k_feedForward = 1.2/10; 
+        public static final double k_launcherFeedForward = 1.2/10; 
     }
 
 
