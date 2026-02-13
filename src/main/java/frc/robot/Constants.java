@@ -86,4 +86,6 @@ public final class Constants{
         public static final double k_intakeSetpointDeploy = 0.25;
         public static final double k_intakeSetpointBob = 0.2;
         public static final double k_intakeSetpointRetract = 0;
+
+        public static final int k_operatorPort = 1;
     }

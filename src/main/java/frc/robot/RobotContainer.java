@@ -11,12 +11,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.swerve.Gyro;
 import frc.robot.swerve.Swervedrive;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.TeleopDrive;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class RobotContainer {
 
     Swervedrive m_swerve = new Swervedrive();
+    IntakeSubsystem m_intake = new IntakeSubsystem();
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
+    CommandXboxController operatorController = new CommandXboxController(Constants.k_operatorPort);
 
     public RobotContainer() {
         m_swerve.setDefaultCommand(
@@ -28,8 +32,12 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        
-    }
+        operatorController.a().whileTrue(IntakeCommands.intake(m_intake));
+        operatorController.a().whileTrue(IntakeCommands.deployBob(m_intake));
+        operatorController.b().whileTrue(IntakeCommands.outtake(m_intake));
+        operatorController.y().whileTrue(IntakeCommands.deploy(m_intake));
+        operatorController.x().whileTrue(IntakeCommands.undeploy(m_intake));
+        }
 
     public Command getAutonomousCommand() {
         return Commands.print("No autonomous command configured");

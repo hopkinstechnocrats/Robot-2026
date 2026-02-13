@@ -16,7 +16,7 @@ public class IntakeCommands {
             },
         m_intakeSubsystem);
     }
-    public static Command (IntakeSubsystem m_IntakeSubsystem){
+    public static Command outtake (IntakeSubsystem m_IntakeSubsystem){
         return Commands.run(
             () -> {
             m_IntakeSubsystem.intake(-Constants.k_intakeSpeedRPS);
@@ -26,7 +26,21 @@ public class IntakeCommands {
     public static Command deploy(IntakeSubsystem m_IntakeSubsystem){
         return Commands.run(
             () -> {
-            m_IntakeSubsystem.intakeDeploy(Constants.k_intakeSetpoint);
+            m_IntakeSubsystem.intakeDeploy(Constants.k_intakeSetpointDeploy);
+            }
+            );
+    }
+   public static Command deployBob(IntakeSubsystem m_IntakeSubsystem){
+        return Commands.run(
+            () -> {
+            m_IntakeSubsystem.intakeDeploy(Constants.k_intakeSetpointBob);
+            }
+            );
+    }
+   public static Command undeploy(IntakeSubsystem m_IntakeSubsystem){
+        return Commands.run(
+            () -> {
+            m_IntakeSubsystem.intakeDeploy(Constants.k_intakeSetpointRetract);
             }
             );
     }
