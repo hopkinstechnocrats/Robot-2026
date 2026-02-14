@@ -1,5 +1,7 @@
 package frc.robot.swerve;
 
+import java.util.Optional;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -21,6 +23,7 @@ import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.networktables.DoubleEntry;
 import frc.robot.Constants;
 
@@ -61,7 +64,27 @@ public class Swervedrive extends SubsystemBase{
 
     ChassisSpeeds m_speeds;
 
+    Optional<Alliance> allience;
+    boolean isAllienceColorRed = false;
+
     public Swervedrive(){
+        //find the allience color
+        
+        allience = DriverStation.getAlliance();
+        if (allience.isPresent()) {
+            if (allience.get() == Alliance.Red) {
+                //you're on red team
+                isAllienceColorRed =true;
+            }
+            if (allience.get() == Alliance.Blue) {
+                //you're on blue team
+                isAllienceColorRed = false;
+            }
+        }
+        else {
+            //NO COLOR YET, so we're assuming that you're blue by default
+            isAllienceColorRed = false;
+        }
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Swerve");
 
@@ -99,7 +122,7 @@ public class Swervedrive extends SubsystemBase{
 
         // Configure AutoBuilder last
         AutoBuilder.configure(
-            m_poseEstimator, // Robot pose supplier
+            m_poseEstimator.getEstimatedPosition(),// Robot pose supplier
             this.resetOdometry(m_pose), // Method to reset odometry (will be called if your auto has a starting pose)
             m_speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             (speeds, feedforwards) -> Drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
@@ -107,8 +130,9 @@ public class Swervedrive extends SubsystemBase{
             new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
             new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
                 ),
-            RobotConfig()// The robot configuration
-                
+            RobotConfig.fromGUISettings(),// The robot configuration
+            isAllienceColorRed
+            //find out what a subsystem is and add it as the last argument.
 
                 // Boolean supplier that controls when the path will be mirrored for the red alliance
                 // This will flip the path being followed to the red side of the field.
