@@ -78,9 +78,5 @@ public class HopperSubsystem extends SubsystemBase{
 
         public void hopper(double hopperSpeed){
         	m_hopperMotor.setControl(m_hopperRequest.withVelocity(hopperSpeed));
-        }
-
-        public void hopperBrake(double hopperSpeed){
-        	m_hopperMotor.setControl(m_hopperRequest.withVelocity(hopperSpeed));
-        }
+        }        
 }

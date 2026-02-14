@@ -66,9 +66,9 @@ public final class Constants{
     public static final class GyroConstants{
         public static final int k_gyroID = 15;
     }
-
+  //TODO test this stuff and get real numbers :)
     public static final class HopperConstants{
-        public static final int k_hopperMotorCANID = 0;
+        public static final int k_hopperMotorCANID = 0;  //TODO get CANID
         public static final double k_hopperSpeedRPS = 1;
         public static final double k_reverseHopperSpeedRPS = -1;
         public static final double k_hopperBrakeSpeedRPS = 0;
@@ -77,6 +77,4 @@ public final class Constants{
         public static final double k_hopperD = 0;
         public static final double k_feedForward = 0.1; 
     }
-
-
 }

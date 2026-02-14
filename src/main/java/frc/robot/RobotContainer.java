@@ -28,19 +28,16 @@ public class RobotContainer {
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
         );
-        
-
-        configureBindings();
-    }
-
-    private void configureBindings() {
         hopperSubsystem.setDefaultCommand(
             new RunCommand(
                     () -> {
-                    hopperSubsystem.hopperBrake(Constants.HopperConstants.k_hopperBrakeSpeedRPS);
+                    hopperSubsystem.hopper(Constants.HopperConstants.k_hopperBrakeSpeedRPS);
                   }, hopperSubsystem
       ));
+
+        configureButtonBindings();
     }
+
 
     public Command getAutonomousCommand() {
         return Commands.print("No autonomous command configured");
