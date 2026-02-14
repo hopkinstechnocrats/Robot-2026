@@ -66,10 +66,10 @@ public final class Constants{
     public static final class GyroConstants{
         public static final int k_gyroID = 15;
     }
-
-           public static final int intakeMotorCANID = 11; //TODO
-        public static final int intakeDeployMotorCANID = 12; //TODO
-        public static final int intakeDeployMotorFollowerCANID = 13; //TODO
+        //TODO: test all values from line 70-88
+        public static final int intakeMotorCANID = 11; 
+        public static final int intakeDeployMotorCANID = 12;
+        public static final int intakeDeployMotorFollowerCANID = 13;
 
         public static final double k_intakeP = 1;
         public static final double k_intakeI = 0;

@@ -33,11 +33,11 @@ public class RobotContainer {
 
     private void configureBindings() {
         operatorController.a().whileTrue(IntakeCommands.intake(m_intake));
-        operatorController.a().whileTrue(IntakeCommands.deployBob(m_intake));
+        operatorController.a().whileTrue(IntakeCommands.deployBob(m_intake)); //TODO check if works
         operatorController.b().whileTrue(IntakeCommands.outtake(m_intake));
         operatorController.y().whileTrue(IntakeCommands.deploy(m_intake));
         operatorController.x().whileTrue(IntakeCommands.undeploy(m_intake));
-        }
+    }
 
     public Command getAutonomousCommand() {
         return Commands.print("No autonomous command configured");

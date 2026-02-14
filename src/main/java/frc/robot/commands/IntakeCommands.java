@@ -26,21 +26,21 @@ public class IntakeCommands {
     public static Command deploy(IntakeSubsystem m_IntakeSubsystem){
         return Commands.run(
             () -> {
-            m_IntakeSubsystem.intakeDeploy(Constants.k_intakeSetpointDeploy);
+            m_IntakeSubsystem.intakeDeploy();
             }
             );
     }
    public static Command deployBob(IntakeSubsystem m_IntakeSubsystem){
         return Commands.run(
             () -> {
-            m_IntakeSubsystem.intakeDeploy(Constants.k_intakeSetpointBob);
+            m_IntakeSubsystem.intakeDeploy();
             }
             );
     }
    public static Command undeploy(IntakeSubsystem m_IntakeSubsystem){
         return Commands.run(
             () -> {
-            m_IntakeSubsystem.intakeDeploy(Constants.k_intakeSetpointRetract);
+            m_IntakeSubsystem.intakeDeploy();
             }
             );
     }

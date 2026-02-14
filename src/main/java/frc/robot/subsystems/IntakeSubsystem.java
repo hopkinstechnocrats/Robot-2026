@@ -20,7 +20,7 @@ import frc.robot.Constants;
 
     public class IntakeSubsystem extends SubsystemBase{
         NetworkTableInstance inst;
-      	NetworkTable table;
+      	NetworkTable table; 
         TalonFX m_intakeMotor;
         TalonFX m_intakeDeployMotor;
         TalonFX m_intakeDeployMotorFollower;
@@ -38,9 +38,9 @@ import frc.robot.Constants;
         public IntakeSubsystem(){
             inst = NetworkTableInstance.getDefault();
             table = inst.getTable("Launcher Info");
-            m_intakeMotor = new TalonFX(Constants.intakeMotorCANID); //Need to getCANID
-            m_intakeDeployMotor = new TalonFX(Constants.intakeDeployMotorCANID); //Also needs CANID
-            m_intakeDeployMotorFollower = new TalonFX(Constants.intakeDeployMotorFollowerCANID); //Also needs CANID
+            m_intakeMotor = new TalonFX(Constants.intakeMotorCANID); //TODO:Need to getCANID
+            m_intakeDeployMotor = new TalonFX(Constants.intakeDeployMotorCANID); //TODO:Also needs CANID
+            m_intakeDeployMotorFollower = new TalonFX(Constants.intakeDeployMotorFollowerCANID); //TODO:Also needs CANID
             Slot0Configs m_intakeConfig = new Slot0Configs();
             Slot1Configs m_intakeDeployConfig = new Slot1Configs();
             m_intakeOutputConfig = new MotorOutputConfigs();
@@ -54,6 +54,15 @@ import frc.robot.Constants;
             m_intakeDeployConfig.kS = Constants.k_intakeDeployS;
             m_intakeDeployConfig.kV = Constants.k_intakeDeployV;
 
+            m_intakeOutputConfig.NeutralMode = NeutralModeValue.Brake;
+            m_intakeDeployOutputConfig.NeutralMode = NeutralModeValue.Brake;
+            m_intakeMotor.setNeutralMode(NeutralModeValue.Brake);
+            m_intakeDeployMotor.setNeutralMode(NeutralModeValue.Brake);
+            m_intakeDeployMotor.getConfigurator().apply(m_intakeDeployOutputConfig);
+            m_intakeDeployMotorFollower.setNeutralMode(NeutralModeValue.Brake);
+            m_intakeDeployMotorFollower.getConfigurator().apply(m_intakeDeployOutputConfig);
+            m_intakeMotor.getConfigurator().apply(m_intakeConfig);
+
             final TrapezoidProfile m_intakeDeployProfile = new TrapezoidProfile(
             new TrapezoidProfile.Constraints(80, 160));
             TrapezoidProfile.State m_DeployGoal = new TrapezoidProfile.State(Constants.k_IntakePosition, 0);
@@ -63,14 +72,7 @@ import frc.robot.Constants;
             m_request.Position = m_setpoint.position;
             m_request.Velocity = m_setpoint.velocity;
 
-            m_intakeOutputConfig.NeutralMode = NeutralModeValue.Brake;
-            m_intakeDeployOutputConfig.NeutralMode = NeutralModeValue.Brake;
-            m_intakeMotor.setNeutralMode(NeutralModeValue.Brake);
-            m_intakeDeployMotor.setNeutralMode(NeutralModeValue.Brake);
-            m_intakeDeployMotor.getConfigurator().apply(m_intakeDeployOutputConfig);
-            m_intakeDeployMotorFollower.setNeutralMode(NeutralModeValue.Brake);
-            m_intakeDeployMotorFollower.getConfigurator().apply(m_intakeDeployOutputConfig);
-            m_intakeMotor.getConfigurator().apply(m_intakeConfig);
+
 
             
 
@@ -84,13 +86,12 @@ import frc.robot.Constants;
             MotorFollowerVoltage.set(m_intakeDeployMotorFollower.getMotorVoltage().getValueAsDouble());
     }
         
-        public void intake(double intakeSpeed){
-            m_intakeMotor.setControl(m_intakeRequest.withVelocity(10));
-        }
-        public void intakeDeploy(double intakePosition){
-            m_intakeDeployMotor.setControl(m_request.withPosition(m_request.Position).withVelocity(m_request.Velocity));
-            m_intakeDeployMotorFollower.setControl(m_request.withPosition(-m_request.Position).withVelocity(-m_request.Velocity));
-
-        }
+    public void intake(double intakeSpeed){
+        m_intakeMotor.setControl(m_intakeRequest.withVelocity(intakeSpeed));
+    }
+    public void intakeDeploy(){
+        m_intakeDeployMotor.setControl(m_request.withPosition(m_request.Position).withVelocity(m_request.Velocity));
+        m_intakeDeployMotorFollower.setControl(m_request.withPosition(-m_request.Position).withVelocity(-m_request.Velocity));
+    }
 
 }
