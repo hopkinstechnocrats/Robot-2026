@@ -30,7 +30,7 @@ public class TurretSubsystem extends SubsystemBase {
     TunableNumber kDInputTurret;
     TunableNumber kSInputTurret;
     TunableNumber kVInputTurret;
-    public final static VelocityVoltage m_intakeRequest = new VelocityVoltage(0).withSlot(0);
+    public final static VelocityVoltage m_turretRequest = new VelocityVoltage(0).withSlot(0);
     final PositionVoltage m_request = new PositionVoltage(0).withSlot(0);
     
     public TurretSubsystem(){
@@ -59,7 +59,7 @@ public class TurretSubsystem extends SubsystemBase {
 
         m_turretSetpoint = m_turretProfile.calculate(0.020, m_turretSetpoint, m_turretGoal);
         m_request.Position = m_turretSetpoint.position;
-        m_request.Velocity = m_turretSetpoint.velocity;
+        m_turretRequest.Velocity = m_turretSetpoint.velocity;
 
         m_turretOutputConfig.NeutralMode = NeutralModeValue.Brake;
         m_turretMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -103,7 +103,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void turretBrake(double turretSpeed){
-        
+        m_turretMotor.setControl(m_request.withPosition(Constants.TurretConstants.k_turretBrakeSpeedRPS).withVelocity(Constants.TurretConstants.k_turretBrakeSpeedRPS));
     }
     
     

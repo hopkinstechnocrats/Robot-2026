@@ -34,10 +34,10 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-         turretSubsystem.setDefaultCommand(
-          new RunCommand(
-                  () -> {
-                  turretSubsystem.turret(Constants.TurretConstants.k_turretBrakeSpeedRPS);
+        turretSubsystem.setDefaultCommand(
+            new RunCommand(
+                    () -> {
+                    turretSubsystem.turret(Constants.TurretConstants.k_turretBrakeSpeedRPS);
                 }, turretSubsystem)
       );
         
