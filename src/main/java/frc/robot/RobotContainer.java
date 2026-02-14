@@ -31,12 +31,7 @@ public class RobotContainer {
         
 
         configureBindings();
-            launcherSubsystem.setDefaultCommand(
-            new RunCommand(
-                    () -> {
-                    launcherSubsystem.launcherBrake(Constants.LauncherConstants.k_launcherBrakeSpeedRPS);
-                  }, launcherSubsystem
-      ));
+        launcherSubsystem.setDefaultCommand(LauncherCommands.launcherBreak(launcherSubsystem));
     }
 
     private void configureBindings() {
