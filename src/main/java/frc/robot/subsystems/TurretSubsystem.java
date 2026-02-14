@@ -30,8 +30,7 @@ public class TurretSubsystem extends SubsystemBase {
     TunableNumber kDInputTurret;
     TunableNumber kSInputTurret;
     TunableNumber kVInputTurret;
-    public final static VelocityVoltage m_turretRequest = new VelocityVoltage(0).withSlot(0);
-    final PositionVoltage m_request = new PositionVoltage(0).withSlot(0);
+    final PositionVoltage m_turretRequest = new PositionVoltage(0).withSlot(0);
     
     public TurretSubsystem(){
         inst = NetworkTableInstance.getDefault();
@@ -58,11 +57,9 @@ public class TurretSubsystem extends SubsystemBase {
         kVInputTurret = new TunableNumber("/Tunable Numbers/kVInput Turret", Constants.TurretConstants.k_turretV);
 
         m_turretSetpoint = m_turretProfile.calculate(0.020, m_turretSetpoint, m_turretGoal);
-        m_request.Position = m_turretSetpoint.position;
-        m_turretRequest.Velocity = m_turretSetpoint.velocity;
+        m_turretRequest.Position = m_turretSetpoint.position;
 
         m_turretOutputConfig.NeutralMode = NeutralModeValue.Brake;
-        m_turretMotor.setNeutralMode(NeutralModeValue.Brake);
         m_turretMotor.getConfigurator().apply(m_turretOutputConfig);
     }
 
@@ -99,12 +96,6 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void turret(double turretSpeed){
-        m_turretMotor.setControl(m_request.withPosition(m_request.Position).withVelocity(m_request.Velocity));
+        m_turretMotor.setControl(m_turretRequest.withPosition(m_turretRequest.Position));
     }
-
-    public void turretBrake(double turretSpeed){
-        m_turretMotor.setControl(m_request.withPosition(Constants.TurretConstants.k_turretBrakeSpeedRPS).withVelocity(Constants.TurretConstants.k_turretBrakeSpeedRPS));
-    }
-    
-    
 }

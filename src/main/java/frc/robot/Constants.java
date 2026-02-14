@@ -66,7 +66,7 @@ public final class Constants{
     public static final class GyroConstants{
         public static final int k_gyroID = 15;
     }
-
+//TODO: test and change all numbers
     public static final class TurretConstants{
         public static final int k_turretMotorCANID = 11;//change later
         public static final double k_turretSpeedRPS = .1;
