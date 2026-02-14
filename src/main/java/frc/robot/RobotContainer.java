@@ -26,19 +26,19 @@ public class RobotContainer {
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
         );
-
-        configureBindings();
         FeederSubsystem.setDefaultCommand(
             new RunCommand(
                     () -> {
-                    FeederSubsystem.feederBrake(Constants.FeederConstants.feederBreakSpeedRPS);
+                    FeederSubsystem.feeder(Constants.FeederConstants.feederBreakSpeedRPS);
                   }, FeederSubsystem)
         );
+        configureBindings();
+        
     }
 
     private void configureBindings() {
-        operatorController.povRight().whileTrue(FeederCommands.feeder(FeederSubsystem));
-        operatorController.povLeft().whileTrue(FeederCommands.unfeeder(FeederSubsystem));
+        operatorController.povRight().onTrue(FeederCommands.feeder(FeederSubsystem));
+        operatorController.povLeft().onTrue(FeederCommands.unfeeder(FeederSubsystem));
     }
 
     public Command getAutonomousCommand() {
