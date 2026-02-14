@@ -94,7 +94,9 @@ public class SwerveModule extends SubsystemBase{
         m_turnOutputConfigs.NeutralMode = NeutralModeValue.Brake;
 
         m_driveMotor.getConfigurator().apply(m_driveConfig);
+        m_driveMotor.getConfigurator().apply(m_driveOutputConfigs);
         m_turnMotor.getConfigurator().apply(m_turnConfig);
+        m_turnMotor.getConfigurator().apply(m_turnOutputConfigs);
 
         m_turnMotor.getConfigurator().setPosition((m_absoluteEncoder.get()-absEcoderOffset)*Constants.SwerveConstants.k_turnGearRatio);
     }
