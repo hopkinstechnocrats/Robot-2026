@@ -28,18 +28,19 @@ public class RobotContainer {
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
         );
-        
+        hopperSubsystem.setDefaultCommand(
+            new RunCommand(
+                    () -> {
+                    hopperSubsystem.hopper(Constants.HopperConstants.k_hopperBrakeSpeedRPS);
+                  }, hopperSubsystem
+      ));
 
         configureBindings();
     }
 
     private void configureBindings() {
-        hopperSubsystem.setDefaultCommand(
-            new RunCommand(
-                    () -> {
-                    hopperSubsystem.hopperBrake(Constants.HopperConstants.k_hopperBrakeSpeedRPS);
-                  }, hopperSubsystem
-      ));
+        operatorController.a().whileTrue(HopperCommands.hopper(hopperSubsystem));
+        operatorController.b().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
     }
 
     public Command getAutonomousCommand() {
@@ -49,10 +50,4 @@ public class RobotContainer {
     private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
     private final CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.operatorXboxControllerPort);
 
-
-    private void configureButtonBindings() {
-        operatorController.a().whileTrue(HopperCommands.hopper(hopperSubsystem));
-        operatorController.b().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
-
-  }
 }

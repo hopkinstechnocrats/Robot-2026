@@ -50,8 +50,6 @@ public class HopperSubsystem extends SubsystemBase{
 
             HopperMotorVoltage = table.getDoubleTopic("Hopper Motor Volated").getEntry(0);
             HopperPIDDifference = table.getDoubleTopic("Hopper PID Difference").getEntry(0);
-
-            hopperMotor.setNeutralMode(NeutralModeValue.Brake);
         }
     
 		@Override
@@ -77,10 +75,6 @@ public class HopperSubsystem extends SubsystemBase{
     	}
 
         public void hopper(double hopperSpeed){
-        	m_hopperMotor.setControl(m_hopperRequest.withVelocity(hopperSpeed));
-        }
-
-        public void hopperBrake(double hopperSpeed){
         	m_hopperMotor.setControl(m_hopperRequest.withVelocity(hopperSpeed));
         }
 }
