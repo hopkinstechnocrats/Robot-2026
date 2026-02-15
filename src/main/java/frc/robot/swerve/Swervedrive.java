@@ -180,7 +180,7 @@ public class Swervedrive extends SubsystemBase{
     }
 
     public ChassisSpeeds actualSpeeds(){
-        return m_swerveKinematics.toChassisSpeeds(fL.getModuleState(), rR.getModuleState())
+        return m_swerveKinematics.toChassisSpeeds(fL.getModuleState(), fR.getModuleState());
     }
     
     public Rotation2d getRotation(){
