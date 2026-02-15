@@ -64,27 +64,18 @@ public class Swervedrive extends SubsystemBase{
 
     ChassisSpeeds m_speeds;
 
-    Optional<Alliance> allience;
-    boolean isAllienceColorRed = false;
+    Optional<Alliance> alliance;
+    boolean isAllienceColorRed;
 
-    public Swervedrive(){
-        //find the allience color
-        
-        allience = DriverStation.getAlliance();
-        if (allience.isPresent()) {
-            if (allience.get() == Alliance.Red) {
-                //you're on red team
-                isAllienceColorRed =true;
-            }
-            if (allience.get() == Alliance.Blue) {
-                //you're on blue team
-                isAllienceColorRed = false;
-            }
+    RobotConfig pathPlannerConfig;
+
+    public Swervedrive(){        
+        alliance = DriverStation.getAlliance();
+        isAllienceColorRed = false; //if the alliance can't be determined then you're assumed to be on blue team by default.
+        if (alliance.isPresent()) {
+            isAllienceColorRed = alliance.get() == Alliance.Red;
         }
-        else {
-            //NO COLOR YET, so we're assuming that you're blue by default
-            isAllienceColorRed = false;
-        }
+
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Swerve");
 
@@ -121,23 +112,35 @@ public class Swervedrive extends SubsystemBase{
 
 
         // Configure AutoBuilder last
+        try{
+            //TODO: check that the main/deploy/pathplanner/settings.json file exists and has up to date info. 
+            //It should be created/updated by filling out the pathplanner GUI.
+            pathPlannerConfig = RobotConfig.fromGUISettings();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
         AutoBuilder.configure(
-            m_poseEstimator.getEstimatedPosition(),// Robot pose supplier
-            this.resetOdometry(m_pose), // Method to reset odometry (will be called if your auto has a starting pose)
-            m_speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            ()->m_poseEstimator.getEstimatedPosition(),// Robot pose supplier
+            (Pose2d pose)->this.resetOdometry(pose), // Method to reset odometry (will be called if your auto has a starting pose)
+            ()->m_speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             (speeds, feedforwards) -> Drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+            //TODO figure out what feedforward's being used for?
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-                ),
-            RobotConfig.fromGUISettings(),// The robot configuration
-            isAllienceColorRed
-            //find out what a subsystem is and add it as the last argument.
-
-                // Boolean supplier that controls when the path will be mirrored for the red alliance
-                // This will flip the path being followed to the red side of the field.
-                // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
+                new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            ),//TODO: check if PPHolonomicDriveController needs to be turned into a PathFollowingController
+            //TODO: check that the PID constants are correct in PPHolonomicDriveController.
+            pathPlannerConfig,// The robot configuration 
+            ()->{
+                alliance = DriverStation.getAlliance();
+                if(alliance.isPresent()){
+                    /*If our robot is on the red alliance, then return true to flip our auto's path 
+                      The Origin remains on the blue side.*/
+                    isAllienceColorRed = alliance.get() == DriverStation.Alliance.Red;
+                }
+                return isAllienceColorRed;
+            },
+            this
         );
     }
 
