@@ -97,7 +97,12 @@ public class SwerveModule extends SubsystemBase{
         m_driveMotor.getConfigurator().apply(m_driveConfig);
         m_turnMotor.getConfigurator().apply(m_turnConfig);
 
-        m_turnMotor.getConfigurator().setPosition((m_absoluteEncoder.get()-absEcoderOffset)*Constants.SwerveConstants.k_turnGearRatio);
+        double differenceInTurnAngle = (m_absoluteEncoder.get()-absEcoderOffset);
+        if(1-differenceInTurnAngle <differenceInTurnAngle){
+            differenceInTurnAngle = 1-differenceInTurnAngle;
+        }
+        
+        m_turnMotor.getConfigurator().setPosition(differenceInTurnAngle*Constants.SwerveConstants.k_turnGearRatio);
     }
 
      @Override
