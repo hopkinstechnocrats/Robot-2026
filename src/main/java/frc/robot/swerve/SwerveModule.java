@@ -11,6 +11,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.swerve.SwerveModuleConstantsFactory;
+import com.ctre.phoenix6.swerve.jni.SwerveJNI.ModuleState;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -166,5 +167,9 @@ public class SwerveModule extends SubsystemBase{
 
     public double getDriveVelocityMeterPerSec(){
         return (m_driveMotor.getVelocity().getValueAsDouble()/Constants.SwerveConstants.k_driveGearRatio) * Constants.SwerveConstants.k_wheelCircumferenceMeters;
+    }
+
+    public SwerveModuleState getModuleState(){
+        return m_moduleState;
     }
 }

@@ -178,6 +178,10 @@ public class Swervedrive extends SubsystemBase{
         actualModuleState[2] = new SwerveModuleState(bL.getDriveVelocityMeterPerSec(), bL.getAngleRotation2d());
         actualModuleState[3] = new SwerveModuleState(bR.getDriveVelocityMeterPerSec(), bR.getAngleRotation2d());
     }
+
+    public ChassisSpeeds actualSpeeds(){
+        return m_swerveKinematics.toChassisSpeeds(fL.getModuleState(), rR.getModuleState())
+    }
     
     public Rotation2d getRotation(){
         return gyro.getRotation();
