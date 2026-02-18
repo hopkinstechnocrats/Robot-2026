@@ -177,13 +177,12 @@ public class Swervedrive extends SubsystemBase{
         actualModuleState[1] = new SwerveModuleState(fR.getDriveVelocityMeterPerSec(), fR.getAngleRotation2d());
         actualModuleState[2] = new SwerveModuleState(bL.getDriveVelocityMeterPerSec(), bL.getAngleRotation2d());
         actualModuleState[3] = new SwerveModuleState(bR.getDriveVelocityMeterPerSec(), bR.getAngleRotation2d());
-
     }
     
     public Rotation2d getRotation(){
         return gyro.getRotation();
     }
-        
+
     public void resetOdometry(Pose2d pose) {
         m_poseEstimator.resetPosition(gyro.getRotation(), this.getModulePositions(), pose);
         ChassisSpeeds robotRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(new ChassisSpeeds(0, 0, 0), gyro.getRotation());
