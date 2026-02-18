@@ -70,6 +70,7 @@ public final class Constants{
     public static final class LauncherConstants{
         // TODO test numbers 73-78
         public static final int k_launcherMotorCANID = 11;//TODO: Change CANID
+        public static final int k_launcherMotorSecondCANID = 12;//TODO: Change CANID
         public static final double k_launchSpeedRPS = 78; //rotations per second
         public static final double k_launcherBrakeSpeedRPS = 0;
         public static final double k_launcherP = 0.3; 

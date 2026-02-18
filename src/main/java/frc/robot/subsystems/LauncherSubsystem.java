@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 
@@ -23,8 +24,11 @@ import frc.robot.TunableNumber;
       	DoubleEntry LauncherPIDDifference; 
 		DoubleEntry LauncherMotorVoltage; 
       	TalonFX m_launcherMotor;
+        TalonFX m_launcherMotorSecond;
    		Slot0Configs m_launcherConfig;
+        Slot0Configs m_launcherInvertedConfig;
         MotorOutputConfigs m_launcherOutputConfig;
+        MotorOutputConfigs m_launcherInvertedOutputConfig;
         TunableNumber kPInputLauncher;
         TunableNumber kIInputLauncher;
         TunableNumber kDInputLauncher;
@@ -35,14 +39,30 @@ import frc.robot.TunableNumber;
             inst = NetworkTableInstance.getDefault();
             table = inst.getTable("Launcher Info");
             m_launcherMotor = new TalonFX(Constants.LauncherConstants.k_launcherMotorCANID); //Need to getCANID
+            m_launcherMotorSecond = new TalonFX(Constants.LauncherConstants.k_launcherMotorSecondCANID); //need CANID
+            m_launcherInvertedConfig = new Slot0Configs();
             m_launcherConfig = new Slot0Configs();
             m_launcherOutputConfig = new MotorOutputConfigs();
+            m_launcherInvertedOutputConfig = new MotorOutputConfigs();
             m_launcherConfig.kP = Constants.LauncherConstants.k_launcherP;
             m_launcherConfig.kI = Constants.LauncherConstants.k_launcherI;
             m_launcherConfig.kD = Constants.LauncherConstants.k_launcherD;
 			m_launcherConfig.kV = Constants.LauncherConstants.k_launcherFeedForward;
+            m_launcherConfig.kP = Constants.LauncherConstants.k_launcherP;
+            m_launcherConfig.kI = Constants.LauncherConstants.k_launcherI;
+            m_launcherConfig.kD = Constants.LauncherConstants.k_launcherD;
+			m_launcherConfig.kV = Constants.LauncherConstants.k_launcherFeedForward;
+            m_launcherOutputConfig.NeutralMode = NeutralModeValue.Brake;
+            m_launcherInvertedOutputConfig.NeutralMode = NeutralModeValue.Brake;
+            m_launcherOutputConfig.Inverted = InvertedValue.Clockwise_Positive;
+            m_launcherInvertedOutputConfig.Inverted = InvertedValue.CounterClockwise_Positive;
+
+            m_launcherMotor.setNeutralMode(NeutralModeValue.Brake);
+            m_launcherMotorSecond.setNeutralMode(NeutralModeValue.Brake);
+            m_launcherMotor.getConfigurator().apply(m_launcherOutputConfig);
+            m_launcherMotorSecond.setNeutralMode(NeutralModeValue.Brake);
+            m_launcherMotorSecond.getConfigurator().apply(m_launcherOutputConfig);
             m_launcherMotor.getConfigurator().apply(m_launcherConfig);
-         
 
 			LauncherMotorVoltage = table.getDoubleTopic("Motor Volated").getEntry(0);
             LauncherPIDDifference = table.getDoubleTopic("PID Difference").getEntry(0);
@@ -60,7 +80,6 @@ import frc.robot.TunableNumber;
       		LauncherPIDDifference.set(m_launcherMotor.getClosedLoopError().getValueAsDouble()); 
      		//difference between desired state and real state as a double
 			LauncherMotorVoltage.set(m_launcherMotor.getMotorVoltage().getValueAsDouble());
-
             if(DriverStation.isTestEnabled() && kPInputLauncher.hasChanged(hashCode())){
                 m_launcherConfig.kP = kPInputLauncher.getAsDouble();
                 m_launcherMotor.getConfigurator().apply(m_launcherConfig);
