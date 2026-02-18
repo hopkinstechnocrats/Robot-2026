@@ -83,6 +83,7 @@ public final class Constants{
 
         public static final double k_IntakePosition = 0;
         public static final double k_intakeSpeedRPS = 20;
+        public static final double k_intakeBrakeSpeedRPS = 0;
         public static final double k_intakeSetpointDeploy = 0.25;
         public static final double k_intakeSetpointBob = 0.2;
         public static final double k_intakeSetpointRetract = 0;

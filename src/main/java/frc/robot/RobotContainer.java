@@ -27,6 +27,12 @@ public class RobotContainer {
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
         );
         
+        m_intake.setDefaultCommand(
+            new RunCommand(
+                    () -> {
+                    m_intake.intake(Constants.k_intakeBrakeSpeedRPS);
+                  }, m_intake)
+        );
 
         configureBindings();
     }
