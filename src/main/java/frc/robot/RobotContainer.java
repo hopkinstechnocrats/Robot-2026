@@ -43,6 +43,7 @@ public class RobotContainer {
         operatorController.b().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
     }
 
+
     public Command getAutonomousCommand() {
         return Commands.print("No autonomous command configured");
     }
