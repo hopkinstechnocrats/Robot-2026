@@ -6,20 +6,20 @@ import edu.wpi.first.math.geometry.Rotation2d;
 public final class Constants{
 
     public static final class SwerveConstants{
-        public static final int k_frontLeftDriveCANID = 3;
-        public static final int k_frontRightDriveCANID = 5;
-        public static final int k_backLeftDriveCANID = 9;
-        public static final int k_backRightDriveCANID = 7;
+        public static final int k_frontLeftDriveCANID = 13;
+        public static final int k_frontRightDriveCANID = 12;
+        public static final int k_backLeftDriveCANID = 11;
+        public static final int k_backRightDriveCANID = 10;
 
-        public static final int k_frontLeftTurnCANID = 4;
-        public static final int k_frontRightTurnCANID = 6;
-        public static final int k_backLeftTurnCANID = 10;
-        public static final int k_backRightTurnCANID = 8;
+        public static final int k_frontLeftTurnCANID = 6;
+        public static final int k_frontRightTurnCANID = 7;
+        public static final int k_backLeftTurnCANID = 8;
+        public static final int k_backRightTurnCANID = 9;
 
-        public static final int k_flAbsEncoderPort = 2;
-        public static final int k_frAbsEncoderPort = 1;
-        public static final int k_blAbsEncoderPort = 3;
-        public static final int k_brAbsEncoderPort = 0;
+        public static final int k_flAbsEncoderPort = 20;
+        public static final int k_frAbsEncoderPort = 21;
+        public static final int k_blAbsEncoderPort = 22;
+        public static final int k_brAbsEncoderPort = 23;
 
         public static final double k_driveKP = 0.3 ;
         public static final double k_driveKI = 0.0;
@@ -32,14 +32,14 @@ public final class Constants{
         public static final boolean k_turnInverted = true;
         public static final boolean k_driveInverted = false;
 
-        public static final double frontLeftX = 0.3;
-        public static final double frontLeftY = 0.3;
-        public static final double frontRightX = 0.3;
-        public static final double frontRightY = -0.3;
-        public static final double backLeftX = -0.3;
-        public static final double backLeftY = 0.3;
-        public static final double backRightX = -0.3;
-        public static final double backRightY = -0.3;
+        public static final double frontLeftX = 0.21761;
+        public static final double frontLeftY = 0.31921;
+        public static final double frontRightX = 0.21761;
+        public static final double frontRightY = -0.31921;
+        public static final double backLeftX = -0.21761;
+        public static final double backLeftY = 0.31921;
+        public static final double backRightX = -0.21761;
+        public static final double backRightY = -0.31921;
 
         public static final double k_flAbsEncoderOffset = 0.102;
         public static final double k_frAbsEncoderOffset = 0.257;

@@ -7,6 +7,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -33,8 +34,9 @@ public class SwerveModule extends SubsystemBase{
 
     MotorOutputConfigs m_driveOutputConfigs;
     MotorOutputConfigs m_turnOutputConfigs;
-    
-    AnalogEncoder m_absoluteEncoder;
+
+    CANcoder m_absoluteEncoder;
+    CANcoderConfiguration m_canCoderConfig;
 
     NetworkTableInstance inst;
     NetworkTable table;
@@ -52,7 +54,7 @@ public class SwerveModule extends SubsystemBase{
 
     SwerveModuleState m_moduleState;
 
-    SwerveModule(int driveID, int turnID, int absEncoderPort, double absEcoderOffset){
+    SwerveModule(int driveID, int turnID, int absEncoderPort, double absEncoderOffset){
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Tunable Numbers");
 
@@ -68,7 +70,11 @@ public class SwerveModule extends SubsystemBase{
         m_driveMotor = new TalonFX(driveID, new CANBus("GertrudeGreyser"));
         m_turnMotor = new TalonFX(turnID, new CANBus("GertrudeGreyser"));
 
-        m_absoluteEncoder = new AnalogEncoder(absEncoderPort);
+        m_absoluteEncoder = new CANcoder(absEncoderPort);
+        m_canCoderConfig = new CANcoderConfiguration();
+
+        m_canCoderConfig.MagnetSensor.MagnetOffset = absEncoderOffset;
+        m_absoluteEncoder.getConfigurator().apply(m_canCoderConfig);
 
         m_driveConfig = new Slot0Configs();
         m_turnConfig = new Slot0Configs();
@@ -98,7 +104,7 @@ public class SwerveModule extends SubsystemBase{
         m_turnMotor.getConfigurator().apply(m_turnConfig);
         m_turnMotor.getConfigurator().apply(m_turnOutputConfigs);
 
-        m_turnMotor.getConfigurator().setPosition((m_absoluteEncoder.get()-absEcoderOffset)*Constants.SwerveConstants.k_turnGearRatio);
+        m_turnMotor.getConfigurator().setPosition(m_absoluteEncoder.getPosition().getValueAsDouble()*Constants.SwerveConstants.k_turnGearRatio);
     }
 
      @Override
@@ -163,7 +169,7 @@ public class SwerveModule extends SubsystemBase{
     }
 
     public double getAbsEncoderPositionRot(){
-        return m_absoluteEncoder.get();
+        return m_absoluteEncoder.getPosition().getValueAsDouble();
     }
 
     public double getDriveVelocityMeterPerSec(){
