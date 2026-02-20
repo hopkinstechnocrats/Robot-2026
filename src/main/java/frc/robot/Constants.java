@@ -16,10 +16,10 @@ public final class Constants{
         public static final int k_backLeftTurnCANID = 8;
         public static final int k_backRightTurnCANID = 9;
 
-        public static final int k_flAbsEncoderPort = 20;
+        public static final int k_flAbsEncoderPort = 22;
         public static final int k_frAbsEncoderPort = 21;
-        public static final int k_blAbsEncoderPort = 22;
-        public static final int k_brAbsEncoderPort = 23;
+        public static final int k_blAbsEncoderPort = 23;
+        public static final int k_brAbsEncoderPort = 20;
 
         public static final double k_driveKP = 0.3 ;
         public static final double k_driveKI = 0.0;
@@ -41,10 +41,10 @@ public final class Constants{
         public static final double backRightX = -0.21761;
         public static final double backRightY = -0.31921;
 
-        public static final double k_flAbsEncoderOffset = 0.102;
-        public static final double k_frAbsEncoderOffset = 0.257;
-        public static final double k_blAbsEncoderOffset = 0.621;
-        public static final double k_brAbsEncoderOffset = 0.444;
+        public static final double k_flAbsEncoderOffset = 0.171;
+        public static final double k_frAbsEncoderOffset = 0.988;
+        public static final double k_blAbsEncoderOffset = 0;
+        public static final double k_brAbsEncoderOffset = 0.78;
 
         public static final double k_maxLinearSpeedMeterPerSecond = 3;
         public static final double k_maxAngularSpeedRadPerSec = 4.0 * Math.PI;
