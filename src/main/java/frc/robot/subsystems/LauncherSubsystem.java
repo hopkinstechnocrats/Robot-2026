@@ -23,6 +23,8 @@ import frc.robot.TunableNumber;
       	NetworkTable table;
       	DoubleEntry LauncherPIDDifference; 
 		DoubleEntry LauncherMotorVoltage; 
+      	DoubleEntry LauncherPIDDifferenceSecond; 
+		DoubleEntry LauncherMotorVoltageSecond; 
       	TalonFX m_launcherMotor;
         TalonFX m_launcherMotorSecond;
    		Slot0Configs m_launcherConfig;
@@ -48,10 +50,10 @@ import frc.robot.TunableNumber;
             m_launcherConfig.kI = Constants.LauncherConstants.k_launcherI;
             m_launcherConfig.kD = Constants.LauncherConstants.k_launcherD;
 			m_launcherConfig.kV = Constants.LauncherConstants.k_launcherFeedForward;
-            m_launcherConfig.kP = Constants.LauncherConstants.k_launcherP;
-            m_launcherConfig.kI = Constants.LauncherConstants.k_launcherI;
-            m_launcherConfig.kD = Constants.LauncherConstants.k_launcherD;
-			m_launcherConfig.kV = Constants.LauncherConstants.k_launcherFeedForward;
+            m_launcherInvertedConfig.kP = Constants.LauncherConstants.k_launcherP;
+            m_launcherInvertedConfig.kI = Constants.LauncherConstants.k_launcherI;
+            m_launcherInvertedConfig.kD = Constants.LauncherConstants.k_launcherD;
+			m_launcherInvertedConfig.kV = Constants.LauncherConstants.k_launcherFeedForward;
             m_launcherOutputConfig.NeutralMode = NeutralModeValue.Brake;
             m_launcherInvertedOutputConfig.NeutralMode = NeutralModeValue.Brake;
             m_launcherOutputConfig.Inverted = InvertedValue.Clockwise_Positive;
@@ -77,32 +79,43 @@ import frc.robot.TunableNumber;
 		
 		@Override
     	public void periodic(){
+      		LauncherPIDDifferenceSecond.set(m_launcherMotorSecond.getClosedLoopError().getValueAsDouble());
       		LauncherPIDDifference.set(m_launcherMotor.getClosedLoopError().getValueAsDouble()); 
      		//difference between desired state and real state as a double
 			LauncherMotorVoltage.set(m_launcherMotor.getMotorVoltage().getValueAsDouble());
+			LauncherMotorVoltageSecond.set(m_launcherMotorSecond.getMotorVoltage().getValueAsDouble());
             if(DriverStation.isTestEnabled() && kPInputLauncher.hasChanged(hashCode())){
                 m_launcherConfig.kP = kPInputLauncher.getAsDouble();
                 m_launcherMotor.getConfigurator().apply(m_launcherConfig);
+                m_launcherInvertedConfig.kP = kPInputLauncher.getAsDouble();
+                m_launcherMotorSecond.getConfigurator().apply(m_launcherInvertedConfig);
             }
-
+ 
             if(DriverStation.isTestEnabled() && kIInputLauncher.hasChanged(hashCode())){
                 m_launcherConfig.kI = kIInputLauncher.getAsDouble();
                 m_launcherMotor.getConfigurator().apply(m_launcherConfig);
+                m_launcherInvertedConfig.kI = kIInputLauncher.getAsDouble();
+                m_launcherMotorSecond.getConfigurator().apply(m_launcherInvertedConfig);
             }
 
             if(DriverStation.isTestEnabled() && kDInputLauncher.hasChanged(hashCode())){
                 m_launcherConfig.kD = kDInputLauncher.getAsDouble();
                 m_launcherMotor.getConfigurator().apply(m_launcherConfig);
+                m_launcherInvertedConfig.kD = kDInputLauncher.getAsDouble();
+                m_launcherMotorSecond.getConfigurator().apply(m_launcherInvertedConfig);
             }
 
             if(DriverStation.isTestEnabled() && kVInputLauncher.hasChanged(hashCode())){
                 m_launcherConfig.kV = kVInputLauncher.getAsDouble();
                 m_launcherMotor.getConfigurator().apply(m_launcherConfig);
+                m_launcherInvertedConfig.kV = kVInputLauncher.getAsDouble();
+                m_launcherMotorSecond.getConfigurator().apply(m_launcherInvertedConfig);
             }
     	}
         
         public void launcher(double launcherSpeed){
         	m_launcherMotor.setControl(m_launcherRequest.withVelocity(launcherSpeed));
+        	m_launcherMotorSecond.setControl(m_launcherRequest.withVelocity(-launcherSpeed));
         }
     }
 
