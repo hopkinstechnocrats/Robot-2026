@@ -70,7 +70,7 @@ public class SwerveModule extends SubsystemBase{
         m_driveMotor = new TalonFX(driveID, new CANBus("GertrudeGreyser"));
         m_turnMotor = new TalonFX(turnID, new CANBus("GertrudeGreyser"));
 
-        m_absoluteEncoder = new CANcoder(absEncoderPort);
+        m_absoluteEncoder = new CANcoder(absEncoderPort, new CANBus("GertrudeGreyser"));
         m_canCoderConfig = new CANcoderConfiguration();
 
         m_canCoderConfig.MagnetSensor.MagnetOffset = absEncoderOffset;
