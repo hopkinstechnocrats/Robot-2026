@@ -49,8 +49,8 @@ public final class Constants{
         public static final double k_maxLinearSpeedMeterPerSecond = 3;
         public static final double k_maxAngularSpeedRadPerSec = 4.0 * Math.PI;
 
-        public static final double k_driveGearRatio = 6.75;
-        public static final double k_turnGearRatio = 12.8;
+        public static final double k_driveGearRatio = 5.27;
+        public static final double k_turnGearRatio = 287/11;
         public static final double k_wheelCircumferenceMeters = 0.1016 * Math.PI;
 
         public static final Pose2d k_startPose = new Pose2d(0, 0, new Rotation2d(0));
