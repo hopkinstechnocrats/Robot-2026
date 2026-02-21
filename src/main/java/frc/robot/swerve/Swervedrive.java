@@ -105,7 +105,7 @@ public class Swervedrive extends SubsystemBase{
 
         robotPosition = table.getStructTopic("Robot Position", Pose2d.struct).publish();
 
-    try{
+        try{
             //TODO: check that the main/deploy/pathplanner/settings.json file exists and has up to date info. 
             //It should be created/updated by filling out the pathplanner GUI.
             pathPlannerConfig = RobotConfig.fromGUISettings();
