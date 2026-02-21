@@ -43,7 +43,7 @@ public final class Constants{
         public static final double k_blAbsEncoderOffset = 0.325;
         public static final double k_brAbsEncoderOffset = 0.221;
 
-        public static final double k_maxLinearSpeedMeterPerSecond = 5;
+        public static final double k_maxLinearSpeedMeterPerSecond = 7.5;
         public static final double k_maxAngularSpeedRadPerSec = 8.0 * Math.PI;
 
         public static final double k_driveGearRatio = 5.27;
