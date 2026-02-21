@@ -29,6 +29,7 @@ public final class Constants{
         public static final double k_turnKI = 0.2;
         public static final double k_turnKD = 0.0;
 
+        //Distance in meters
         public static final double frontLeftX = 0.21761;
         public static final double frontLeftY = 0.31921;
         public static final double frontRightX = 0.21761;
@@ -43,6 +44,7 @@ public final class Constants{
         public static final double k_blAbsEncoderOffset = 0.325;
         public static final double k_brAbsEncoderOffset = 0.221;
 
+        //TODO: Driver practice, find out if fast enough
         public static final double k_maxLinearSpeedMeterPerSecond = 3;
         public static final double k_maxAngularSpeedRadPerSec = 4.0 * Math.PI;
 
