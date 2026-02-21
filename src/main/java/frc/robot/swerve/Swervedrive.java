@@ -67,7 +67,7 @@ public class Swervedrive extends SubsystemBase{
     Optional<Alliance> alliance;
     boolean isAllienceColorRed;
 
-    RobotConfig pathPlannerConfig;
+    RobotConfig config;
 
     public Swervedrive(){
        
@@ -89,7 +89,7 @@ public class Swervedrive extends SubsystemBase{
         bL = new SwerveModule(Constants.SwerveConstants.k_backLeftDriveCANID, Constants.SwerveConstants.k_backLeftTurnCANID,
                 Constants.SwerveConstants.k_blAbsEncoderPort, Constants.SwerveConstants.k_blAbsEncoderOffset);
         bR = new SwerveModule(Constants.SwerveConstants.k_backRightDriveCANID, Constants.SwerveConstants.k_backRightTurnCANID,
-                Constants.SwerveConstants.k_brAbsEncoderPort, Constants.SwerveConstants.k_brAbsEncoderOffset);
+Constants.SwerveConstants.k_brAbsEncoderPort, Constants.SwerveConstants.k_brAbsEncoderOffset);
 
         m_swerveKinematics = new SwerveDriveKinematics(m_frontLeftPosition, m_frontRightPosition, m_backLeftPosition, m_backRightPosition);
 
@@ -105,37 +105,37 @@ public class Swervedrive extends SubsystemBase{
 
         robotPosition = table.getStructTopic("Robot Position", Pose2d.struct).publish();
 
-    try{
+        try{
             //TODO: check that the main/deploy/pathplanner/settings.json file exists and has up to date info. 
             //It should be created/updated by filling out the pathplanner GUI.
-            pathPlannerConfig = RobotConfig.fromGUISettings();
+            config = RobotConfig.fromGUISettings();
         } catch(Exception e){
             e.printStackTrace();
         }
 
         AutoBuilder.configure(
-            ()->m_poseEstimator.getEstimatedPosition(),// Robot pose supplier
+            ()->m_poseEstimator.getEstimatedPosition(), // Robot pose supplier
             (Pose2d pose)->this.resetOdometry(pose), // Method to reset odometry (will be called if your auto has a starting pose)
             ()->m_speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             (speeds, feedforwards) -> Drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-            //TODO figure out what feedforward's being used for?
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-            ),//TODO: check if PPHolonomicDriveController needs to be turned into a PathFollowingController
-            //TODO: check that the PID constants are correct in PPHolonomicDriveController.
-            pathPlannerConfig,// The robot configuration 
-            ()->{
-                alliance = DriverStation.getAlliance();
-                if(alliance.isPresent()){
-                    /*If our robot is on the red alliance, then return true to flip our auto's path 
-                      The Origin remains on the blue side.*/
-                    isAllienceColorRed = alliance.get() == DriverStation.Alliance.Red;
-                }
-                return isAllienceColorRed;
+                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            ),
+            config, // The robot configuration
+            () -> {
+              // Boolean supplier that controls when the path will be mirrored for the red alliance
+              // This will flip the path being followed to the red side of the field.
+              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+              var alliance = DriverStation.getAlliance();
+              if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+              }
+              return false;
             },
-            this
-        );
+            this // Reference to this subsystem to set requirements
+        ); 
     }
 
     @Override

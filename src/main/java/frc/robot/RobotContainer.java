@@ -49,6 +49,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("Test1");
+        PathPlannerAuto auto = new PathPlannerAuto("Test1");
+        System.out.println(auto);
+        return auto;
     }
 }
