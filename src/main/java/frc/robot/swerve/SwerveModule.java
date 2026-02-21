@@ -93,7 +93,7 @@ public class SwerveModule extends SubsystemBase{
         m_driveOutputConfigs = new MotorOutputConfigs();
 
         //TODO I have no clue something with inversion
-        m_turnOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
+        m_turnOutputConfigs.Inverted = InvertedValue.CounterClockwise_Positive;
         m_driveOutputConfigs.Inverted = InvertedValue.CounterClockwise_Positive;
 
         m_driveOutputConfigs.NeutralMode = NeutralModeValue.Brake;
