@@ -4,49 +4,61 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+
 import frc.robot.swerve.Gyro;
+import frc.robot.autos.Autos;
 import frc.robot.swerve.Swervedrive;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.swerve.Swervedrive;
+import frc.robot.commands.IntakeCommands;
 
 public class RobotContainer {
 
-    Swervedrive m_swerve = new Swervedrive();
-    IntakeSubsystem m_intake = new IntakeSubsystem();
+    private final CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.operatorXboxControllerPort);
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
-    CommandXboxController operatorController = new CommandXboxController(Constants.k_operatorPort);
 
+    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    
+    Autos auto = new Autos();
+    Swervedrive m_swerve = new Swervedrive();
+    
+    
     public RobotContainer() {
+        m_chooser.setDefaultOption("forward auto", auto.complexAuto(m_swerve, 2)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
         );
-        
-        m_intake.setDefaultCommand(
+
+		intakeSubsystem.setDefaultCommand(
             new RunCommand(
                     () -> {
-                    m_intake.intake(Constants.k_intakeBrakeSpeedRPS);
-                  }, m_intake)
-        );
+                    intakeSubsystem.intakeBrake();
+                  }, intakeSubsystem
+      ));
 
-        configureBindings();
-    }
-
-    private void configureBindings() {
-        operatorController.a().whileTrue(IntakeCommands.intake(m_intake));
-        operatorController.a().whileTrue(IntakeCommands.deployBob(m_intake)); //TODO check if works
-        operatorController.b().whileTrue(IntakeCommands.outtake(m_intake));
-        operatorController.y().whileTrue(IntakeCommands.deploy(m_intake));
-        operatorController.x().whileTrue(IntakeCommands.undeploy(m_intake));
-    }
+      configureButtonBindings();
+    } 
 
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+        return m_chooser.getSelected();
+    }
+
+    private void configureButtonBindings() {
+      operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
+      operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
+      //operatorController.y().whileTrue(IntakeCommands.deploy(intakeSubsystem));
+      //operatorController.x().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
+      //operatorController.a().whileTrue(IntakeCommands.deployBob(intakeSubsystem)); //TODO needs timer for bobing
     }
 }
-
