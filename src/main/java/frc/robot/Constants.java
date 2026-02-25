@@ -60,11 +60,22 @@ public final class Constants{
         public static final double k_driveControllerDeadband = 0.1;
         public static final double k_operatorControllerDeadband = 0.1;
         public static final int k_driverPort = 0;
+        public static final int k_operatorXboxControllerPort = 1;
     }
     
     public static final class GyroConstants{
         public static final int k_gyroID = 15;
     }
-
+//TODO: test and change all of these values
+    public static final class FeederConstants{
+        public static final int k_feederMotorCANID = 11;
+        public static final double k_feederSpeedRPS = .1;
+        public static final double k_reverseFeederSpeedRPS = -.1;
+        public static final double k_feederBreakSpeedRPS = 0;
+        public static final double k_feederP = 1; 
+        public static final double k_feederI = 0;
+        public static final double k_feederD = 0;
+        public static final double k_feederFeedForward = 0; 
+    }
 
 }

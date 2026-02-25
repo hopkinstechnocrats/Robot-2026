@@ -12,13 +12,25 @@ import frc.robot.swerve.Gyro;
 import frc.robot.swerve.Swervedrive;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.commands.FeederCommands;
+
 
 public class RobotContainer {
 
     Swervedrive m_swerve = new Swervedrive();
+    FeederSubsystem FeederSubsystem = new FeederSubsystem();
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
+    CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
 
     public RobotContainer() {
+        FeederSubsystem.setDefaultCommand(
+        new RunCommand(
+                    () -> {
+                    FeederSubsystem.feederBrake();
+                  }, FeederSubsystem
+      ));
+
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
         );
@@ -28,7 +40,8 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        
+        operatorController.povRight().onTrue(FeederCommands.feeder(FeederSubsystem));
+        operatorController.povLeft().onTrue(FeederCommands.unfeeder(FeederSubsystem)); 
     }
 
     public Command getAutonomousCommand() {
