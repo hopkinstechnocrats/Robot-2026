@@ -58,8 +58,7 @@ public class TurretSubsystem extends SubsystemBase {
 
         m_turretSetpoint = m_turretProfile.calculate(0.020, m_turretSetpoint, m_turretGoal);
         m_turretRequest.Position = m_turretSetpoint.position;
-
-        m_turretOutputConfig.NeutralMode = NeutralModeValue.Brake;
+        m_turretRequest.Velocity = m_turretSetpoint.velocity;
         m_turretMotor.getConfigurator().apply(m_turretOutputConfig);
     }
 
@@ -96,6 +95,10 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void turret(double turretSpeed){
-        m_turretMotor.setControl(m_turretRequest.withPosition(m_turretRequest.Position));
+        m_turretMotor.setControl(m_turretRequest.withPosition(m_turretRequest.Position).withVelocity(m_turretRequest.Velocity));
+    }
+
+    public void turretBrake(){
+        m_turretMotor.setControl(m_turretRequest.withPosition(Constants.TurretConstants.k_turretBrakeSpeedRPS));
     }
 }

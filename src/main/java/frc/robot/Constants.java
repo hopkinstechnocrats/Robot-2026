@@ -73,7 +73,7 @@ public final class Constants{
         public static final double k_reverseTurretSpeedRPS = -.1;
         public static final double k_turretBrakeSpeedRPS = 0;
 
-        public static final double k_turretP = 0;
+        public static final double k_turretP = 1;
         public static final double k_turretI = 0;
         public static final double k_turretD = 0;
         public static final double k_turretS = 0;

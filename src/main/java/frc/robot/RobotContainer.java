@@ -26,10 +26,11 @@ public class RobotContainer {
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
         );
+
         turretSubsystem.setDefaultCommand(
             new RunCommand(
                     () -> {
-                    turretSubsystem.turret(Constants.TurretConstants.k_turretBrakeSpeedRPS);
+                    turretSubsystem.turretBrake();
                 }, turretSubsystem)
         );
 
