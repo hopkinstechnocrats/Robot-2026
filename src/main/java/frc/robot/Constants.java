@@ -63,7 +63,7 @@ public final class Constants{
     public static final class GyroConstants{
         public static final int k_gyroID = 15;
     }
-
+    //TODO: test to find numbers for this whole block
     public static final class HopperConstants{
         public static final int k_hopperMotorCANID = 12;
         public static final double k_hopperSpeedRPS = 5;
