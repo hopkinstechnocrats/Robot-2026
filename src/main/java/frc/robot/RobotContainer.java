@@ -15,15 +15,28 @@ import frc.robot.autos.Autos;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
 
+import frc.robot.subsystems.launcherSubsystem;
+import frc.robot.commands.launcherCommands;
+
 public class RobotContainer {
 
-    Swervedrive m_swerve = new Swervedrive();
+    launcherSubsystem launcherSubsystem = new launcherSubsystem();
     Autos auto = new Autos();
+    Swervedrive m_swerve = new Swervedrive();
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
+    CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.operatorXboxControllerPort);
 
     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     public RobotContainer() {
+
+        launcherSubsystem.setDefaultCommand(
+            new RunCommand(
+                    () -> {
+                    launcherSubsystem.launcherBrake();
+                  }, launcherSubsystem
+        ));
+
         m_chooser.setDefaultOption("forward auto", auto.complexAuto(m_swerve, 2)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
@@ -34,7 +47,9 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        
+        operatorController.a().whileTrue(launcherCommands.launcher(launcherSubsystem));
+        operatorController.b().whileTrue(launcherCommands.reverseLauncher(launcherSubsystem));
+
     }
 
     public Command getAutonomousCommand() {
