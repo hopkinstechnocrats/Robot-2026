@@ -117,13 +117,11 @@ public class Swervedrive extends SubsystemBase{
             ()->m_poseEstimator.getEstimatedPosition(),// Robot pose supplier
             (Pose2d pose)->this.resetOdometry(pose), // Method to reset odometry (will be called if your auto has a starting pose)
             ()->m_speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            (speeds, feedforwards) -> Drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-            //TODO figure out what feedforward's being used for?
+            (m_speeds, feedforwards) -> Drive(m_speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-            ),//TODO: check if PPHolonomicDriveController needs to be turned into a PathFollowingController
-            //TODO: check that the PID constants are correct in PPHolonomicDriveController.
+            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            ),
             pathPlannerConfig,// The robot configuration 
             ()->{
                 alliance = DriverStation.getAlliance();
