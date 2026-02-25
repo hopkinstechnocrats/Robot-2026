@@ -34,7 +34,7 @@ public class TeleopDrive extends Command{
     public void execute(){
         m_xOut = MathUtil.applyDeadband(-m_x.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
         m_yOut = MathUtil.applyDeadband(-m_y.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
-        m_omegaOut = MathUtil.applyDeadband(-m_omega.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
+        m_omegaOut = MathUtil.applyDeadband(Constants.SwerveConstants.k_blaireMode*m_omega.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
 
         m_xOut *= Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
         m_yOut *= Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;

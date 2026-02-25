@@ -51,6 +51,8 @@ public final class Constants{
         public static final double k_wheelCircumferenceMeters = 0.1016 * Math.PI;
 
         public static final Pose2d k_startPose = new Pose2d(0, 0, new Rotation2d(0));
+        //1 for inverted turning, -1 for non inverted
+        public static final double k_blaireMode = 1;
     }
  
     public static final class ControlConstants{
