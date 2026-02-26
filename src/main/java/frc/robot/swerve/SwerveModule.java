@@ -2,6 +2,7 @@ package frc.robot.swerve;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -9,6 +10,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.swerve.SwerveModuleConstantsFactory;
@@ -31,6 +33,8 @@ public class SwerveModule extends SubsystemBase{
 
     Slot0Configs m_driveConfig;
     Slot0Configs m_turnConfig;
+
+    FeedbackConfigs m_sensorConfigs;
 
     MotorOutputConfigs m_driveOutputConfigs;
     MotorOutputConfigs m_turnOutputConfigs;
@@ -87,7 +91,8 @@ public class SwerveModule extends SubsystemBase{
         m_turnConfig.kI = Constants.SwerveConstants.k_turnKI;
         m_turnConfig.kD = Constants.SwerveConstants.k_turnKD;
 
-        
+        m_sensorConfigs = new FeedbackConfigs();
+        m_sensorConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
 
         m_turnOutputConfigs = new MotorOutputConfigs();
         m_driveOutputConfigs = new MotorOutputConfigs();
@@ -143,7 +148,7 @@ public class SwerveModule extends SubsystemBase{
     public void Drive(SwerveModuleState moduleState){
         m_moduleState = moduleState;
         m_moduleState.optimize(this.getAngleRotation2d());
-        m_moduleState.speedMetersPerSecond *= m_moduleState.angle.minus(this.getAngleRotation2d()).getCos();
+        m_moduleState.cosineScale(this.getAngleRotation2d());
         m_driveMotor.setControl(m_driveRequest.withVelocity(m_moduleState.speedMetersPerSecond * Constants.SwerveConstants.k_driveGearRatio));
         m_turnMotor.setControl(m_turnRequest.withPosition(m_moduleState.angle.getRotations() * Constants.SwerveConstants.k_turnGearRatio));
     }
