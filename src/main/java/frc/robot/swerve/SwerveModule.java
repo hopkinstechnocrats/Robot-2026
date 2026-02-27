@@ -67,10 +67,10 @@ public class SwerveModule extends SubsystemBase{
         kDInputDrive = new TunableNumber("/Tunable Numbers/kDInput Drive", Constants.SwerveConstants.k_driveKD);
 
 
-        m_driveMotor = new TalonFX(driveID, new CANBus("GertrudeGreyser"));
-        m_turnMotor = new TalonFX(turnID, new CANBus("GertrudeGreyser"));
+        m_driveMotor = new TalonFX(driveID, new CANBus("rio"));
+        m_turnMotor = new TalonFX(turnID, new CANBus("rio"));
 
-        m_absoluteEncoder = new CANcoder(absEncoderPort, new CANBus("GertrudeGreyser"));
+        m_absoluteEncoder = new CANcoder(absEncoderPort, new CANBus("rio"));
         m_canCoderConfig = new CANcoderConfiguration();
 
         m_canCoderConfig.MagnetSensor.MagnetOffset = absEncoderOffset;

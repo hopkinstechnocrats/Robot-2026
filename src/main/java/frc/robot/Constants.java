@@ -6,15 +6,15 @@ import edu.wpi.first.math.geometry.Rotation2d;
 public final class Constants{
 
     public static final class SwerveConstants{
-        public static final int k_frontLeftDriveCANID = 13;
-        public static final int k_frontRightDriveCANID = 12;
-        public static final int k_backLeftDriveCANID = 11;
-        public static final int k_backRightDriveCANID = 10;
+        public static final int k_frontLeftDriveCANID = 3;
+        public static final int k_frontRightDriveCANID = 5;
+        public static final int k_backLeftDriveCANID = 9;
+        public static final int k_backRightDriveCANID = 7;
 
-        public static final int k_frontLeftTurnCANID = 6;
-        public static final int k_frontRightTurnCANID = 7;
-        public static final int k_backLeftTurnCANID = 8;
-        public static final int k_backRightTurnCANID = 9;
+        public static final int k_frontLeftTurnCANID = 4;
+        public static final int k_frontRightTurnCANID = 6;
+        public static final int k_backLeftTurnCANID = 10;
+        public static final int k_backRightTurnCANID = 8;
 
         public static final int k_flAbsEncoderPort = 22;
         public static final int k_frAbsEncoderPort = 21;
