@@ -9,6 +9,10 @@ import java.util.function.DoubleSupplier;
 
 
 public class TeleopDrive extends Command{
+    public TeleopDrive(Swervedrive m_swerve2, Object object, Object object2, Object object3) {
+        //TODO Auto-generated constructor stub
+    }
+
     private Swervedrive m_swerve;
     private DoubleSupplier m_x;
     private DoubleSupplier m_y;
@@ -17,8 +21,18 @@ public class TeleopDrive extends Command{
     private double m_xOut;
     private double m_yOut;
     private double m_omegaOut;
+        
+    public class TeleopDriveslow extends Command{
+    private Swervedrive m_swerve;
+    private DoubleSupplier m_x;
+    private DoubleSupplier m_y;
+    private DoubleSupplier m_omega;
 
-    public TeleopDrive(Swervedrive swervedrive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier omega){
+    private double m_xOut;
+    private double m_yOut;
+    private double m_omegaOut;
+    
+    public TeleopDriveslow(Swervedrive swervedrive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier omega){
         m_swerve = swervedrive;
         m_x = xSupplier;
         m_y = ySupplier;
@@ -27,6 +41,12 @@ public class TeleopDrive extends Command{
         addRequirements(swervedrive);
     }
 
+     public void TeleopDrive(Swervedrive swervedrive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier omega){
+        m_swerve = swervedrive;
+        m_x = xSupplier;
+        m_y = ySupplier;
+        m_omega = omega;
+     }
     @Override
     public void initialize(){}
 
@@ -45,6 +65,18 @@ public class TeleopDrive extends Command{
         m_swerve.Drive(speeds);
     }
 
+     public void executeslow(){
+        m_xOut = MathUtil.applyDeadband(-m_x.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
+        m_yOut = MathUtil.applyDeadband(-m_y.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
+        m_omegaOut = MathUtil.applyDeadband(-m_omega.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
+
+        m_xOut *= Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond_slow;
+        m_yOut *= Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond_slow;
+        m_omegaOut *= Constants.SwerveConstants.k_maxAngularSpeedRadPerSec;
+
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(m_xOut, m_yOut, m_omegaOut, m_swerve.getRotation());
+        m_swerve.Drive(speeds);
+     }
     @Override
     public void end(boolean interrupted){}
 
@@ -52,4 +84,5 @@ public class TeleopDrive extends Command{
     public boolean isFinished(){
         return false;
     }
+} 
 }

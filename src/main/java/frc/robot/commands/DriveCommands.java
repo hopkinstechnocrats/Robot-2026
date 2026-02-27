@@ -44,5 +44,16 @@ public class DriveCommands{
             swervedrive.Drive(ChassisSpeeds.fromFieldRelativeSpeeds(speeds,  swervedrive.getRotation()));
         }, swervedrive);
     }
+       public static Command joystickDriveFieldOrientedslow(Swervedrive swervedrive,
+            DoubleSupplier xVelocity, DoubleSupplier yVelocity, DoubleSupplier omega){
+        return Commands.run(() -> {
+            ChassisSpeeds speeds = new ChassisSpeeds(
+                -xVelocity.getAsDouble() * Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond_slow,
+                -yVelocity.getAsDouble() * Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond_slow,
+                omega.getAsDouble() * Constants.SwerveConstants.k_maxAngularSpeedRadPerSec);
+            swervedrive.Drive(ChassisSpeeds.fromFieldRelativeSpeeds(speeds,  swervedrive.getRotation()));
+        }, swervedrive);
+    }
     
-}
+} 
+
