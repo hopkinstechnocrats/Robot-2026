@@ -26,6 +26,8 @@ import frc.robot.TunableNumber;
 
 public class SwerveModule extends SubsystemBase{
 
+    double excessRotations;
+
     TalonFX m_driveMotor;
     TalonFX m_turnMotor;
 
@@ -55,6 +57,8 @@ public class SwerveModule extends SubsystemBase{
     SwerveModuleState m_moduleState;
 
     SwerveModule(int driveID, int turnID, int absEncoderPort, double absEncoderOffset){
+        excessRotations = 0;
+
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Tunable Numbers");
 

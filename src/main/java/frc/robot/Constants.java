@@ -57,6 +57,9 @@ public final class Constants{
         public static final double k_driveControllerDeadband = 0.1;
         public static final double k_operatorControllerDeadband = 0.1;
         public static final int k_driverPort = 0;
+
+        //set to -1 for inverted turning and 1 for regular turning
+        public static final double BlaireMode = -1;
     }
     
     public static final class GyroConstants{
