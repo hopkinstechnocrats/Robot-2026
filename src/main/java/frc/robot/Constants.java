@@ -25,8 +25,8 @@ public final class Constants{
         public static final double k_driveKI = 0.0;
         public static final double k_driveKD = 0.0;
 
-        public static final double k_turnKP = 0.6;
-        public static final double k_turnKI = 0.2;
+        public static final double k_turnKP = 10.0;
+        public static final double k_turnKI = 1.5;
         public static final double k_turnKD = 0.0;
 
         public static final double frontLeftX = 0.21761;

@@ -156,13 +156,13 @@ public class SwerveModule extends SubsystemBase{
     public void Drive(SwerveModuleState moduleState){
         m_moduleState = moduleState;
         m_moduleState.optimize(this.getAngleRotation2d());
-        m_moduleState.cosineScale(this.getAngleRotation2d());
-        m_driveMotor.setControl(m_driveRequest.withVelocity(m_moduleState.speedMetersPerSecond * Constants.SwerveConstants.k_driveGearRatio));
-        m_turnMotor.setControl(m_turnRequest.withPosition(m_moduleState.angle.getRotations() * Constants.SwerveConstants.k_turnGearRatio));
+        m_moduleState.speedMetersPerSecond *= m_moduleState.angle.minus(this.getAngleRotation2d()).getCos();
+        m_driveMotor.setControl(m_driveRequest.withVelocity(m_moduleState.speedMetersPerSecond));
+        m_turnMotor.setControl(m_turnRequest.withPosition(m_moduleState.angle.getRotations()));
     }
 
     public double getAnglePositionRot(){
-        return m_turnMotor.getPosition().getValueAsDouble()/Constants.SwerveConstants.k_turnGearRatio;
+        return m_absoluteEncoder.getPosition().getValueAsDouble();
     }
 
     public double getDrivePositionRot(){
@@ -174,7 +174,7 @@ public class SwerveModule extends SubsystemBase{
     }
 
     public Rotation2d getAngleRotation2d(){
-        return new Rotation2d((m_turnMotor.getPosition().getValueAsDouble()/Constants.SwerveConstants.k_turnGearRatio) * Math.PI * 2 ); 
+        return new Rotation2d(m_absoluteEncoder.getPosition().getValueAsDouble() * 2 * Math.PI); 
     }
 
     public SwerveModulePosition getModulePosition(){
