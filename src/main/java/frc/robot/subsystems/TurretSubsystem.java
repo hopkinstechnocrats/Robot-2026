@@ -31,6 +31,9 @@ public class TurretSubsystem extends SubsystemBase {
     TunableNumber kSInputTurret;
     TunableNumber kVInputTurret;
     final PositionVoltage m_turretRequest = new PositionVoltage(0).withSlot(0);
+    final PositionVoltage m_turretPoint1Request = new PositionVoltage(0).withSlot(0);
+    final PositionVoltage m_turretPoint2Request = new PositionVoltage(0).withSlot(0);
+    final PositionVoltage m_turretPoint3Request = new PositionVoltage(0).withSlot(0);
     
     public TurretSubsystem(){
         inst = NetworkTableInstance.getDefault();
@@ -47,8 +50,15 @@ public class TurretSubsystem extends SubsystemBase {
 
         final TrapezoidProfile m_turretProfile = new TrapezoidProfile(
         new TrapezoidProfile.Constraints(80, 160));
-        TrapezoidProfile.State m_turretGoal = new TrapezoidProfile.State(Constants.TurretConstants.k_turretPosition, 0);
-        TrapezoidProfile.State m_turretSetpoint = new TrapezoidProfile.State();
+//TODO: make constants for all 3 turret setpoints, continue implementing
+        TrapezoidProfile.State m_turretGoal1 = new TrapezoidProfile.State(Constants.TurretConstants.k_turretPosition, 0);
+        TrapezoidProfile.State m_turretSetpoint1 = new TrapezoidProfile.State();
+
+        TrapezoidProfile.State m_turretGoal2 = new TrapezoidProfile.State(Constants.TurretConstants.k_turretPosition, 0);
+        TrapezoidProfile.State m_turretSetpoint2 = new TrapezoidProfile.State();
+
+        TrapezoidProfile.State m_turretGoal3 = new TrapezoidProfile.State(Constants.TurretConstants.k_turretPosition, 0);
+        TrapezoidProfile.State m_turretSetpoint3 = new TrapezoidProfile.State();
 
         kPInputTurret = new TunableNumber("/Tunable Numbers/kPInput Turret", Constants.TurretConstants.k_turretP);
         kIInputTurret = new TunableNumber("/Tunable Numbers/kIInput Turret", Constants.TurretConstants.k_turretI);
@@ -56,9 +66,19 @@ public class TurretSubsystem extends SubsystemBase {
         kSInputTurret = new TunableNumber("/Tunable Numbers/kSInput Turret", Constants.TurretConstants.k_turretS);
         kVInputTurret = new TunableNumber("/Tunable Numbers/kVInput Turret", Constants.TurretConstants.k_turretV);
 
-        m_turretSetpoint = m_turretProfile.calculate(0.020, m_turretSetpoint, m_turretGoal);
-        m_turretRequest.Position = m_turretSetpoint.position;
-        m_turretRequest.Velocity = m_turretSetpoint.velocity;
+        m_turretSetpoint1 = m_turretProfile.calculate(0.020, m_turretSetpoint1, m_turretGoal1);
+        m_turretPoint1Request.Position = m_turretSetpoint1.position;
+        m_turretPoint1Request.Velocity = m_turretSetpoint1.velocity;
+        m_turretMotor.getConfigurator().apply(m_turretOutputConfig);
+
+        m_turretSetpoint2 = m_turretProfile.calculate(0.020, m_turretSetpoint2, m_turretGoal2);
+        m_turretPoint2Request.Position = m_turretSetpoint2.position;
+        m_turretPoint2Request.Velocity = m_turretSetpoint2.velocity;
+        m_turretMotor.getConfigurator().apply(m_turretOutputConfig);
+
+        m_turretSetpoint3 = m_turretProfile.calculate(0.020, m_turretSetpoint3, m_turretGoal3);
+        m_turretPoint3Request.Position = m_turretSetpoint2.position;
+        m_turretPoint3Request.Velocity = m_turretSetpoint2.velocity;
         m_turretMotor.getConfigurator().apply(m_turretOutputConfig);
     }
 
@@ -95,9 +115,21 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void turret(double turretSpeed){
-        m_turretMotor.setControl(m_turretRequest.withPosition(m_turretRequest.Position).withVelocity(m_turretRequest.Velocity));
+        m_turretMotor.setControl(m_turretRequest.withVelocity(m_turretRequest.Velocity));
     }
 
+    public void turretP1(double turretSpeed){
+        m_turretMotor.setControl(m_turretPoint1Request.withVelocity(m_turretPoint1Request.Velocity).withPosition(m_turretPoint1Request.Position));
+    }
+
+    public void turretP2(double turretSpeed){
+        m_turretMotor.setControl(m_turretPoint2Request.withVelocity(m_turretPoint2Request.Velocity).withPosition(m_turretPoint2Request.Position));
+    }
+
+    public void turretP3(double turretSpeed){
+        m_turretMotor.setControl(m_turretPoint3Request.withVelocity(m_turretPoint3Request.Velocity).withPosition(m_turretPoint3Request.Position));
+    }
+    
     public void turretBrake(){
         m_turretMotor.setControl(m_turretRequest.withPosition(Constants.TurretConstants.k_turretBrakeSpeedRPS));
     }
