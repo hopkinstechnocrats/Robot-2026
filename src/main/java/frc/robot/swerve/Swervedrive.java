@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.Kinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -146,6 +147,8 @@ public class Swervedrive extends SubsystemBase{
 
         updateActualStates();
 
+        stateToChassisSpeeds();
+
         actualStatePublisher.set(actualModuleState);
 
         flAnalog.set(fL.getAbsEncoderPositionRot());
@@ -163,7 +166,6 @@ public class Swervedrive extends SubsystemBase{
         bR.Drive(desiredModuleStates[3]);
     }
 
-    
     private void updateActualStates(){
         actualModuleState[0] = new SwerveModuleState(fL.getDriveVelocityMeterPerSec(), fL.getAngleRotation2d());
         actualModuleState[1] = new SwerveModuleState(fR.getDriveVelocityMeterPerSec(), fR.getAngleRotation2d());
@@ -171,7 +173,10 @@ public class Swervedrive extends SubsystemBase{
         actualModuleState[3] = new SwerveModuleState(bR.getDriveVelocityMeterPerSec(), bR.getAngleRotation2d());
 
     }
-    
+
+    private void stateToChassisSpeeds(){
+        m_speeds = m_swerveKinematics.toChassisSpeeds(actualModuleState[0], actualModuleState[1], actualModuleState[2], actualModuleState[3]);
+    }
 
     public Rotation2d getRotation(){
         return gyro.getRotation();
