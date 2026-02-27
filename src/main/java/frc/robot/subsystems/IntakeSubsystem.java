@@ -54,7 +54,7 @@ public class IntakeSubsystem extends SubsystemBase{
             kIInputIntake = new TunableNumber("/Tunable Numbers/kIInput Intake", Constants.IntakeConstants.k_intakeI);
             kDInputIntake = new TunableNumber("/Tunable Numbers/kDInput Intake", Constants.IntakeConstants.k_intakeD);
 
-            m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID, new CANBus("GertrudeGreyser")); //Need to getCANID
+            m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
             m_intakeDeployMotor = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorCANID); //TODO:Also needs CANID
             m_intakeDeployMotorFollower = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorFollowerCANID); //TODO:Also needs CANID
             m_intakeConfig = new Slot0Configs();
