@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -12,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.swerve.Gyro;
 import frc.robot.swerve.Swervedrive;
@@ -19,8 +21,7 @@ import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
 
 public class RobotContainer {
-
-//test test pathplanner test 
+ 
     Swervedrive m_swerve = new Swervedrive();
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     private final SendableChooser<Command> autoChooser;
@@ -32,6 +33,8 @@ public class RobotContainer {
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
         );
         
+        NamedCommands.registerCommand("wait", new WaitCommand(1.0));
+
         configureBindings();
 
          // Build an auto chooser. This will use Commands.none() as the default option.
@@ -42,7 +45,6 @@ public class RobotContainer {
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
     }
-
 
     private void configureBindings() {
         
