@@ -2,9 +2,12 @@ package frc.robot.swerve;
 
 import java.util.function.DoubleSupplier;
 
+import javax.xml.crypto.dsig.Transform;
+
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -135,15 +138,15 @@ public class Swervedrive extends SubsystemBase{
         return gyro.getRotation();
     }
 
-    public void goToSpecifiedPose(Translation2d targetPosition){
-        Translation2d currentPosition = m_frontLeftPosition.plus(m_backLeftPosition.plus(m_backRightPosition.plus(m_frontRightPosition)));
-        currentPosition = currentPosition.div(4);//find the average of the 4 swerve module positions
+    public void goToSpecifiedPose(Pose2d targetPosition){
+        Pose2d currentPosition = new Pose2d(m_frontLeftPosition.plus(m_backLeftPosition.plus(m_backRightPosition.plus(m_frontRightPosition))).div(4),targetPosition.getRotation());
+        //find the average of the 4 swerve module positions
 
-        Translation2d deltaPosition = targetPosition.minus(currentPosition);
+        Transform2d deltaPosition = targetPosition.minus(currentPosition);
 
         double m_xOut = deltaPosition.getX();
         double m_yOut = deltaPosition.getY();
-        double m_omegaOut = deltaPosition.getAngle().getRadians();
+        double m_omegaOut = deltaPosition.getRotation().getRadians();
 
         if(m_xOut > Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond){
             m_xOut = Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
@@ -154,7 +157,7 @@ public class Swervedrive extends SubsystemBase{
         if(m_omegaOut > Constants.SwerveConstants.k_maxAngularSpeedRadPerSec){
             m_omegaOut = Constants.SwerveConstants.k_maxAngularSpeedRadPerSec;
         }
-        
+
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(m_xOut, m_yOut, m_omegaOut, this.getRotation());
 
         this.Drive(speeds);

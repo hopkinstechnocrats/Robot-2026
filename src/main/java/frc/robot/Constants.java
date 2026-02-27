@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 
 public final class Constants{
 
@@ -60,6 +61,9 @@ public final class Constants{
 
         //set to -1 for inverted turning and 1 for regular turning
         public static final double BlaireMode = -1;
+
+        //TODO: set to a useful pose please. 
+        public static final Pose2d setPose = new Pose2d(1,1, new Rotation2d(0));
     }
     
     public static final class GyroConstants{
