@@ -32,7 +32,6 @@ public class RobotContainer {
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
         );
         
-
         configureBindings();
 
          // Build an auto chooser. This will use Commands.none() as the default option.
@@ -50,6 +49,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("QAuto1");
+        return new PathPlannerAuto("AutoTest");
     }
 }
