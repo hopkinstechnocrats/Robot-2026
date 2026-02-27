@@ -2,6 +2,7 @@ package frc.robot.swerve;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.ClosedLoopGeneralConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -41,6 +42,8 @@ public class SwerveModule extends SubsystemBase{
 
     CANcoder m_absoluteEncoder;
     CANcoderConfiguration m_canCoderConfig;
+
+    ClosedLoopGeneralConfigs m_generalConfig;
 
     NetworkTableInstance inst;
     NetworkTable table;
@@ -93,6 +96,11 @@ public class SwerveModule extends SubsystemBase{
 
         m_sensorConfigs = new FeedbackConfigs();
         m_sensorConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+        m_sensorConfigs.RotorToSensorRatio = Constants.SwerveConstants.k_turnGearRatio; 
+        m_sensorConfigs.FeedbackRemoteSensorID = m_absoluteEncoder.getDeviceID();
+
+        m_generalConfig = new ClosedLoopGeneralConfigs();
+        m_generalConfig.ContinuousWrap = true;
 
         m_turnOutputConfigs = new MotorOutputConfigs();
         m_driveOutputConfigs = new MotorOutputConfigs();
@@ -108,6 +116,8 @@ public class SwerveModule extends SubsystemBase{
         m_driveMotor.getConfigurator().apply(m_driveOutputConfigs);
         m_turnMotor.getConfigurator().apply(m_turnConfig);
         m_turnMotor.getConfigurator().apply(m_turnOutputConfigs);
+        m_turnMotor.getConfigurator().apply(m_sensorConfigs);
+        m_turnMotor.getConfigurator().apply(m_generalConfig);
 
         m_turnMotor.getConfigurator().setPosition(m_absoluteEncoder.getPosition().getValueAsDouble()*Constants.SwerveConstants.k_turnGearRatio);
     }
