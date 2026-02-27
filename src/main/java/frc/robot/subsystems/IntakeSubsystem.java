@@ -35,6 +35,8 @@ public class IntakeSubsystem extends SubsystemBase{
     Slot1Configs m_intakeDeployConfig;
     MotorOutputConfigs m_intakeOutputConfig;
     MotorOutputConfigs m_intakeDeployOutputConfig;
+    TunableNumber kIntakeFeedSpeedRPS;
+    TunableNumber kIntakeReverseFeedSpeedRPS;
     TunableNumber kPInputIntake;
     TunableNumber kIInputIntake;
     TunableNumber kDInputIntake;
@@ -55,6 +57,8 @@ public class IntakeSubsystem extends SubsystemBase{
             inst = NetworkTableInstance.getDefault();
             table = inst.getTable("Intake Info");
 
+            kIntakeFeedSpeedRPS = new TunableNumber("/TunableNumbers/Intake Feed Speed RPS", Constants.IntakeConstants.k_intakeSpeedRPS);
+            kIntakeReverseFeedSpeedRPS = new TunableNumber("/TunableNumbers/Intake Reverse Feed Speed RPS", Constants.IntakeConstants.k_reverseIntakeSpeedRPS);
             kPInputIntake = new TunableNumber("/Tunable Numbers/k_PInput Intake", Constants.IntakeConstants.k_intakeP);
             kIInputIntake = new TunableNumber("/Tunable Numbers/k_IInput Intake", Constants.IntakeConstants.k_intakeI);
             kDInputIntake = new TunableNumber("/Tunable Numbers/k_DInput Intake", Constants.IntakeConstants.k_intakeD);
@@ -129,6 +133,10 @@ public class IntakeSubsystem extends SubsystemBase{
 
             DeployPIDFollowerDifference.set(m_intakeDeployMotorFollower.getClosedLoopError().getValueAsDouble()); 
 			DeployMotorFollowerVoltage.set(m_intakeDeployMotorFollower.getMotorVoltage().getValueAsDouble());
+
+            if(DriverStation.isTestEnabled() && kIntakeFeedSpeedRPS.hasChanged(hashCode())){
+                m_intakeRequest.Velocity = kIntakeFeedSpeedRPS.getAsDouble();
+            }
 
             if(DriverStation.isTestEnabled() && kPInputIntake.hasChanged(hashCode())){
                 m_intakeConfig.kP = kPInputIntake.getAsDouble();
