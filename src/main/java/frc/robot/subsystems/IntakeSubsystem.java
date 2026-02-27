@@ -38,6 +38,11 @@ public class IntakeSubsystem extends SubsystemBase{
     TunableNumber kPInputIntake;
     TunableNumber kIInputIntake;
     TunableNumber kDInputIntake;
+    TunableNumber kPInputDeployIntake;
+    TunableNumber kIInputDeployIntake;
+    TunableNumber kDInputDeployIntake;
+    TunableNumber kSInputDeployIntake;
+    TunableNumber kVInputDeployIntake;
     final VelocityVoltage m_intakeRequest = new VelocityVoltage(0).withSlot(0);
     final PositionVoltage m_intakeDeployRequest = new PositionVoltage(0).withSlot(1);
     final PositionVoltage m_intakeUndeployRequest = new PositionVoltage(0).withSlot(1);
@@ -50,9 +55,15 @@ public class IntakeSubsystem extends SubsystemBase{
             inst = NetworkTableInstance.getDefault();
             table = inst.getTable("Intake Info");
 
-            kPInputIntake = new TunableNumber("/Tunable Numbers/kPInput Intake", Constants.IntakeConstants.k_intakeP);
-            kIInputIntake = new TunableNumber("/Tunable Numbers/kIInput Intake", Constants.IntakeConstants.k_intakeI);
-            kDInputIntake = new TunableNumber("/Tunable Numbers/kDInput Intake", Constants.IntakeConstants.k_intakeD);
+            kPInputIntake = new TunableNumber("/Tunable Numbers/k_PInput Intake", Constants.IntakeConstants.k_intakeP);
+            kIInputIntake = new TunableNumber("/Tunable Numbers/k_IInput Intake", Constants.IntakeConstants.k_intakeI);
+            kDInputIntake = new TunableNumber("/Tunable Numbers/k_DInput Intake", Constants.IntakeConstants.k_intakeD);
+
+            kPInputDeployIntake = new TunableNumber("/Tunable Numbers/kP_Input Deploy Intake", Constants.IntakeConstants.k_intakeDeployP);
+            kIInputDeployIntake = new TunableNumber("/Tunable Numbers/kI_Input Deploy Intake", Constants.IntakeConstants.k_intakeDeployI);
+            kDInputDeployIntake = new TunableNumber("/Tunable Numbers/kD_Input Deploy Intake", Constants.IntakeConstants.k_intakeDeployD);
+            kSInputDeployIntake = new TunableNumber("/Tunable Numbers/kS_Input Deploy Intake", Constants.IntakeConstants.k_intakeDeployS);
+            kVInputDeployIntake = new TunableNumber("/Tunable Numbers/kV_Input Deploy Intake", Constants.IntakeConstants.k_intakeDeployV);
 
             m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
             m_intakeDeployMotor = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorCANID); //TODO:Also needs CANID
@@ -132,6 +143,36 @@ public class IntakeSubsystem extends SubsystemBase{
             if(DriverStation.isTestEnabled() && kDInputIntake.hasChanged(hashCode())){
                 m_intakeConfig.kD = kDInputIntake.getAsDouble();
                 m_intakeMotor.getConfigurator().apply(m_intakeConfig);            
+            }
+
+            if(DriverStation.isTestEnabled() && kPInputDeployIntake.hasChanged(hashCode())){
+                m_intakeDeployConfig.kP = kPInputDeployIntake.getAsDouble();
+                m_intakeDeployMotor.getConfigurator().apply(m_intakeDeployConfig);
+                m_intakeDeployMotorFollower.getConfigurator().apply(m_intakeDeployConfig);            
+            }
+
+            if(DriverStation.isTestEnabled() && kIInputDeployIntake.hasChanged(hashCode())){
+                m_intakeDeployConfig.kI = kIInputDeployIntake.getAsDouble();
+                m_intakeDeployMotor.getConfigurator().apply(m_intakeDeployConfig);
+                m_intakeDeployMotorFollower.getConfigurator().apply(m_intakeDeployConfig);            
+            }
+
+            if(DriverStation.isTestEnabled() && kDInputDeployIntake.hasChanged(hashCode())){
+                m_intakeDeployConfig.kD = kDInputDeployIntake.getAsDouble();
+                m_intakeDeployMotor.getConfigurator().apply(m_intakeDeployConfig);
+                m_intakeDeployMotorFollower.getConfigurator().apply(m_intakeDeployConfig);            
+            }
+
+            if(DriverStation.isTestEnabled() && kSInputDeployIntake.hasChanged(hashCode())){
+                m_intakeDeployConfig.kS = kSInputDeployIntake.getAsDouble();
+                m_intakeDeployMotor.getConfigurator().apply(m_intakeDeployConfig);
+                m_intakeDeployMotorFollower.getConfigurator().apply(m_intakeDeployConfig);            
+            }
+
+            if(DriverStation.isTestEnabled() && kVInputDeployIntake.hasChanged(hashCode())){
+                m_intakeDeployConfig.kV = kVInputDeployIntake.getAsDouble();
+                m_intakeDeployMotor.getConfigurator().apply(m_intakeDeployConfig);
+                m_intakeDeployMotorFollower.getConfigurator().apply(m_intakeDeployConfig);            
             }
     	}
 
