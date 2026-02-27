@@ -64,10 +64,10 @@ public final class Constants{
     public static final class GyroConstants{
         public static final int k_gyroID = 15;
     }
-
+//TODO: change all of these numbers
     public static final class IntakeConstants{
         public static final int k_intakeMotorCANID = 14;
-        public static final double k_intakeSpeedRPS = 1000;
+        public static final double k_intakeSpeedRPS = 1000;//TODO: change this speed
         public static final double k_reverseIntakeSpeedRPS = -1000;   
         public static final double k_intakeBrakeSpeedRPS = 0;
         public static final double k_intakeP = 0.3; 
