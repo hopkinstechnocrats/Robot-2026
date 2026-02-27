@@ -34,7 +34,8 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        
+        driveController.a().whileTrue(DriveCommands.goToSpecifiedPoseCommand(m_swerve, null));
+        //TODO: add a setpose to go to.
     }
 
     public Command getAutonomousCommand() {

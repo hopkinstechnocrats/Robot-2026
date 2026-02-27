@@ -1,5 +1,7 @@
 package frc.robot.swerve;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -131,5 +133,30 @@ public class Swervedrive extends SubsystemBase{
 
     public Rotation2d getRotation(){
         return gyro.getRotation();
+    }
+
+    public void goToSpecifiedPose(Translation2d targetPosition){
+        Translation2d currentPosition = m_frontLeftPosition.plus(m_backLeftPosition.plus(m_backRightPosition.plus(m_frontRightPosition)));
+        currentPosition = currentPosition.div(4);//find the average of the 4 swerve module positions
+
+        Translation2d deltaPosition = targetPosition.minus(currentPosition);
+
+        double m_xOut = deltaPosition.getX();
+        double m_yOut = deltaPosition.getY();
+        double m_omegaOut = deltaPosition.getAngle().getRadians();
+
+        if(m_xOut > Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond){
+            m_xOut = Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
+        }
+        if(m_yOut > Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond){
+            m_yOut = Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
+        }        
+        if(m_omegaOut > Constants.SwerveConstants.k_maxAngularSpeedRadPerSec){
+            m_omegaOut = Constants.SwerveConstants.k_maxAngularSpeedRadPerSec;
+        }
+        
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(m_xOut, m_yOut, m_omegaOut, this.getRotation());
+
+        this.Drive(speeds);
     }
 }
