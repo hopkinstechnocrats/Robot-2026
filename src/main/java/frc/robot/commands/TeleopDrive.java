@@ -9,9 +9,7 @@ import java.util.function.DoubleSupplier;
 
 
 public class TeleopDrive extends Command{
-    public TeleopDrive(Swervedrive m_swerve2, Object object, Object object2, Object object3) {
-        //TODO Auto-generated constructor stub
-    }
+
 
     private Swervedrive m_swerve;
     private DoubleSupplier m_x;
@@ -22,7 +20,7 @@ public class TeleopDrive extends Command{
     private double m_yOut;
     private double m_omegaOut;
         
-    public class TeleopDriveslow extends Command{
+    public class TeleopDrive extends Command{
     private Swervedrive m_swerve;
     private DoubleSupplier m_x;
     private DoubleSupplier m_y;
@@ -32,6 +30,13 @@ public class TeleopDrive extends Command{
     private double m_yOut;
     private double m_omegaOut;
     
+    public void TeleopDrive(Swervedrive swervedrive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier omega){
+        m_swerve = swervedrive;
+        m_x = xSupplier;
+        m_y = ySupplier;
+        m_omega = omega;
+    }
+
     public TeleopDriveslow(Swervedrive swervedrive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier omega){
         m_swerve = swervedrive;
         m_x = xSupplier;
@@ -41,12 +46,6 @@ public class TeleopDrive extends Command{
         addRequirements(swervedrive);
     }
 
-     public void TeleopDrive(Swervedrive swervedrive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier omega){
-        m_swerve = swervedrive;
-        m_x = xSupplier;
-        m_y = ySupplier;
-        m_omega = omega;
-     }
     @Override
     public void initialize(){}
 
