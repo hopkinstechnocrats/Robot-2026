@@ -118,8 +118,6 @@ public class SwerveModule extends SubsystemBase{
         m_turnMotor.getConfigurator().apply(m_turnOutputConfigs);
         m_turnMotor.getConfigurator().apply(m_sensorConfigs);
         m_turnMotor.getConfigurator().apply(m_generalConfig);
-
-        m_turnMotor.getConfigurator().setPosition(m_absoluteEncoder.getPosition().getValueAsDouble()*Constants.SwerveConstants.k_turnGearRatio);
     }
 
      @Override
