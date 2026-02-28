@@ -26,8 +26,6 @@ public class RobotContainer {
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     private final SendableChooser<Command> autoChooser;
 
-    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-
     public RobotContainer() {
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
@@ -37,13 +35,11 @@ public class RobotContainer {
 
         configureBindings();
 
-         // Build an auto chooser. This will use Commands.none() as the default option.
+        // Build an auto chooser. This will use Commands.none() as the default option.
+        // With an option that allows you to specify the default auto by its name
         autoChooser = AutoBuilder.buildAutoChooser();
 
-        // Another option that allows you to specify the default auto by its name
-        // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+        SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
     private void configureBindings() {
@@ -51,6 +47,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("AutoTest");
+        return autoChooser.getSelected();
     }
 }
