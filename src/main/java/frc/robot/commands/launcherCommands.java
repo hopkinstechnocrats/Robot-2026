@@ -7,10 +7,10 @@ import frc.robot.subsystems.launcherSubsystem;
 
 public class launcherCommands extends Command {
        
-    public static Command launcher(launcherSubsystem wheel) {
+    public static Command launcher(launcherSubsystem wheel, double launcherSpeed) {
         return Commands.run(
             () -> {
-                wheel.launcher(Constants.LauncherConstants.k_launcherSpeedRPS);
+                wheel.launcher(launcherSpeed);
             },
         wheel);
     }

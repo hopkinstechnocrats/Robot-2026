@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.swerve.Gyro;
 import frc.robot.swerve.Swervedrive;
+import frc.robot.Constants.LauncherConstants;
 import frc.robot.autos.Autos;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
@@ -47,9 +48,10 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        operatorController.a().whileTrue(launcherCommands.launcher(launcherSubsystem));
+        operatorController.a().whileTrue(launcherCommands.launcher(launcherSubsystem, LauncherConstants.k_launcherSpeedRPS));
         operatorController.b().whileTrue(launcherCommands.reverseLauncher(launcherSubsystem));
-
+        operatorController.x().whileTrue(launcherCommands.launcher(launcherSubsystem, LauncherConstants.k_fastLauncherSpeedRPS));
+        operatorController.y().whileTrue(launcherCommands.launcher(launcherSubsystem, LauncherConstants.k_slowLauncherSpeedRPS));
     }
 
     public Command getAutonomousCommand() {
