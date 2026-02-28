@@ -25,8 +25,8 @@ public final class Constants{
         public static final double k_driveKI = 0.0;
         public static final double k_driveKD = 0.0;
 
-        public static final double k_turnKP = 0.6;
-        public static final double k_turnKI = 0.2;
+        public static final double k_turnKP = 12.0;
+        public static final double k_turnKI = 5;
         public static final double k_turnKD = 0.0;
 
         public static final double frontLeftX = 0.21761;
@@ -39,7 +39,7 @@ public final class Constants{
         public static final double backRightY = -0.31921;
 
         public static final double k_flAbsEncoderOffset = -0.171;
-        public static final double k_frAbsEncoderOffset = -0.989;
+        public static final double k_frAbsEncoderOffset = -0.489;
         public static final double k_blAbsEncoderOffset = 0.325;
         public static final double k_brAbsEncoderOffset = 0.221;
 
@@ -51,6 +51,8 @@ public final class Constants{
         public static final double k_wheelCircumferenceMeters = 0.1016 * Math.PI;
 
         public static final Pose2d k_startPose = new Pose2d(0, 0, new Rotation2d(0));
+        //1 for inverted turning, -1 for non inverted
+        public static final double k_blaireMode = 1;
     }
  
     public static final class ControlConstants{
