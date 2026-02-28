@@ -55,6 +55,10 @@ public final class Constants{
         public static final double k_blaireMode = 1;
     }
     public static final class driveSetpoints{
+        public static final double minDriveSpeed = 0.1;
+        public static final double minDistanceMeters = 0.01;
+        public static final double speedToDistanceRatio = 1;
+        
         public static final Pose2d testSetpoint= new Pose2d(1,1,new Rotation2d(1));
     }
  

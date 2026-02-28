@@ -130,20 +130,28 @@ public class Swervedrive extends SubsystemBase{
     }
 
     public void gotoSetpoint(Pose2d targetPose){
-        Rotation2d currentAngle = new Rotation2d(0);
+        Translation2d BLdeltaFR = m_backLeftPosition.minus(m_frontRightPosition);
+        Rotation2d currentAngle = new Rotation2d(Math.atan(BLdeltaFR.getY()/BLdeltaFR.getX())+Math.PI/4);
+        //TODO: test that this to see if it's the right angle (points at the front).
+
         //take the average of the 4 swerve module positions
         Translation2d currentPosition = m_frontLeftPosition.plus(m_backLeftPosition).plus(m_backRightPosition).plus(m_frontRightPosition).div(4);
         Pose2d currentPose = new Pose2d(currentPosition,currentAngle);
 
         Transform2d transformPose = targetPose.minus(currentPose);
 
+        double distanceToSetpoint = Math.sqrt(transformPose.getX()*transformPose.getX() + transformPose.getY()*transformPose.getY());
         double c_driveAngle = Math.atan(transformPose.getY()/transformPose.getX());
-        double c_driveSpeed = Math.sqrt(transformPose.getX()*transformPose.getX() + transformPose.getY()*transformPose.getY());
+        double c_driveSpeed = distanceToSetpoint*Constants.driveSetpoints.speedToDistanceRatio+Constants.driveSetpoints.minDriveSpeed;
         double c_turnAngle = transformPose.getRotation().getRadians();
 
+        if(distanceToSetpoint < Constants.driveSetpoints.minDistanceMeters){
+            c_driveSpeed = 0;
+        }
         if(c_driveSpeed > Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond){
             c_driveSpeed = Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
         }
+        
         if(c_turnAngle > Constants.SwerveConstants.k_maxAngularSpeedRadPerSec){
             c_turnAngle = Constants.SwerveConstants.k_maxAngularSpeedRadPerSec;
         }
