@@ -26,7 +26,7 @@ public class RobotContainer {
     public RobotContainer() {
         m_chooser.setDefaultOption("forward auto", auto.complexAuto(m_swerve, 2)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(
-            new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
+            new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),()->driveController.getLeftTriggerAxis()) 
         );
         
 
@@ -34,7 +34,7 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        
+
     }
 
     public Command getAutonomousCommand() {
