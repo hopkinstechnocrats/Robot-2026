@@ -67,7 +67,7 @@ public class IntakeSubsystem extends SubsystemBase{
             kIInputDeployIntake = new TunableNumber("/Tunable Numbers/kI_Input Deploy Intake", Constants.IntakeConstants.k_intakeDeployI);
             kDInputDeployIntake = new TunableNumber("/Tunable Numbers/kD_Input Deploy Intake", Constants.IntakeConstants.k_intakeDeployD);
             kSInputDeployIntake = new TunableNumber("/Tunable Numbers/kS_Input Deploy Intake", Constants.IntakeConstants.k_intakeDeployS);
-            kVInputDeployIntake = new TunableNumber("/Tunable Numbers/kV_Input Deploy Intake", Constants.IntakeConstants.k_intakeDeployV);
+            kVInputDeployIntake = new TunableNumber("/Tunable Numbers/kV_Input Deploy Intake", Constants.IntakeConstants.k_intakeDeployFeedForeward);
 
             m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
             m_intakeDeployMotor = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorCANID); //TODO:Also needs CANID
@@ -78,13 +78,13 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeConfig.kP = Constants.IntakeConstants.k_intakeP;
             m_intakeConfig.kI = Constants.IntakeConstants.k_intakeI;
             m_intakeConfig.kD = Constants.IntakeConstants.k_intakeD;
-			m_intakeConfig.kV = Constants.IntakeConstants.k_feedForward;
+			m_intakeConfig.kV = Constants.IntakeConstants.k_intakeFeedForward;
             m_intakeDeployOutputConfig = new MotorOutputConfigs();
             m_intakeDeployConfig.kP = Constants.IntakeConstants.k_intakeDeployP;
             m_intakeDeployConfig.kI = Constants.IntakeConstants.k_intakeDeployI;
             m_intakeDeployConfig.kD = Constants.IntakeConstants.k_intakeDeployD;
             m_intakeDeployConfig.kS = Constants.IntakeConstants.k_intakeDeployS;
-            m_intakeDeployConfig.kV = Constants.IntakeConstants.k_intakeDeployV;
+            m_intakeDeployConfig.kV = Constants.IntakeConstants.k_intakeDeployFeedForeward;
 
             m_intakeMotor.getConfigurator().apply(m_intakeConfig);
             m_intakeDeployMotor.getConfigurator().apply(m_intakeDeployOutputConfig);

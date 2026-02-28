@@ -73,7 +73,7 @@ public final class Constants{
         public static final double k_intakeP = 0.3; 
         public static final double k_intakeI = 0;
         public static final double k_intakeD = 0;
-        public static final double k_feedForward = 0.1;
+        public static final double k_intakeFeedForward = 0.1;
         
         public static final int k_intakeDeployMotorCANID = 100;
         public static final int k_intakeDeployMotorFollowerCANID = 101;
@@ -81,7 +81,7 @@ public final class Constants{
         public static final double k_intakeDeployI = 0;
         public static final double k_intakeDeployD = 0;
         public static final double k_intakeDeployS = 0;
-        public static final double k_intakeDeployV = 0;
+        public static final double k_intakeDeployFeedForeward = 0;
         public static final double k_intakeSetpointDeploy = 0.25;
         public static final double k_intakeSetpointBob = 0.2;
         public static final double k_intakeSetpointRetract = 0;
