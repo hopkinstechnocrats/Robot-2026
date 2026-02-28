@@ -77,10 +77,11 @@ public final class Constants{
         public static final double k_turretI = 0;
         public static final double k_turretD = 0;
         public static final double k_turretS = 0;
-        public static final double k_turretV = 0;
-
-        public static final double k_turretPosition = 0;
-        public static final double k_turrretSetpoint = 0;
+        public static final double k_turretFeedForeward = 0;
+//TODO: test and change setpoints
+        public static final double k_turretGoalPosition1 = 0;
+        public static final double k_turretGoalPosition2 = .5;
+        public static final double k_turretGoalPosition3 = -.5;
     }
 
 

@@ -41,6 +41,9 @@ public class RobotContainer {
     private void configureBindings() {
         operatorController.rightBumper().whileTrue(TurretCommands.turret(turretSubsystem));
         operatorController.leftBumper().whileTrue(TurretCommands.reverseTurret(turretSubsystem));
+        operatorController.x().whileTrue(TurretCommands.TurretP1(turretSubsystem));
+        operatorController.y().whileTrue(TurretCommands.TurretP2(turretSubsystem));
+        operatorController.b().whileTrue(TurretCommands.TurretP3(turretSubsystem));
         
     }
 

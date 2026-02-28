@@ -7,18 +7,39 @@ import frc.robot.subsystems.TurretSubsystem;
 
 public class TurretCommands extends Command {
 
-    public static Command turret(TurretSubsystem wheel) {
+    public static Command turret(TurretSubsystem turret) {
         return Commands.run(
             () -> {
-                wheel.turret(Constants.TurretConstants.k_turretSpeedRPS);
+                turret.turret(Constants.TurretConstants.k_turretSpeedRPS);
             },
-        wheel);
+        turret);
     }
-    public static Command reverseTurret(TurretSubsystem wheel) {
+    public static Command reverseTurret(TurretSubsystem reverseTurret) {
         return Commands.run(
             () -> {
-                wheel.turret(Constants.TurretConstants.k_reverseTurretSpeedRPS);
+                reverseTurret.turret(Constants.TurretConstants.k_reverseTurretSpeedRPS);
             },
-        wheel);
+        reverseTurret);
+    }
+    public static Command TurretP1(TurretSubsystem TurretP1) {
+        return Commands.run(
+            () -> {
+                TurretP1.turretP1();
+            },
+        TurretP1);
+    }
+    public static Command TurretP2(TurretSubsystem TurretP2) {
+        return Commands.run(
+            () -> {
+                TurretP2.turretP2();
+            },
+        TurretP2);
+    }
+    public static Command TurretP3(TurretSubsystem TurretP3) {
+        return Commands.run(
+            () -> {
+                TurretP3.turretP3();
+            },
+        TurretP3);
     }
 }

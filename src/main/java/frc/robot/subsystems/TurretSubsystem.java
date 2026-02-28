@@ -46,25 +46,25 @@ public class TurretSubsystem extends SubsystemBase {
         m_turretConfig.kI = Constants.TurretConstants.k_turretI;
         m_turretConfig.kD = Constants.TurretConstants.k_turretD;
         m_turretConfig.kS = Constants.TurretConstants.k_turretS;
-        m_turretConfig.kV = Constants.TurretConstants.k_turretV;
+        m_turretConfig.kV = Constants.TurretConstants.k_turretFeedForeward;
 
         final TrapezoidProfile m_turretProfile = new TrapezoidProfile(
         new TrapezoidProfile.Constraints(80, 160));
-//TODO: make constants for all 3 turret setpoints, continue implementing
-        TrapezoidProfile.State m_turretGoal1 = new TrapezoidProfile.State(Constants.TurretConstants.k_turretPosition, 0);
+
+        TrapezoidProfile.State m_turretGoal1 = new TrapezoidProfile.State(Constants.TurretConstants.k_turretGoalPosition1, 0);
         TrapezoidProfile.State m_turretSetpoint1 = new TrapezoidProfile.State();
 
-        TrapezoidProfile.State m_turretGoal2 = new TrapezoidProfile.State(Constants.TurretConstants.k_turretPosition, 0);
+        TrapezoidProfile.State m_turretGoal2 = new TrapezoidProfile.State(Constants.TurretConstants.k_turretGoalPosition2, 0);
         TrapezoidProfile.State m_turretSetpoint2 = new TrapezoidProfile.State();
 
-        TrapezoidProfile.State m_turretGoal3 = new TrapezoidProfile.State(Constants.TurretConstants.k_turretPosition, 0);
+        TrapezoidProfile.State m_turretGoal3 = new TrapezoidProfile.State(Constants.TurretConstants.k_turretGoalPosition3, 0);
         TrapezoidProfile.State m_turretSetpoint3 = new TrapezoidProfile.State();
 
         kPInputTurret = new TunableNumber("/Tunable Numbers/kPInput Turret", Constants.TurretConstants.k_turretP);
         kIInputTurret = new TunableNumber("/Tunable Numbers/kIInput Turret", Constants.TurretConstants.k_turretI);
         kDInputTurret = new TunableNumber("/Tunable Numbers/kDInput Turret", Constants.TurretConstants.k_turretD);
         kSInputTurret = new TunableNumber("/Tunable Numbers/kSInput Turret", Constants.TurretConstants.k_turretS);
-        kVInputTurret = new TunableNumber("/Tunable Numbers/kVInput Turret", Constants.TurretConstants.k_turretV);
+        kVInputTurret = new TunableNumber("/Tunable Numbers/kVInput Turret", Constants.TurretConstants.k_turretFeedForeward);
 
         m_turretSetpoint1 = m_turretProfile.calculate(0.020, m_turretSetpoint1, m_turretGoal1);
         m_turretPoint1Request.Position = m_turretSetpoint1.position;
@@ -118,15 +118,15 @@ public class TurretSubsystem extends SubsystemBase {
         m_turretMotor.setControl(m_turretRequest.withVelocity(m_turretRequest.Velocity));
     }
 
-    public void turretP1(double turretSpeed){
+    public void turretP1(){
         m_turretMotor.setControl(m_turretPoint1Request.withVelocity(m_turretPoint1Request.Velocity).withPosition(m_turretPoint1Request.Position));
     }
 
-    public void turretP2(double turretSpeed){
+    public void turretP2(){
         m_turretMotor.setControl(m_turretPoint2Request.withVelocity(m_turretPoint2Request.Velocity).withPosition(m_turretPoint2Request.Position));
     }
 
-    public void turretP3(double turretSpeed){
+    public void turretP3(){
         m_turretMotor.setControl(m_turretPoint3Request.withVelocity(m_turretPoint3Request.Velocity).withPosition(m_turretPoint3Request.Position));
     }
     
