@@ -3,6 +3,7 @@ package frc.robot.swerve;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -126,6 +127,33 @@ public class Swervedrive extends SubsystemBase{
         actualModuleState[2] = new SwerveModuleState(bL.getDriveVelocityMeterPerSec(), bL.getAngleRotation2d());
         actualModuleState[3] = new SwerveModuleState(bR.getDriveVelocityMeterPerSec(), bR.getAngleRotation2d());
 
+    }
+
+    public void gotoSetpoint(Pose2d targetPose){
+        Rotation2d currentAngle = new Rotation2d(0);
+        //take the average of the 4 swerve module positions
+        Translation2d currentPosition = m_frontLeftPosition.plus(m_backLeftPosition).plus(m_backRightPosition).plus(m_frontRightPosition).div(4);
+        Pose2d currentPose = new Pose2d(currentPosition,currentAngle);
+
+        Transform2d transformPose = targetPose.minus(currentPose);
+
+        double c_driveAngle = Math.atan(transformPose.getY()/transformPose.getX());
+        double c_driveSpeed = Math.sqrt(transformPose.getX()*transformPose.getX() + transformPose.getY()*transformPose.getY());
+        double c_turnAngle = transformPose.getRotation().getRadians();
+
+        if(c_driveSpeed > Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond){
+            c_driveSpeed = Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
+        }
+        if(c_turnAngle > Constants.SwerveConstants.k_maxAngularSpeedRadPerSec){
+            c_turnAngle = Constants.SwerveConstants.k_maxAngularSpeedRadPerSec;
+        }
+
+        double m_xOut = Math.cos(c_driveAngle)*c_driveSpeed;
+        double m_yOut = Math.sin(c_driveAngle)*c_driveSpeed;
+        
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(m_xOut, m_yOut, c_turnAngle, this.getRotation());
+
+        this.Drive(speeds);
     }
     
 

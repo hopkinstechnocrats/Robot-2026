@@ -44,5 +44,10 @@ public class DriveCommands{
             swervedrive.Drive(ChassisSpeeds.fromFieldRelativeSpeeds(speeds,  swervedrive.getRotation()));
         }, swervedrive);
     }
+    public static Command gotoSetpointCommand(Swervedrive swervedrive, Pose2d targetPose){
+        return Commands.run(()->{
+            swervedrive.gotoSetpoint(targetPose);
+        },swervedrive);
+    }
     
 }

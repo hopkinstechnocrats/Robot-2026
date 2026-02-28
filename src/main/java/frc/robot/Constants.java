@@ -54,6 +54,9 @@ public final class Constants{
         //1 for inverted turning, -1 for non inverted
         public static final double k_blaireMode = 1;
     }
+    public static final class driveSetpoints{
+        public static final Pose2d testSetpoint= new Pose2d(1,1,new Rotation2d(1));
+    }
  
     public static final class ControlConstants{
         public static final double k_driveControllerDeadband = 0.1;
