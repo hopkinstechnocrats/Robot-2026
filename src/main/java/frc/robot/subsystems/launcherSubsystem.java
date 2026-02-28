@@ -34,6 +34,7 @@ public class launcherSubsystem extends SubsystemBase{
     TunableNumber kPInputLauncher;
     TunableNumber kIInputLauncher;
     TunableNumber kDInputLauncher;
+    TunableNumber k_LauncherSpeed;
     final VelocityVoltage m_launcherRequest = new VelocityVoltage(0).withSlot(0);
 
     TalonFX launcherMotor;
@@ -46,6 +47,7 @@ public class launcherSubsystem extends SubsystemBase{
             kPInputLauncher = new TunableNumber("/Tunable Numbers/kPInput launcher", Constants.LauncherConstants.k_launcherP);
             kIInputLauncher = new TunableNumber("/Tunable Numbers/kIInput launcher", Constants.LauncherConstants.k_launcherI);
             kDInputLauncher = new TunableNumber("/Tunable Numbers/kDInput launcher", Constants.LauncherConstants.k_launcherD);
+            k_LauncherSpeed = new TunableNumber("/Tunable Numbers/Launcher Speed", Constants.LauncherConstants.k_launcherSpeedRPS);
 
             m_launcherMotor = new TalonFX(Constants.LauncherConstants.k_launcherMotorCANID); //Need to getCANID
             m_launcherMotorSecond = new TalonFX(Constants.LauncherConstants.k_launcherMotorSecondCANID); //Need to getCANID
@@ -99,6 +101,10 @@ public class launcherSubsystem extends SubsystemBase{
                 m_launcherMotor.getConfigurator().apply(m_launcherConfig);
                 m_launcherConfigSecond.kD = kDInputLauncher.getAsDouble();
                 m_launcherMotorSecond.getConfigurator().apply(m_launcherConfigSecond);
+            }
+
+            if(DriverStation.isTestEnabled() && k_LauncherSpeed.hasChanged(hashCode())){
+                m_launcherRequest.Velocity = k_LauncherSpeed.getAsDouble();
             }
     	}
 
