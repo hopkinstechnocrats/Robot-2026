@@ -39,7 +39,7 @@ public final class Constants{
         public static final double backRightY = -0.31921;
 
         public static final double k_flAbsEncoderOffset = -0.171;
-        public static final double k_frAbsEncoderOffset = -0.489;
+        public static final double k_frAbsEncoderOffset = -0.989;
         public static final double k_blAbsEncoderOffset = 0.325;
         public static final double k_brAbsEncoderOffset = 0.221;
 

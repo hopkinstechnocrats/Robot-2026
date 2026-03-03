@@ -1,5 +1,6 @@
 package frc.robot.swerve;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -10,7 +11,7 @@ public class Gyro extends SubsystemBase{
     Pigeon2 pigeon;
 
     Gyro(int gyroID){
-        pigeon = new Pigeon2(gyroID);
+        pigeon = new Pigeon2(gyroID, new CANBus("GertrudeGreyser"));
     }
 
     public Rotation2d getRotation(){
