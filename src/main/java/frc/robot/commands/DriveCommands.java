@@ -17,7 +17,7 @@ import java.util.function.DoubleSupplier;
 public class DriveCommands{
     private DriveCommands(){}
   
-    /*
+    
     private static Translation2d getLinearVelocityFromJoysticks(double x, double y) {
 
         // Apply deadband
@@ -33,7 +33,7 @@ public class DriveCommands{
             .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
             .getTranslation();
     }
-    */
+    
     public static Command joystickDriveFieldOriented(Swervedrive swervedrive,
             DoubleSupplier xVelocity, DoubleSupplier yVelocity, DoubleSupplier omega){
         return Commands.run(() -> {

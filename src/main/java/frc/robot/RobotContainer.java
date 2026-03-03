@@ -4,40 +4,64 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+
 import frc.robot.swerve.Gyro;
+import frc.robot.autos.Autos;
 import frc.robot.swerve.Swervedrive;
 import frc.robot.autos.Autos;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.swerve.Swervedrive;
+import frc.robot.commands.IntakeCommands;
 
 public class RobotContainer {
 
-    Swervedrive m_swerve = new Swervedrive();
-    Autos auto = new Autos();
+    private final CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.operatorXboxControllerPort);
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
 
     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-
+    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    
+    Autos auto = new Autos();
+    Swervedrive m_swerve = new Swervedrive();
+    
+    
     public RobotContainer() {
         m_chooser.setDefaultOption("forward auto", auto.complexAuto(m_swerve, 2)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
         );
-        
 
-        configureBindings();
-    }
+		intakeSubsystem.setDefaultCommand(
+            new RunCommand(
+                    () -> {
+                    intakeSubsystem.intakeBrake();
+                  }, intakeSubsystem
+      ));
 
-    private void configureBindings() {
-        
-    }
+      configureButtonBindings();
+    } 
 
     public Command getAutonomousCommand() {
         return m_chooser.getSelected();
+    }
+
+    private void configureButtonBindings() {
+      operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
+      operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
+      operatorController.y().whileTrue(IntakeCommands.deploy(intakeSubsystem));
+      operatorController.x().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
+      operatorController.a().whileTrue(IntakeCommands.deployBob(intakeSubsystem).withTimeout(1));
     }
 }

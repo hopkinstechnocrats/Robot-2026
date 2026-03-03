@@ -55,14 +55,39 @@ public final class Constants{
         public static final double k_blaireMode = 1;
     }
  
+ 
     public static final class ControlConstants{
         public static final double k_driveControllerDeadband = 0.1;
         public static final double k_operatorControllerDeadband = 0.1;
         public static final int k_driverPort = 0;
+        public static final int operatorXboxControllerPort = 1;
     }
     
     public static final class GyroConstants{
         public static final int k_gyroID = 15;
+    }
+//TODO: change all of these numbers
+    public static final class IntakeConstants{
+        public static final int k_intakeMotorCANID = 14;
+        public static final double k_intakeSpeedRPS = 1000;//TODO: change this speed
+        public static final double k_reverseIntakeSpeedRPS = -1000;   
+        public static final double k_intakeBrakeSpeedRPS = 0;
+        public static final double k_intakeP = 0.3; 
+        public static final double k_intakeI = 0;
+        public static final double k_intakeD = 0;
+        public static final double k_intakeFeedForward = 0.1;
+        
+        public static final int k_intakeDeployMotorCANID = 100;
+        public static final int k_intakeDeployMotorFollowerCANID = 101;
+        public static final double k_intakeDeployP = 1;
+        public static final double k_intakeDeployI = 0;
+        public static final double k_intakeDeployD = 0;
+        public static final double k_intakeDeployS = 0;
+        public static final double k_intakeDeployFeedForeward = 0;
+        public static final double k_intakeSetpointDeploy = 0.25;
+        public static final double k_intakeSetpointBob = 0.2;
+        public static final double k_intakeSetpointRetract = 0;
+        public static final double k_intakeDeployPosition = 0;       
     }
 
 
