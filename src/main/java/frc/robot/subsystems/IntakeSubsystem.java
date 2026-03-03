@@ -205,7 +205,7 @@ public class IntakeSubsystem extends SubsystemBase{
 
         public void intakeBrake(){
         	m_intakeMotor.setControl(m_intakeRequest.withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
-            //m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(Constants.IntakeConstants.k_intakeBrakeSpeedRPS).withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
-            //m_intakeDeployMotorFollower.setControl(m_intakeDeployRequest.withPosition(Constants.IntakeConstants.k_intakeBrakeSpeedRPS).withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
+            m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(Constants.IntakeConstants.k_intakeBrakeSpeedRPS).withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
+            m_intakeDeployMotorFollower.setControl(m_intakeDeployRequest.withPosition(Constants.IntakeConstants.k_intakeBrakeSpeedRPS).withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
         }
 }
