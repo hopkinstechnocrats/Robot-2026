@@ -7,18 +7,18 @@ import frc.robot.subsystems.HopperSubsystem;
 
 public class HopperCommands extends Command {
        
-    public static Command hopper(HopperSubsystem wheel) {
+    public static Command hopper(HopperSubsystem hoptest) {
         return Commands.run(
             () -> {
-                wheel.hopper(Constants.HopperConstants.k_hopperSpeedRPS);
+                hoptest.hopper(Constants.HopperConstants.k_hopperSpeedRPS);
             },
-        wheel);
+        hoptest);
     }
-    public static Command reverseHopper(HopperSubsystem wheel) {
+    public static Command reverseHopper(HopperSubsystem hoptest) {
         return Commands.run(
             () -> {
-                wheel.hopper(Constants.HopperConstants.k_reverseHopperSpeedRPS);
+                hoptest.hopper(Constants.HopperConstants.k_reverseHopperSpeedRPS);
             },
-        wheel);
+        hoptest);
     }
 }
