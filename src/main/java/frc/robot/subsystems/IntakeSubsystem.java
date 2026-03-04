@@ -94,13 +94,13 @@ public class IntakeSubsystem extends SubsystemBase{
         	m_intakeMotor.setControl(m_intakeRequest.withVelocity(intakeSpeed));
         }
 
-        public void intakeDeploy(){
-            m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(m_intakeDeployRequest.Position).withVelocity(m_intakeDeployRequest.Velocity));
+        public void intakeDeploy(double position){
+            m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(position));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
         public void intakeBrake(){
         	m_intakeMotor.setControl(m_intakeRequest.withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
-            m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(Constants.IntakeConstants.k_intakeBrakeSpeedRPS).withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
-            m_intakeDeployMotorFollower.setControl(m_intakeDeployRequest.withPosition(Constants.IntakeConstants.k_intakeBrakeSpeedRPS).withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
+            m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(m_intakeDeployMotor.getPosition().getValueAsDouble()));
+            m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
 }
