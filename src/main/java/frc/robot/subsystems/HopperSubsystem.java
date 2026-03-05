@@ -5,10 +5,13 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,8 +25,8 @@ public class HopperSubsystem extends SubsystemBase{
   	DoubleEntry HopperPIDDifference; 
 	DoubleEntry HopperMotorVoltage; 
   	TalonFX m_hopperMotor;
-	Slot0Configs m_hopperConfig;
-    MotorOutputConfigs m_hopperOutputConfig;
+    TalonFXConfiguration m_talonConfig;
+    
     TunableNumber kPInputHopper;
     TunableNumber kIInputHopper;
     TunableNumber kDInputHopper;
@@ -40,13 +43,15 @@ public class HopperSubsystem extends SubsystemBase{
             kDInputHopper = new TunableNumber("/Tunable Numbers/kDInput Hopper", Constants.HopperConstants.k_hopperD);
 
             m_hopperMotor = new TalonFX(Constants.HopperConstants.k_hopperMotorCANID); //Need to getCANID
-            m_hopperConfig = new Slot0Configs();
-            m_hopperOutputConfig = new MotorOutputConfigs();
-            m_hopperConfig.kP = Constants.HopperConstants.k_hopperP;
-            m_hopperConfig.kI = Constants.HopperConstants.k_hopperI;
-            m_hopperConfig.kD = Constants.HopperConstants.k_hopperD;
-			m_hopperConfig.kV = Constants.HopperConstants.k_feedForward;
-            m_hopperMotor.getConfigurator().apply(m_hopperConfig);
+            m_talonConfig = new TalonFXConfiguration();
+            
+            m_talonConfig.Slot0.kP = Constants.HopperConstants.k_hopperP;
+            m_talonConfig.Slot0.kI = Constants.HopperConstants.k_hopperI;
+            m_talonConfig.Slot0.kD = Constants.HopperConstants.k_hopperD;
+			m_talonConfig.Slot0.kV = Constants.HopperConstants.k_feedForward;
+            m_talonConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.3;
+            m_talonConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+            m_hopperMotor.getConfigurator().apply(m_talonConfig);
 
             HopperMotorVoltage = table.getDoubleTopic("Hopper Motor Volated").getEntry(0);
             HopperPIDDifference = table.getDoubleTopic("Hopper PID Difference").getEntry(0);
@@ -59,18 +64,18 @@ public class HopperSubsystem extends SubsystemBase{
 			HopperMotorVoltage.set(m_hopperMotor.getMotorVoltage().getValueAsDouble());
 
             if(DriverStation.isTestEnabled() && kPInputHopper.hasChanged(hashCode())){
-                m_hopperConfig.kP = kPInputHopper.getAsDouble();
-                m_hopperMotor.getConfigurator().apply(m_hopperConfig);
+                m_talonConfig.Slot0.kP = kPInputHopper.getAsDouble();
+                m_hopperMotor.getConfigurator().apply(m_talonConfig);
             }
 
             if(DriverStation.isTestEnabled() && kIInputHopper.hasChanged(hashCode())){
-                m_hopperConfig.kI = kIInputHopper.getAsDouble();
-                m_hopperMotor.getConfigurator().apply(m_hopperConfig);
+                m_talonConfig.Slot0.kI = kIInputHopper.getAsDouble();
+                m_hopperMotor.getConfigurator().apply(m_talonConfig);
             }
 
             if(DriverStation.isTestEnabled() && kDInputHopper.hasChanged(hashCode())){
-                m_hopperConfig.kD = kDInputHopper.getAsDouble();
-                m_hopperMotor.getConfigurator().apply(m_hopperConfig);            
+                m_talonConfig.Slot0.kD = kDInputHopper.getAsDouble();
+                m_hopperMotor.getConfigurator().apply(m_talonConfig);            
             }
     	}
 

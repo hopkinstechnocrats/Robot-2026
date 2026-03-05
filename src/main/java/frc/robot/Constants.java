@@ -66,8 +66,8 @@ public final class Constants{
     //TODO: test to find numbers for this whole block
     public static final class HopperConstants{
         public static final int k_hopperMotorCANID = 17;
-        public static final double k_hopperSpeedRPS = 4;
-        public static final double k_reverseHopperSpeedRPS = -4;   
+        public static final double k_hopperSpeedRPS = 30;
+        public static final double k_reverseHopperSpeedRPS = -30;   
         public static final double k_hopperBrakeSpeedRPS = 0;
         public static final double k_hopperP = 0.3; 
         public static final double k_hopperI = 0;
