@@ -62,6 +62,5 @@ public class RobotContainer {
       operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
       operatorController.y().whileTrue(IntakeCommands.deploy(intakeSubsystem));
       operatorController.x().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
-      operatorController.a().whileTrue(IntakeCommands.deployBob(intakeSubsystem).withTimeout(1));
     }
 }

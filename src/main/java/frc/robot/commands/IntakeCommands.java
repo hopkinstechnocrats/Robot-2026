@@ -15,22 +15,22 @@ public class IntakeCommands extends Command {
         intake);
     }
 
-    public static Command outtake(IntakeSubsystem outtake) {
+    public static Command outtake(IntakeSubsystem intake) {
         return Commands.run(
             () -> {
-                outtake.intake(Constants.IntakeConstants.k_reverseIntakeSpeedRPS);
+                intake.intake(Constants.IntakeConstants.k_reverseIntakeSpeedRPS);
             },
-        outtake);
+        intake);
     }
 
-    public static Command deploy(IntakeSubsystem deploy) {
+    public static Command deploy(IntakeSubsystem intake) {
         return Commands.run(
             () -> {
-                deploy.intakeDeploy();
+                intake.intakeDeploy(Constants.IntakeConstants.k_intakeSetpointDeploy);
             },
-        deploy);
+        intake);
     }
-
+/*
     public static Command deployBob(IntakeSubsystem deployBob) {
         return Commands.run(
             () -> {
@@ -38,12 +38,12 @@ public class IntakeCommands extends Command {
             },
         deployBob);
     }
-
-    public static Command undeploy(IntakeSubsystem undeploy) {
+*/
+    public static Command undeploy(IntakeSubsystem intake) {
         return Commands.run(
             () -> {
-                undeploy.intakeUndeploy();
+                intake.intakeDeploy(Constants.IntakeConstants.k_intakeSetpointRetract);
             },
-        undeploy);
+        intake);
     }
 }
