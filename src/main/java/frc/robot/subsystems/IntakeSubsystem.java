@@ -63,6 +63,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeConfig.Slot0.kD = Constants.IntakeConstants.k_intakeD;
             m_intakeConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             m_intakeConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+            m_intakeConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.1;
 
             m_deployConfig.Slot0.kP = Constants.IntakeConstants.k_intakeDeployP;
             m_deployConfig.Slot0.kI = Constants.IntakeConstants.k_intakeDeployI;
