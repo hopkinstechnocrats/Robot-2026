@@ -33,6 +33,7 @@ public class IntakeSubsystem extends SubsystemBase{
     DoubleEntry DeployMotorVoltage; 
     DoubleEntry DeployPIDFollowerDifference;
     DoubleEntry DeployMotorFollowerVoltage;
+    DoubleEntry deployMotorPosition;
   	TalonFX m_intakeMotor;
     TalonFX m_intakeDeployMotor;
     TalonFX m_intakeDeployMotorFollower;
@@ -51,6 +52,8 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
             m_intakeDeployMotor = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorCANID); //TODO:Also needs CANID
             m_intakeDeployMotorFollower = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorFollowerCANID); //TODO:Also needs CANID
+            
+            deployMotorPosition = table.getDoubleTopic("Deploy Position").getEntry(0);
 
             m_intakeConfig = new TalonFXConfiguration();
             m_deployConfig = new TalonFXConfiguration();
@@ -65,6 +68,8 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.Slot0.kI = Constants.IntakeConstants.k_intakeDeployI;
             m_deployConfig.Slot0.kD = Constants.IntakeConstants.k_intakeDeployD;
             m_deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+            m_deployConfig.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.k_deployGearRatio;
+            m_deployConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.2;
 
             m_intakeMotor.getConfigurator().apply(m_intakeConfig);
             m_intakeDeployMotor.getConfigurator().apply(m_deployConfig);
@@ -88,6 +93,8 @@ public class IntakeSubsystem extends SubsystemBase{
 
             DeployPIDFollowerDifference.set(m_intakeDeployMotorFollower.getClosedLoopError().getValueAsDouble()); 
 			DeployMotorFollowerVoltage.set(m_intakeDeployMotorFollower.getMotorVoltage().getValueAsDouble());
+
+            deployMotorPosition.set(m_intakeDeployMotor.getPosition().getValueAsDouble());
     	}
 
         public void intake(double intakeSpeed){
@@ -103,4 +110,5 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(m_intakeDeployMotor.getPosition().getValueAsDouble()));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
+
 }
