@@ -68,9 +68,9 @@ public final class Constants{
     }
 //TODO: test and change all of these values
     public static final class FeederConstants{
-        public static final int k_feederMotorCANID = 11;
-        public static final double k_feederSpeedRPS = .1;
-        public static final double k_reverseFeederSpeedRPS = -.1;
+        public static final int k_feederMotorCANID = 24;
+        public static final double k_feederSpeedRPS = 1;
+        public static final double k_reverseFeederSpeedRPS = 1;
         public static final double k_feederBreakSpeedRPS = 0;
         public static final double k_feederP = 1; 
         public static final double k_feederI = 0;
