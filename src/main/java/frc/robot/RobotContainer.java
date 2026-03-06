@@ -34,18 +34,13 @@ public class RobotContainer {
     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
-    LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
+    private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
     
     Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
     
     public RobotContainer() {
-        feederSubsystem.setDefaultCommand(
-        new RunCommand(
-                    () -> {
-                    feederSubsystem.feederBrake();
-                  }, feederSubsystem
-      ));
+        feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
         m_chooser.setDefaultOption("forward auto", auto.complexAuto(m_swerve, 2)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(

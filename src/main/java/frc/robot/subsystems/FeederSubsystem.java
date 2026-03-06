@@ -19,12 +19,14 @@ public class FeederSubsystem extends SubsystemBase {
     TalonFX m_feederMotor;
     NetworkTableInstance inst;
     NetworkTable table;
+    /*
   	DoubleEntry FeederPIDDifference; 
     DoubleEntry FeederMotorVoltage;
     TunableNumber k_PInputFeeder; 
     TunableNumber k_IInputFeeder; 
     TunableNumber k_DInputFeeder;
     TunableNumber k_FeedForewardFeeder;
+    */
     Slot0Configs m_feederConfig;
     MotorOutputConfigs m_feederOutputConfig;
     final VelocityVoltage m_feederRequest = new VelocityVoltage(0).withSlot(0);
@@ -39,20 +41,22 @@ public class FeederSubsystem extends SubsystemBase {
         m_feederConfig.kI = Constants.FeederConstants.k_feederI;
         m_feederConfig.kD = Constants.FeederConstants.k_feederD;
 		m_feederConfig.kV = Constants.FeederConstants.k_feederFeedForward;
-        m_feederOutputConfig.NeutralMode = NeutralModeValue.Brake;
+        //m_feederOutputConfig.NeutralMode = NeutralModeValue.Brake;
         m_feederMotor.getConfigurator().apply(m_feederOutputConfig);
         m_feederMotor.getConfigurator().apply(m_feederConfig);
-
+        /*
         FeederMotorVoltage = table.getDoubleTopic("Feeder Motor Volated").getEntry(0);
         FeederPIDDifference = table.getDoubleTopic("Feeder PID Difference").getEntry(0);
         k_PInputFeeder = new TunableNumber("/Tunable Numbers/kPInput Feeder", Constants.FeederConstants.k_feederP);
         k_IInputFeeder = new TunableNumber("/Tunable Numbers/kIInput Feeder", Constants.FeederConstants.k_feederI);
         k_DInputFeeder = new TunableNumber("/Tunable Numbers/kDInput Feeder", Constants.FeederConstants.k_feederD);
         k_FeedForewardFeeder = new TunableNumber("/Tunable Numbers/FeedForeward Input Feeder", Constants.FeederConstants.k_feederFeedForward);
+        */
     }
 
     @Override
     public void periodic(){
+        /*
       	FeederPIDDifference.set(m_feederMotor.getClosedLoopError().getValueAsDouble()); 
      	//difference between desired state and real state as a double
 		FeederMotorVoltage.set(m_feederMotor.getMotorVoltage().getValueAsDouble());
@@ -76,6 +80,7 @@ public class FeederSubsystem extends SubsystemBase {
                 m_feederConfig.kV = k_FeedForewardFeeder.getAsDouble();
                 m_feederMotor.getConfigurator().apply(m_feederConfig);
             }
+            */
     }
 
     public void feeder(double feederSpeed){

@@ -21,4 +21,11 @@ public class FeederCommands extends Command{
         wheel);
         
     }
+
+    public static Command brakeFeeder(FeederSubsystem feeder){
+        return Commands.run(
+            () -> {
+                feeder.feederBrake();
+            }, feeder);
+    }
 }

@@ -3,6 +3,7 @@ package frc.robot.swerve;
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.ClosedLoopGeneralConfigs;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -39,6 +40,8 @@ public class SwerveModule extends SubsystemBase{
 
     MotorOutputConfigs m_driveOutputConfigs;
     MotorOutputConfigs m_turnOutputConfigs;
+
+    CurrentLimitsConfigs m_currentLimitConfig;
 
     CANcoder m_absoluteEncoder;
     CANcoderConfiguration m_canCoderConfig;
@@ -112,8 +115,12 @@ public class SwerveModule extends SubsystemBase{
         m_driveOutputConfigs.NeutralMode = NeutralModeValue.Brake;
         m_turnOutputConfigs.NeutralMode = NeutralModeValue.Brake;
 
+        m_currentLimitConfig = new CurrentLimitsConfigs();
+        m_currentLimitConfig.StatorCurrentLimit = 80;
+
         m_driveMotor.getConfigurator().apply(m_driveConfig);
         m_driveMotor.getConfigurator().apply(m_driveOutputConfigs);
+        m_driveMotor.getConfigurator().apply(m_currentLimitConfig);
         m_turnMotor.getConfigurator().apply(m_turnConfig);
         m_turnMotor.getConfigurator().apply(m_turnOutputConfigs);
         m_turnMotor.getConfigurator().apply(m_sensorConfigs);
