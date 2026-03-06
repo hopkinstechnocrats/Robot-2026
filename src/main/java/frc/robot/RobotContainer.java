@@ -41,7 +41,8 @@ public class RobotContainer {
     public RobotContainer() {
         m_chooser.setDefaultOption("forward auto", auto.complexAuto(m_swerve, 2)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(
-            new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
+            new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),
+                ()->driveController.getLeftTriggerAxis(), () -> driveController.getRightTriggerAxis()) 
         );
 
 		    intakeSubsystem.setDefaultCommand(
@@ -66,6 +67,9 @@ public class RobotContainer {
       operatorController.povRight().whileTrue(IntakeCommands.outtake(intakeSubsystem));
       operatorController.y().whileTrue(IntakeCommands.deploy(intakeSubsystem));
       operatorController.x().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
+      driveController.a().onTrue(Commands.run(
+        () -> m_swerve.resetHeading(),
+        m_swerve));
       operatorController.a().whileTrue(HopperCommands.hopper(hopperSubsystem));
       operatorController.b().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
     }
