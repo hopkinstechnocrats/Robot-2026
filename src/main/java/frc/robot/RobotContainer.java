@@ -21,7 +21,7 @@ import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.commands.HopperCommands;
-frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.swerve.Swervedrive;
 import frc.robot.commands.IntakeCommands;
 
@@ -50,6 +50,8 @@ public class RobotContainer {
                     intakeSubsystem.intakeBrake();
                   }, intakeSubsystem
         ));
+
+        hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
 
         configureButtonBindings();
     } 

@@ -21,4 +21,11 @@ public class HopperCommands extends Command {
             },
         hoptest);
     }
+    public static Command brake(HopperSubsystem hoptest) {
+        return Commands.run(
+            () -> {
+                hoptest.hopper(Constants.HopperConstants.k_hopperBrakeSpeedRPS);
+            },
+        hoptest);
+    }
 }

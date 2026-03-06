@@ -76,6 +76,7 @@ public final class Constants{
         public static final double k_hopperI = 0;
         public static final double k_hopperD = 0;
         public static final double k_feedForward = 0.1; 
+    }
 //TODO: change all of these numbers
     public static final class IntakeConstants{
         public static final int k_intakeMotorCANID = 14;
