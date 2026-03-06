@@ -33,13 +33,14 @@ public class FeederSubsystem extends SubsystemBase {
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Feeder Info");
         m_feederMotor = new TalonFX(Constants.FeederConstants.k_feederMotorCANID);
-        m_feederMotor.setNeutralMode(NeutralModeValue.Brake);
         m_feederConfig = new Slot0Configs();
         m_feederOutputConfig = new MotorOutputConfigs();
         m_feederConfig.kP = Constants.FeederConstants.k_feederP;
         m_feederConfig.kI = Constants.FeederConstants.k_feederI;
         m_feederConfig.kD = Constants.FeederConstants.k_feederD;
 		m_feederConfig.kV = Constants.FeederConstants.k_feederFeedForward;
+        m_feederOutputConfig.NeutralMode = NeutralModeValue.Brake;
+        m_feederMotor.getConfigurator().apply(m_feederOutputConfig);
         m_feederMotor.getConfigurator().apply(m_feederConfig);
 
         FeederMotorVoltage = table.getDoubleTopic("Feeder Motor Volated").getEntry(0);
