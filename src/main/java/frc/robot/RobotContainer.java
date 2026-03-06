@@ -62,8 +62,8 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-      operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
-      operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
+      operatorController.povUp().whileTrue(IntakeCommands.intake(intakeSubsystem));
+      operatorController.povRight().whileTrue(IntakeCommands.outtake(intakeSubsystem));
       operatorController.y().whileTrue(IntakeCommands.deploy(intakeSubsystem));
       operatorController.x().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
       operatorController.a().whileTrue(HopperCommands.hopper(hopperSubsystem));
