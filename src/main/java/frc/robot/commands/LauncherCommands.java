@@ -21,4 +21,12 @@ public class LauncherCommands extends Command {
             },
             wheel);
     }
+
+    public static Command inverseLauncher(LauncherSubsystem launcher){
+        return Commands.run(
+            () -> {
+                launcher.launcher(-Constants.LauncherConstants.k_launcherBrakeSpeedRPS);
+            },
+            launcher);
+    }
 }

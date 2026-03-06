@@ -33,18 +33,18 @@ public class RobotContainer {
     private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-    private final FeederSubsystem FeederSubsystem = new FeederSubsystem();
+    private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
     
     Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
     
     public RobotContainer() {
-        FeederSubsystem.setDefaultCommand(
+        feederSubsystem.setDefaultCommand(
         new RunCommand(
                     () -> {
-                    FeederSubsystem.feederBrake();
-                  }, FeederSubsystem
+                    feederSubsystem.feederBrake();
+                  }, feederSubsystem
       ));
 
         m_chooser.setDefaultOption("forward auto", auto.complexAuto(m_swerve, 2)); //spped x & y is meters/second
@@ -72,17 +72,18 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-      operatorController.povUp().whileTrue(IntakeCommands.intake(intakeSubsystem));
-      operatorController.povRight().whileTrue(IntakeCommands.outtake(intakeSubsystem));
-      operatorController.y().whileTrue(IntakeCommands.deploy(intakeSubsystem));
-      operatorController.x().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
+      operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
+      operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
+      operatorController.povUp().whileTrue(IntakeCommands.deploy(intakeSubsystem));
+      operatorController.povRight().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
       driveController.a().onTrue(Commands.run(
         () -> m_swerve.resetHeading(),
         m_swerve));
-      operatorController.a().whileTrue(HopperCommands.hopper(hopperSubsystem));
-      operatorController.b().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
-      operatorController.povRight().onTrue(FeederCommands.feeder(FeederSubsystem));
-      operatorController.povLeft().onTrue(FeederCommands.unfeeder(FeederSubsystem)); 
-      operatorController.a().whileTrue(LauncherCommands.launcher(launcherSubsystem));
+      operatorController.x().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
+      operatorController.y().whileTrue(FeederCommands.unfeeder(feederSubsystem)); 
+      operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem)
+              .alongWith(FeederCommands.feeder(feederSubsystem))
+              .alongWith(HopperCommands.hopper(hopperSubsystem)));
+      operatorController.povLeft().whileTrue(LauncherCommands.inverseLauncher(launcherSubsystem));
     }
 }
