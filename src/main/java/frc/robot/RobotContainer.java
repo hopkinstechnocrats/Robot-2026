@@ -4,25 +4,39 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.swerve.Gyro;
-import frc.robot.swerve.Swervedrive;
+import frc.robot.autos.Autos;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
+import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.commands.HopperCommands;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.swerve.Swervedrive;
+import frc.robot.commands.IntakeCommands;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.commands.FeederCommands;
 
-
 public class RobotContainer {
-
-    Swervedrive m_swerve = new Swervedrive();
-    FeederSubsystem FeederSubsystem = new FeederSubsystem();
+    
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
-
+    private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
+    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    private final FeederSubsystem FeederSubsystem = new FeederSubsystem();
+    
+    Autos auto = new Autos();
+    Swervedrive m_swerve = new Swervedrive();
+    
+    
     public RobotContainer() {
         FeederSubsystem.setDefaultCommand(
         new RunCommand(
@@ -31,20 +45,40 @@ public class RobotContainer {
                   }, FeederSubsystem
       ));
 
+        m_chooser.setDefaultOption("forward auto", auto.complexAuto(m_swerve, 2)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(
-            new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
+            new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),
+                ()->driveController.getLeftTriggerAxis(), () -> driveController.getRightTriggerAxis()) 
         );
-        
 
-        configureBindings();
-    }
+		    intakeSubsystem.setDefaultCommand(
+            new RunCommand(
+                    () -> {
+                    intakeSubsystem.intakeBrake();
+                  }, intakeSubsystem
+        ));
 
-    private void configureBindings() {
-        operatorController.povRight().onTrue(FeederCommands.feeder(FeederSubsystem));
-        operatorController.povLeft().onTrue(FeederCommands.unfeeder(FeederSubsystem)); 
-    }
+        hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
+
+        configureButtonBindings();
+    } 
+
 
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+        return m_chooser.getSelected();
+    }
+
+    private void configureButtonBindings() {
+      operatorController.povUp().whileTrue(IntakeCommands.intake(intakeSubsystem));
+      operatorController.povRight().whileTrue(IntakeCommands.outtake(intakeSubsystem));
+      operatorController.y().whileTrue(IntakeCommands.deploy(intakeSubsystem));
+      operatorController.x().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
+      driveController.a().onTrue(Commands.run(
+        () -> m_swerve.resetHeading(),
+        m_swerve));
+      operatorController.a().whileTrue(HopperCommands.hopper(hopperSubsystem));
+      operatorController.b().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
+      operatorController.povRight().onTrue(FeederCommands.feeder(FeederSubsystem));
+      operatorController.povLeft().onTrue(FeederCommands.unfeeder(FeederSubsystem)); 
     }
 }
