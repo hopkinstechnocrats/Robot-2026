@@ -23,6 +23,8 @@ import frc.robot.swerve.Swervedrive;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.commands.FeederCommands;
+import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.commands.LauncherCommands;
 
 public class RobotContainer {
     
@@ -32,10 +34,10 @@ public class RobotContainer {
     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem FeederSubsystem = new FeederSubsystem();
+    LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
     
     Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
-    
     
     public RobotContainer() {
         FeederSubsystem.setDefaultCommand(
@@ -51,6 +53,8 @@ public class RobotContainer {
                 ()->driveController.getLeftTriggerAxis(), () -> driveController.getRightTriggerAxis()) 
         );
 
+
+        launcherSubsystem.setDefaultCommand(LauncherCommands.launcherBreak(launcherSubsystem));
 		    intakeSubsystem.setDefaultCommand(
             new RunCommand(
                     () -> {
@@ -62,7 +66,6 @@ public class RobotContainer {
 
         configureButtonBindings();
     } 
-
 
     public Command getAutonomousCommand() {
         return m_chooser.getSelected();
@@ -80,5 +83,6 @@ public class RobotContainer {
       operatorController.b().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
       operatorController.povRight().onTrue(FeederCommands.feeder(FeederSubsystem));
       operatorController.povLeft().onTrue(FeederCommands.unfeeder(FeederSubsystem)); 
+      operatorController.a().whileTrue(LauncherCommands.launcher(launcherSubsystem));
     }
 }

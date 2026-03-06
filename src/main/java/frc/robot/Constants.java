@@ -113,5 +113,17 @@ public final class Constants{
         public static final double k_deployGearRatio = 20*(84/14);
     }
 
+    public static final class LauncherConstants{
+        // TODO test numbers 73-78
+        public static final int k_launcherMotorCANID = 11;//TODO: Change CANID
+        public static final int k_launcherMotorSecondCANID = 12;//TODO: Change CANID
+        public static final double k_launchSpeedRPS = 78; //rotations per second
+        public static final double k_launcherBrakeSpeedRPS = 0;
+        public static final double k_launcherP = 0.3; 
+        public static final double k_launcherI = 0.1;
+        public static final double k_launcherD = 0;
+        public static final double k_launcherFeedForward = 1.2/10; 
+    }
+
 
 }
