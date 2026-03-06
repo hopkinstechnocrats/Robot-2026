@@ -1,5 +1,6 @@
 package frc.robot.swerve;
 
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -130,6 +131,10 @@ public class Swervedrive extends SubsystemBase{
     
 
     public Rotation2d getRotation(){
-        return gyro.getRotation();
+        return m_pose.getRotation();
+    }
+
+    public void resetHeading(){
+       gyro.resetGyro(); 
     }
 }

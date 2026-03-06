@@ -44,6 +44,8 @@ public final class Constants{
         public static final double k_brAbsEncoderOffset = 0.221;
 
         public static final double k_maxLinearSpeedMeterPerSecond = 7.5;
+        public static final double k_slowMaxLinearSpeenMetersPerSecond = 3;
+        public static final double k_bumpMaxLinearSpeenMetersPerSecond = 5;
         public static final double k_maxAngularSpeedRadPerSec = 8.0 * Math.PI;
 
         public static final double k_driveGearRatio = 5.27;
@@ -66,6 +68,17 @@ public final class Constants{
     public static final class GyroConstants{
         public static final int k_gyroID = 15;
     }
+    //TODO: test to find numbers for this whole block
+    public static final class HopperConstants{
+        public static final int k_hopperMotorCANID = 17;
+        public static final double k_hopperSpeedRPS = 30;
+        public static final double k_reverseHopperSpeedRPS = -30;   
+        public static final double k_hopperBrakeSpeedRPS = 0;
+        public static final double k_hopperP = 0.3; 
+        public static final double k_hopperI = 0;
+        public static final double k_hopperD = 0;
+        public static final double k_feedForward = 0.1; 
+    }
 //TODO: change all of these numbers
     public static final class IntakeConstants{
         public static final int k_intakeMotorCANID = 14;
@@ -85,7 +98,7 @@ public final class Constants{
         public static final double k_intakeDeployS = 0;
         public static final double k_intakeDeployFeedForeward = 0;
         public static final double k_intakeSetpointDeploy = 0.0;
-        public static final double k_intakeSetpointRetract = -0.25;
+        public static final double k_intakeSetpointRetract = -0.1694;
         public static final double k_deployGearRatio = 20*(84/14);
     }
 

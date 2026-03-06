@@ -17,19 +17,20 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 import frc.robot.swerve.Gyro;
 import frc.robot.autos.Autos;
-import frc.robot.swerve.Swervedrive;
-import frc.robot.autos.Autos;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
+import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.commands.HopperCommands;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.swerve.Swervedrive;
 import frc.robot.commands.IntakeCommands;
 
 public class RobotContainer {
 
-    private final CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.operatorXboxControllerPort);
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
+    private final CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.operatorXboxControllerPort);
 
+    private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     
@@ -40,27 +41,36 @@ public class RobotContainer {
     public RobotContainer() {
         m_chooser.setDefaultOption("forward auto", auto.complexAuto(m_swerve, 2)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(
-            new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX()) 
+            new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),
+                ()->driveController.getLeftTriggerAxis(), () -> driveController.getRightTriggerAxis()) 
         );
 
-		intakeSubsystem.setDefaultCommand(
+		    intakeSubsystem.setDefaultCommand(
             new RunCommand(
                     () -> {
                     intakeSubsystem.intakeBrake();
                   }, intakeSubsystem
-      ));
+        ));
 
-      configureButtonBindings();
+        hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
+
+        configureButtonBindings();
     } 
+
 
     public Command getAutonomousCommand() {
         return m_chooser.getSelected();
     }
 
     private void configureButtonBindings() {
-      operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
-      operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
+      operatorController.povUp().whileTrue(IntakeCommands.intake(intakeSubsystem));
+      operatorController.povRight().whileTrue(IntakeCommands.outtake(intakeSubsystem));
       operatorController.y().whileTrue(IntakeCommands.deploy(intakeSubsystem));
       operatorController.x().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
+      driveController.a().onTrue(Commands.run(
+        () -> m_swerve.resetHeading(),
+        m_swerve));
+      operatorController.a().whileTrue(HopperCommands.hopper(hopperSubsystem));
+      operatorController.b().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
     }
 }
