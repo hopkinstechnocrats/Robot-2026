@@ -53,7 +53,7 @@ import frc.robot.TunableNumber;
             m_launcherConfig.kI = Constants.LauncherConstants.k_launcherI;
             m_launcherConfig.kD = Constants.LauncherConstants.k_launcherD;
 			m_launcherConfig.kV = Constants.LauncherConstants.k_launcherFeedForward;
-            m_launcherOutputConfig.NeutralMode = NeutralModeValue.Brake;
+            m_launcherOutputConfig.NeutralMode = NeutralModeValue.Coast;
             m_launcherOutputConfig.Inverted = InvertedValue.Clockwise_Positive;
 
             m_launcherMotor.setNeutralMode(NeutralModeValue.Brake);

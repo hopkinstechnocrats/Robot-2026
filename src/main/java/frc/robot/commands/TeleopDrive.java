@@ -42,14 +42,15 @@ public class TeleopDrive extends Command{
         m_omegaOut = MathUtil.applyDeadband(Constants.SwerveConstants.k_blaireMode*m_omega.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
 
         if(m_fastMode.getAsDouble() > 0.5){
-            m_xOut *= Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
-            m_yOut *= Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
-        }else if(m_bumpMode.getAsDouble() > 0.5){
-            m_xOut *= Constants.SwerveConstants.k_bumpMaxLinearSpeenMetersPerSecond;
-            m_yOut *= Constants.SwerveConstants.k_bumpMaxLinearSpeenMetersPerSecond;
-        }else{
             m_xOut *= Constants.SwerveConstants.k_slowMaxLinearSpeenMetersPerSecond;
             m_yOut *= Constants.SwerveConstants.k_slowMaxLinearSpeenMetersPerSecond;
+        }else if(m_bumpMode.getAsDouble() > 0.5){
+            m_xOut *= Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
+            m_yOut *= Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
+
+        }else{
+            m_xOut *= Constants.SwerveConstants.k_bumpMaxLinearSpeenMetersPerSecond;
+            m_yOut *= Constants.SwerveConstants.k_bumpMaxLinearSpeenMetersPerSecond;
         }
         
         

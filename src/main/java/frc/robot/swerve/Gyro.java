@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Gyro extends SubsystemBase{
@@ -33,6 +34,10 @@ public class Gyro extends SubsystemBase{
 
     public void resetGyro(){
         pigeon.setYaw(0);
+    }
+
+    public void set180(){
+        pigeon.setYaw(180);
     }
 
 }

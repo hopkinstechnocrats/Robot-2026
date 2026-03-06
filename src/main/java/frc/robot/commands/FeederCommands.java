@@ -16,7 +16,7 @@ public class FeederCommands extends Command{
     public static Command unfeeder(FeederSubsystem wheel) {
         return Commands.run(
             () -> {
-                wheel.feeder(-Constants.FeederConstants.k_reverseFeederSpeedRPS);
+                wheel.feeder(Constants.FeederConstants.k_reverseFeederSpeedRPS);
             },
         wheel);
         

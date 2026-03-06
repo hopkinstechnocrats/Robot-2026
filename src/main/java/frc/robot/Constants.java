@@ -43,8 +43,8 @@ public final class Constants{
         public static final double k_blAbsEncoderOffset = 0.325;
         public static final double k_brAbsEncoderOffset = 0.221;
 
-        public static final double k_maxLinearSpeedMeterPerSecond = 8;
-        public static final double k_slowMaxLinearSpeenMetersPerSecond = 8;
+        public static final double k_maxLinearSpeedMeterPerSecond = 14;
+        public static final double k_slowMaxLinearSpeenMetersPerSecond = 5;
         public static final double k_bumpMaxLinearSpeenMetersPerSecond = 8;
         public static final double k_maxAngularSpeedRadPerSec = 8.0 * Math.PI;
 
@@ -71,10 +71,10 @@ public final class Constants{
 //TODO: test and change all of these values
     public static final class FeederConstants{
         public static final int k_feederMotorCANID = 24;
-        public static final double k_feederSpeedRPS = 10;
-        public static final double k_reverseFeederSpeedRPS = 10;
+        public static final double k_feederSpeedRPS = -10;
+        public static final double k_reverseFeederSpeedRPS = 20;
         public static final double k_feederBreakSpeedRPS = 0;
-        public static final double k_feederP = 1; 
+        public static final double k_feederP = 0.3; 
         public static final double k_feederI = 0;
         public static final double k_feederD = 0;
         public static final double k_feederFeedForward = 0; 
