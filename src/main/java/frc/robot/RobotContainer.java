@@ -68,7 +68,7 @@ public class RobotContainer {
     } 
 
     public Command getAutonomousCommand() {
-        return m_chooser.getSelected();
+        return Commands.print("No autonomous command configured");
     }
 
     private void configureButtonBindings() {
