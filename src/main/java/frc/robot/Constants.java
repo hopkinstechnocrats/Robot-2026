@@ -93,7 +93,7 @@ public final class Constants{
 //TODO: change all of these numbers
     public static final class IntakeConstants{
         public static final int k_intakeMotorCANID = 14;
-        public static final double k_intakeSpeedRPS = -50;//TODO: change this speed
+        public static final double k_intakeSpeedRPS = -70;//TODO: change this speed
         public static final double k_reverseIntakeSpeedRPS = 65;   
         public static final double k_intakeBrakeSpeedRPS = 0;
         public static final double k_intakeP = 0.3; 
@@ -117,7 +117,7 @@ public final class Constants{
         // TODO test numbers 73-78
         public static final int k_launcherMotorCANID = 25;//TODO: Change CANID
         public static final int k_launcherMotorSecondCANID = 26;//TODO: Change CANID
-        public static final double k_launchSpeedRPS = 78; //rotations per second
+        public static final double k_launchSpeedRPS = 83; //rotations per second
         public static final double k_launcherBrakeSpeedRPS = 0;
         public static final double k_launcherP = 0.3; 
         public static final double k_launcherI = 0.1;
