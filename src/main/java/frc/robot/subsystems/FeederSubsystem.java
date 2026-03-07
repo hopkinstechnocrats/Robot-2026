@@ -5,6 +5,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -30,6 +31,7 @@ public class FeederSubsystem extends SubsystemBase {
     
     Slot0Configs m_feederConfig;
     MotorOutputConfigs m_feederOutputConfig;
+    CurrentLimitsConfigs m_currentLimits;
     final VelocityVoltage m_feederRequest = new VelocityVoltage(0).withSlot(0);
 
     public FeederSubsystem(){
@@ -38,11 +40,14 @@ public class FeederSubsystem extends SubsystemBase {
         m_feederMotor = new TalonFX(Constants.FeederConstants.k_feederMotorCANID);
         m_feederConfig = new Slot0Configs();
         m_feederOutputConfig = new MotorOutputConfigs();
+        m_currentLimits = new CurrentLimitsConfigs();
         m_feederConfig.kP = Constants.FeederConstants.k_feederP;
         m_feederConfig.kI = Constants.FeederConstants.k_feederI;
         m_feederConfig.kD = Constants.FeederConstants.k_feederD;
 		m_feederConfig.kV = Constants.FeederConstants.k_feederFeedForward;
         m_feederOutputConfig.NeutralMode = NeutralModeValue.Coast;
+        m_currentLimits.StatorCurrentLimit = 80;
+        m_feederMotor.getConfigurator().apply(m_currentLimits);
         m_feederMotor.getConfigurator().apply(m_feederOutputConfig);
         m_feederMotor.getConfigurator().apply(m_feederConfig);
         

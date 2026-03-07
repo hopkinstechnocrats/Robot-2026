@@ -5,6 +5,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.Slot1Configs;
@@ -35,6 +36,7 @@ import frc.robot.TunableNumber;
         TalonFX m_launcherMotorSecond;
    		Slot0Configs m_launcherConfig;
         MotorOutputConfigs m_launcherOutputConfig;
+        CurrentLimitsConfigs m_currentLimits;
         
         TunableNumber kPInputLauncher;
         TunableNumber kIInputLauncher;
@@ -49,6 +51,7 @@ import frc.robot.TunableNumber;
             m_launcherMotor = new TalonFX(Constants.LauncherConstants.k_launcherMotorCANID); //Need to getCANID
             m_launcherMotorSecond = new TalonFX(Constants.LauncherConstants.k_launcherMotorSecondCANID); //need CANID
             m_launcherConfig = new Slot0Configs();
+            m_currentLimits = new CurrentLimitsConfigs();
             m_launcherOutputConfig = new MotorOutputConfigs();
             m_launcherConfig.kP = Constants.LauncherConstants.k_launcherP;
             m_launcherConfig.kI = Constants.LauncherConstants.k_launcherI;
@@ -56,9 +59,12 @@ import frc.robot.TunableNumber;
 			m_launcherConfig.kV = Constants.LauncherConstants.k_launcherFeedForward;
             m_launcherOutputConfig.NeutralMode = NeutralModeValue.Coast;
             m_launcherOutputConfig.Inverted = InvertedValue.Clockwise_Positive;
+            m_currentLimits.StatorCurrentLimit = 80;
 
             m_launcherMotor.setNeutralMode(NeutralModeValue.Brake);
             m_launcherMotorSecond.setNeutralMode(NeutralModeValue.Brake);
+            m_launcherMotor.getConfigurator().apply(m_currentLimits);
+            m_launcherMotorSecond.getConfigurator().apply(m_currentLimits);
             m_launcherMotor.getConfigurator().apply(m_launcherOutputConfig);
             m_launcherMotorSecond.setNeutralMode(NeutralModeValue.Brake);
             m_launcherMotorSecond.getConfigurator().apply(m_launcherOutputConfig);
