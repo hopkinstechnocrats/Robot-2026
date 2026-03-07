@@ -9,16 +9,32 @@ import frc.robot.swerve.Swervedrive;
 public class Autos {
 
     // Forward Auto
-    public Command forwardAuto(Swervedrive swerveDrive, double speed) {
+    public Command oneSecond(Swervedrive swerveDrive, double speed) {
         return new SequentialCommandGroup(
-            drive(swerveDrive, speed, 0, 0).withTimeout(2)
+            drive(swerveDrive, speed, 0, 0).withTimeout(1)
         );
     }
+
+    public Command timeBased(Swervedrive swerveDrive, double time) {
+        return new SequentialCommandGroup(
+            drive(swerveDrive, 4, 0, 0).withTimeout(time)
+        );
+    }
+
+    public Command threeSecond(Swervedrive swerveDrive, double speed) {
+        return new SequentialCommandGroup(
+            drive(swerveDrive, speed, 0, 0).withTimeout(3)
+        );
+    }
+
+
+
+
 
     // Forward + Turn Auto
     public Command complexAuto(Swervedrive swerveDrive, double speed) {
         return new SequentialCommandGroup(
-            drive(swerveDrive, speed, 0, 0).withTimeout(2),
+            drive(swerveDrive, speed, 0, 0).withTimeout(1),
             drive(swerveDrive, 0, speed, 0).withTimeout(2)
         );
     }

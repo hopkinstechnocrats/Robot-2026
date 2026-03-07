@@ -42,10 +42,10 @@ public class RobotContainer {
     public RobotContainer() {
         //feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
-        m_chooser.setDefaultOption("forward auto", auto.complexAuto(m_swerve, 2)); //spped x & y is meters/second
+        m_chooser.setDefaultOption("1 second", auto.oneSecond(m_swerve, 4)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),
-                ()->driveController.getLeftTriggerAxis(), () -> driveController.getRightTriggerAxis()) 
+                ()->driveController.getRightTriggerAxis(), () -> driveController.getLeftTriggerAxis()) 
         );
 
 
@@ -65,7 +65,7 @@ public class RobotContainer {
     } 
 
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+        return auto.timeBased(m_swerve, 4);
     }
 
     private void configureButtonBindings() {
