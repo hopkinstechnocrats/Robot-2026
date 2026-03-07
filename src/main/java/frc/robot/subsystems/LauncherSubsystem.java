@@ -24,8 +24,9 @@ import frc.robot.TunableNumber;
     public class LauncherSubsystem extends SubsystemBase{
       	NetworkTableInstance inst;
       	NetworkTable table;
-        /*
+        
       	DoubleEntry LauncherPIDDifference; 
+        /*
 		DoubleEntry LauncherMotorVoltage; 
       	DoubleEntry LauncherPIDDifferenceSecond; 
 		DoubleEntry LauncherMotorVoltageSecond; 
@@ -34,12 +35,12 @@ import frc.robot.TunableNumber;
         TalonFX m_launcherMotorSecond;
    		Slot0Configs m_launcherConfig;
         MotorOutputConfigs m_launcherOutputConfig;
-        /*
+        
         TunableNumber kPInputLauncher;
         TunableNumber kIInputLauncher;
         TunableNumber kDInputLauncher;
         TunableNumber kVInputLauncher;
-        */
+        
         final VelocityVoltage m_launcherRequest = new VelocityVoltage(0).withSlot(0);
         
 		public LauncherSubsystem(){
@@ -65,13 +66,14 @@ import frc.robot.TunableNumber;
 
             /*
 			LauncherMotorVoltage = table.getDoubleTopic("Motor Volated").getEntry(0);
+            */
             LauncherPIDDifference = table.getDoubleTopic("PID Difference").getEntry(0);
 
             kPInputLauncher = new TunableNumber("/Tunable Numbers/kPInput Launcher", Constants.LauncherConstants.k_launcherP);
             kIInputLauncher = new TunableNumber("/Tunable Numbers/kIInput Launcher", Constants.LauncherConstants.k_launcherI);
             kDInputLauncher = new TunableNumber("/Tunable Numbers/kDInput Launcher", Constants.LauncherConstants.k_launcherD);
             kVInputLauncher = new TunableNumber("/Tunable Numbers/kVInput Launcher", Constants.LauncherConstants.k_launcherFeedForward);
-            */
+            
   
         }
         
@@ -79,39 +81,35 @@ import frc.robot.TunableNumber;
 		@Override
     	public void periodic(){
       		//LauncherPIDDifferenceSecond.set(m_launcherMotorSecond.getClosedLoopError().getValueAsDouble());
-      		//LauncherPIDDifference.set(m_launcherMotor.getClosedLoopError().getValueAsDouble()); 
+      		LauncherPIDDifference.set(m_launcherMotor.getClosedLoopError().getValueAsDouble()); 
      		//difference between desired state and real state as a double
 			//LauncherMotorVoltage.set(m_launcherMotor.getMotorVoltage().getValueAsDouble());
 			//LauncherMotorVoltageSecond.set(m_launcherMotorSecond.getMotorVoltage().getValueAsDouble());
-            /*
+            
             if(DriverStation.isTestEnabled() && kPInputLauncher.hasChanged(hashCode())){
                 m_launcherConfig.kP = kPInputLauncher.getAsDouble();
                 m_launcherMotor.getConfigurator().apply(m_launcherConfig);
-                m_launcherInvertedConfig.kP = kPInputLauncher.getAsDouble();
-                m_launcherMotorSecond.getConfigurator().apply(m_launcherInvertedConfig);
+                m_launcherMotorSecond.getConfigurator().apply(m_launcherConfig);
             }
  
             if(DriverStation.isTestEnabled() && kIInputLauncher.hasChanged(hashCode())){
                 m_launcherConfig.kI = kIInputLauncher.getAsDouble();
                 m_launcherMotor.getConfigurator().apply(m_launcherConfig);
-                m_launcherInvertedConfig.kI = kIInputLauncher.getAsDouble();
-                m_launcherMotorSecond.getConfigurator().apply(m_launcherInvertedConfig);
+                m_launcherMotorSecond.getConfigurator().apply(m_launcherConfig);
             }
 
             if(DriverStation.isTestEnabled() && kDInputLauncher.hasChanged(hashCode())){
                 m_launcherConfig.kD = kDInputLauncher.getAsDouble();
                 m_launcherMotor.getConfigurator().apply(m_launcherConfig);
-                m_launcherInvertedConfig.kD = kDInputLauncher.getAsDouble();
-                m_launcherMotorSecond.getConfigurator().apply(m_launcherInvertedConfig);
+                m_launcherMotorSecond.getConfigurator().apply(m_launcherConfig);
             }
 
             if(DriverStation.isTestEnabled() && kVInputLauncher.hasChanged(hashCode())){
                 m_launcherConfig.kV = kVInputLauncher.getAsDouble();
                 m_launcherMotor.getConfigurator().apply(m_launcherConfig);
-                m_launcherInvertedConfig.kV = kVInputLauncher.getAsDouble();
-                m_launcherMotorSecond.getConfigurator().apply(m_launcherInvertedConfig);
+                m_launcherMotorSecond.getConfigurator().apply(m_launcherConfig);
             }
-            */
+            
     	}
         
         public void launcher(double launcherSpeed){

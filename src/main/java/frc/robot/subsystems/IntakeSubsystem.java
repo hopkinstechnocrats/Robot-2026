@@ -58,6 +58,10 @@ public class IntakeSubsystem extends SubsystemBase{
             
             deployMotorPosition = table.getDoubleTopic("Deploy Position").getEntry(0);
 
+            m_tunableIntakeP = new TunableNumber("IntakeTuning/IntakeP", Constants.IntakeConstants.k_intakeP);
+            m_tunableIntakeI = new TunableNumber("IntakeTuning/IntakeI", Constants.IntakeConstants.k_intakeI);
+            m_tunableIntakeD = new TunableNumber("IntakeTuning/IntakeD", Constants.IntakeConstants.k_intakeD);
+
             m_intakeConfig = new TalonFXConfiguration();
             m_deployConfig = new TalonFXConfiguration();
 
@@ -99,6 +103,21 @@ public class IntakeSubsystem extends SubsystemBase{
 			DeployMotorFollowerVoltage.set(m_intakeDeployMotorFollower.getMotorVoltage().getValueAsDouble());
 
             deployMotorPosition.set(m_intakeDeployMotor.getPosition().getValueAsDouble());
+
+            if(m_tunableIntakeP.hasChanged(hashCode()) && DriverStation.isTest()){
+                m_intakeConfig.Slot0.kP = m_tunableIntakeP.getAsDouble();
+                m_intakeMotor.getConfigurator().apply(m_intakeConfig);
+            }
+
+            if(m_tunableIntakeI.hasChanged(hashCode()) && DriverStation.isTest()){
+                m_intakeConfig.Slot0.kI = m_tunableIntakeI.getAsDouble();
+                m_intakeMotor.getConfigurator().apply(m_intakeConfig);
+            }
+
+            if(m_tunableIntakeD.hasChanged(hashCode()) && DriverStation.isTest()){
+                m_intakeConfig.Slot0.kD = m_tunableIntakeD.getAsDouble();
+                m_intakeMotor.getConfigurator().apply(m_intakeConfig);
+            }
     	}
 
         public void intake(double intakeSpeed){
