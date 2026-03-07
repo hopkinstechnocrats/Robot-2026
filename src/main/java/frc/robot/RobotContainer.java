@@ -30,17 +30,17 @@ public class RobotContainer {
     
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
-    private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
+    //private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
     //private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-    private final FeederSubsystem feederSubsystem = new FeederSubsystem();
-    private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
+    //private final FeederSubsystem feederSubsystem = new FeederSubsystem();
+    //private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
     
     Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
     
     public RobotContainer() {
-        feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
+        //feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
         m_chooser.setDefaultOption("forward auto", auto.complexAuto(m_swerve, 2)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(
@@ -49,7 +49,7 @@ public class RobotContainer {
         );
 
 
-        launcherSubsystem.setDefaultCommand(LauncherCommands.launcherBreak(launcherSubsystem));
+        //launcherSubsystem.setDefaultCommand(LauncherCommands.launcherBreak(launcherSubsystem));
         /*
 		    intakeSubsystem.setDefaultCommand(
             new RunCommand(
@@ -59,7 +59,7 @@ public class RobotContainer {
         ));
         */
 
-        hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
+        //hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
 
         configureButtonBindings();
     } 
@@ -76,11 +76,13 @@ public class RobotContainer {
       driveController.a().onTrue(Commands.run(
         () -> m_swerve.resetHeading(),
         m_swerve));
+      /*
       operatorController.x().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
       operatorController.y().whileTrue(FeederCommands.unfeeder(feederSubsystem)); 
       operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem)
               .alongWith(FeederCommands.feeder(feederSubsystem))
               .alongWith(HopperCommands.hopper(hopperSubsystem)));
       operatorController.povLeft().whileTrue(LauncherCommands.inverseLauncher(launcherSubsystem));
+      */
     }
 }
