@@ -34,7 +34,10 @@ public class IntakeSubsystem extends SubsystemBase{
     DoubleEntry DeployPIDFollowerDifference;
     DoubleEntry DeployMotorFollowerVoltage;
     DoubleEntry deployMotorPosition;
-  	TalonFX m_intakeMotor;
+    TunableNumber m_tunableIntakeP;
+    TunableNumber m_tunableIntakeI;
+    TunableNumber m_tunableIntakeD;
+    TalonFX m_intakeMotor;
     TalonFX m_intakeDeployMotor;
     TalonFX m_intakeDeployMotorFollower;
     TalonFXConfiguration m_intakeConfig;
@@ -55,22 +58,27 @@ public class IntakeSubsystem extends SubsystemBase{
             
             deployMotorPosition = table.getDoubleTopic("Deploy Position").getEntry(0);
 
+            m_tunableIntakeP = new TunableNumber("IntakeTuning/IntakeP", Constants.IntakeConstants.k_intakeP);
+            m_tunableIntakeI = new TunableNumber("IntakeTuning/IntakeI", Constants.IntakeConstants.k_intakeI);
+            m_tunableIntakeD = new TunableNumber("IntakeTuning/IntakeD", Constants.IntakeConstants.k_intakeD);
+
             m_intakeConfig = new TalonFXConfiguration();
             m_deployConfig = new TalonFXConfiguration();
 
             m_intakeConfig.Slot0.kP = Constants.IntakeConstants.k_intakeP;
             m_intakeConfig.Slot0.kI = Constants.IntakeConstants.k_intakeI;
             m_intakeConfig.Slot0.kD = Constants.IntakeConstants.k_intakeD;
-            m_intakeConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+            m_intakeConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
             m_intakeConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-            m_intakeConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.1;
+            m_intakeConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0;
+            m_intakeConfig.CurrentLimits.StatorCurrentLimit = 80;
 
             m_deployConfig.Slot0.kP = Constants.IntakeConstants.k_intakeDeployP;
             m_deployConfig.Slot0.kI = Constants.IntakeConstants.k_intakeDeployI;
             m_deployConfig.Slot0.kD = Constants.IntakeConstants.k_intakeDeployD;
             m_deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             m_deployConfig.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.k_deployGearRatio;
-            m_deployConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.2;
+            m_deployConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.5;
 
             m_intakeMotor.getConfigurator().apply(m_intakeConfig);
             m_intakeDeployMotor.getConfigurator().apply(m_deployConfig);
@@ -96,6 +104,21 @@ public class IntakeSubsystem extends SubsystemBase{
 			DeployMotorFollowerVoltage.set(m_intakeDeployMotorFollower.getMotorVoltage().getValueAsDouble());
 
             deployMotorPosition.set(m_intakeDeployMotor.getPosition().getValueAsDouble());
+
+            if(m_tunableIntakeP.hasChanged(hashCode()) && DriverStation.isTest()){
+                m_intakeConfig.Slot0.kP = m_tunableIntakeP.getAsDouble();
+                m_intakeMotor.getConfigurator().apply(m_intakeConfig);
+            }
+
+            if(m_tunableIntakeI.hasChanged(hashCode()) && DriverStation.isTest()){
+                m_intakeConfig.Slot0.kI = m_tunableIntakeI.getAsDouble();
+                m_intakeMotor.getConfigurator().apply(m_intakeConfig);
+            }
+
+            if(m_tunableIntakeD.hasChanged(hashCode()) && DriverStation.isTest()){
+                m_intakeConfig.Slot0.kD = m_tunableIntakeD.getAsDouble();
+                m_intakeMotor.getConfigurator().apply(m_intakeConfig);
+            }
     	}
 
         public void intake(double intakeSpeed){

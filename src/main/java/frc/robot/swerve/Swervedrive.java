@@ -1,5 +1,8 @@
 package frc.robot.swerve;
 
+import java.util.Optional;
+
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,6 +18,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.networktables.DoubleEntry;
 import frc.robot.Constants;
 
@@ -94,6 +99,12 @@ public class Swervedrive extends SubsystemBase{
 
     @Override
     public void periodic(){
+        /*
+        if(m_pose == Constants.SwerveConstants.k_startPose && DriverStation.getAlliance().get() == Alliance.Red){
+            gyro.set180();
+        }
+        */
+
         m_pose = m_poseEstimator.update(gyro.getRotation(), new SwerveModulePosition[]{
              fL.getModulePosition(), fR.getModulePosition(), bL.getModulePosition(), bR.getModulePosition()
         });
@@ -130,6 +141,10 @@ public class Swervedrive extends SubsystemBase{
     
 
     public Rotation2d getRotation(){
-        return gyro.getRotation();
+        return m_pose.getRotation();
+    }
+
+    public void resetHeading(){
+       gyro.resetGyro(); 
     }
 }

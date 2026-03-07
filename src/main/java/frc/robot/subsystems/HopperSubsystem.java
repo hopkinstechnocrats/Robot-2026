@@ -27,6 +27,8 @@ public class HopperSubsystem extends SubsystemBase{
   	TalonFX m_hopperMotor;
     TalonFXConfiguration m_talonConfig;
     
+    MotorOutputConfigs m_talonOutputConfig;
+    
     TunableNumber kPInputHopper;
     TunableNumber kIInputHopper;
     TunableNumber kDInputHopper;
@@ -49,8 +51,10 @@ public class HopperSubsystem extends SubsystemBase{
             m_talonConfig.Slot0.kI = Constants.HopperConstants.k_hopperI;
             m_talonConfig.Slot0.kD = Constants.HopperConstants.k_hopperD;
 			m_talonConfig.Slot0.kV = Constants.HopperConstants.k_feedForward;
+            m_talonConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
             m_talonConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.3;
             m_talonConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+            m_talonConfig.CurrentLimits.StatorCurrentLimit = 80;
             m_hopperMotor.getConfigurator().apply(m_talonConfig);
 
             HopperMotorVoltage = table.getDoubleTopic("Hopper Motor Volated").getEntry(0);
