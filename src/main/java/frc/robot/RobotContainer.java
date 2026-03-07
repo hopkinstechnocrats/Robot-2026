@@ -32,7 +32,7 @@ public class RobotContainer {
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
     private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    //private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
     
@@ -50,12 +50,14 @@ public class RobotContainer {
 
 
         launcherSubsystem.setDefaultCommand(LauncherCommands.launcherBreak(launcherSubsystem));
+        /*
 		    intakeSubsystem.setDefaultCommand(
             new RunCommand(
                     () -> {
                     intakeSubsystem.intakeBrake();
                   }, intakeSubsystem
         ));
+        */
 
         hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
 
@@ -67,10 +69,10 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-      operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
-      operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
-      operatorController.povUp().whileTrue(IntakeCommands.deploy(intakeSubsystem));
-      operatorController.povRight().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
+      //operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
+      //operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
+      //operatorController.povUp().whileTrue(IntakeCommands.deploy(intakeSubsystem));
+      //operatorController.povRight().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
       driveController.a().onTrue(Commands.run(
         () -> m_swerve.resetHeading(),
         m_swerve));
