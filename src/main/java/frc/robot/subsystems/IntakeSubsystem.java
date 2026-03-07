@@ -38,6 +38,7 @@ public class IntakeSubsystem extends SubsystemBase{
     TunableNumber m_tunableIntakeI;
     TunableNumber m_tunableIntakeD;
     TalonFX m_intakeMotor;
+    TalonFX m_intakeFollowerMotor;
     TalonFX m_intakeDeployMotor;
     TalonFX m_intakeDeployMotorFollower;
     TalonFXConfiguration m_intakeConfig;
@@ -53,6 +54,7 @@ public class IntakeSubsystem extends SubsystemBase{
             table = inst.getTable("Intake Info");
 
             m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
+            m_intakeFollowerMotor = new TalonFX(Constants.IntakeConstants.k_intakeFollowerCANID);
             m_intakeDeployMotor = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorCANID); //TODO:Also needs CANID
             m_intakeDeployMotorFollower = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorFollowerCANID); //TODO:Also needs CANID
             
@@ -81,6 +83,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.5;
 
             m_intakeMotor.getConfigurator().apply(m_intakeConfig);
+            m_intakeFollowerMotor.getConfigurator().apply(m_intakeConfig);
             m_intakeDeployMotor.getConfigurator().apply(m_deployConfig);
             m_intakeDeployMotorFollower.getConfigurator().apply(m_deployConfig);
 
@@ -123,6 +126,7 @@ public class IntakeSubsystem extends SubsystemBase{
 
         public void intake(double intakeSpeed){
         	m_intakeMotor.setControl(m_intakeRequest.withVelocity(intakeSpeed));
+            m_intakeFollowerMotor.setControl(new Follower(m_intakeMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
 
         public void intakeDeploy(double position){
@@ -131,6 +135,7 @@ public class IntakeSubsystem extends SubsystemBase{
         }
         public void intakeBrake(){
         	m_intakeMotor.setControl(m_intakeRequest.withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
+            m_intakeMotor.setControl(new Follower(m_intakeMotor.getDeviceID(), MotorAlignmentValue.Opposed));
             m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(m_intakeDeployMotor.getPosition().getValueAsDouble()));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
