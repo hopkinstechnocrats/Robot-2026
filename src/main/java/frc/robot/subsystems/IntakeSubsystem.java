@@ -78,7 +78,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.Slot0.kD = Constants.IntakeConstants.k_intakeDeployD;
             m_deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             m_deployConfig.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.k_deployGearRatio;
-            m_deployConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.2;
+            m_deployConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.5;
 
             m_intakeMotor.getConfigurator().apply(m_intakeConfig);
             m_intakeDeployMotor.getConfigurator().apply(m_deployConfig);
