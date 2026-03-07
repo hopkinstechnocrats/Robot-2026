@@ -34,7 +34,10 @@ public class IntakeSubsystem extends SubsystemBase{
     DoubleEntry DeployPIDFollowerDifference;
     DoubleEntry DeployMotorFollowerVoltage;
     DoubleEntry deployMotorPosition;
-  	TalonFX m_intakeMotor;
+    TunableNumber m_tunableIntakeP;
+    TunableNumber m_tunableIntakeI;
+    TunableNumber m_tunableIntakeD;
+    TalonFX m_intakeMotor;
     TalonFX m_intakeDeployMotor;
     TalonFX m_intakeDeployMotorFollower;
     TalonFXConfiguration m_intakeConfig;

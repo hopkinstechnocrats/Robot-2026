@@ -71,8 +71,8 @@ public final class Constants{
 //TODO: test and change all of these values
     public static final class FeederConstants{
         public static final int k_feederMotorCANID = 24;
-        public static final double k_feederSpeedRPS = -10;
-        public static final double k_reverseFeederSpeedRPS = 20;
+        public static final double k_feederSpeedRPS = -85;
+        public static final double k_reverseFeederSpeedRPS = 40;
         public static final double k_feederBreakSpeedRPS = 0;
         public static final double k_feederP = 0.3; 
         public static final double k_feederI = 0;
@@ -82,8 +82,8 @@ public final class Constants{
     //TODO: test to find numbers for this whole block
     public static final class HopperConstants{
         public static final int k_hopperMotorCANID = 17;
-        public static final double k_hopperSpeedRPS = 85;
-        public static final double k_reverseHopperSpeedRPS = -50;   
+        public static final double k_hopperSpeedRPS = 30;
+        public static final double k_reverseHopperSpeedRPS = -30;   
         public static final double k_hopperBrakeSpeedRPS = 0;
         public static final double k_hopperP = 0.3; 
         public static final double k_hopperI = 0;

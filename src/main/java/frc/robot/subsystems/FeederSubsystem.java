@@ -19,10 +19,10 @@ public class FeederSubsystem extends SubsystemBase {
     TalonFX m_feederMotor;
     NetworkTableInstance inst;
     NetworkTable table;
-    /*
+    
   	DoubleEntry FeederPIDDifference; 
-    DoubleEntry FeederMotorVoltage;
-    */
+    //DoubleEntry FeederMotorVoltage;
+
     TunableNumber k_PInputFeeder; 
     TunableNumber k_IInputFeeder; 
     TunableNumber k_DInputFeeder;
@@ -45,10 +45,10 @@ public class FeederSubsystem extends SubsystemBase {
         m_feederOutputConfig.NeutralMode = NeutralModeValue.Coast;
         m_feederMotor.getConfigurator().apply(m_feederOutputConfig);
         m_feederMotor.getConfigurator().apply(m_feederConfig);
-        /*
-        FeederMotorVoltage = table.getDoubleTopic("Feeder Motor Volated").getEntry(0);
+        
+        //FeederMotorVoltage = table.getDoubleTopic("Feeder Motor Volated").getEntry(0);
         FeederPIDDifference = table.getDoubleTopic("Feeder PID Difference").getEntry(0);
-        */
+        
         k_PInputFeeder = new TunableNumber("/Tunable Numbers/kPInput Feeder", Constants.FeederConstants.k_feederP);
         k_IInputFeeder = new TunableNumber("/Tunable Numbers/kIInput Feeder", Constants.FeederConstants.k_feederI);
         k_DInputFeeder = new TunableNumber("/Tunable Numbers/kDInput Feeder", Constants.FeederConstants.k_feederD);
@@ -58,11 +58,11 @@ public class FeederSubsystem extends SubsystemBase {
 
     @Override
     public void periodic(){
-        /*
+        
       	FeederPIDDifference.set(m_feederMotor.getClosedLoopError().getValueAsDouble()); 
      	//difference between desired state and real state as a double
-		FeederMotorVoltage.set(m_feederMotor.getMotorVoltage().getValueAsDouble());
-        */
+		//FeederMotorVoltage.set(m_feederMotor.getMotorVoltage().getValueAsDouble());
+        
         if(DriverStation.isTestEnabled() && k_PInputFeeder.hasChanged(hashCode())){
                 m_feederConfig.kP = k_PInputFeeder.getAsDouble();
                 m_feederMotor.getConfigurator().apply(m_feederConfig);
