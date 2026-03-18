@@ -173,11 +173,11 @@ public class SwerveModule extends SubsystemBase{
     }
 
     public double getDrivePositionRot(){
-        return m_driveMotor.getPosition().getValueAsDouble()/Constants.SwerveConstants.k_driveGearRatio;
+        return m_driveMotor.getPosition().getValueAsDouble()*Constants.SwerveConstants.k_wheelCircumferenceMeters;
     }
 
     public double getDriveDistanceMeters(){
-        return this.getDrivePositionRot()*Constants.SwerveConstants.k_wheelCircumferenceMeters;
+        return this.getDrivePositionRot()/Constants.SwerveConstants.k_driveGearRatio;
     }
 
     public Rotation2d getAngleRotation2d(){
