@@ -40,4 +40,7 @@ public class Gyro extends SubsystemBase{
         pigeon.setYaw(180);
     }
 
+    public double getYawDegrees(){
+        return pigeon.getYaw().getValueAsDouble();
+    }
 }
