@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.TunableNumber;
 
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+
 public class IntakeSubsystem extends SubsystemBase{
 
  	NetworkTableInstance inst;
@@ -40,7 +42,8 @@ public class IntakeSubsystem extends SubsystemBase{
     TalonFXConfiguration m_intakeConfig;
     TalonFXConfiguration m_deployConfig;
     final VelocityVoltage m_intakeRequest = new VelocityVoltage(0).withSlot(0);
-    final PositionVoltage m_intakeDeployRequest = new PositionVoltage(0).withSlot(0);
+    //final PositionVoltage m_intakeDeployRequest = new PositionVoltage(0).withSlot(0);
+    final MotionMagicVoltage m_intakeDeployRequest = new MotionMagicVoltage(0).withSlot(0);
 
 
     TalonFX intakeMotor;
@@ -102,10 +105,16 @@ public class IntakeSubsystem extends SubsystemBase{
         	m_intakeMotor.setControl(m_intakeRequest.withVelocity(intakeSpeed));
         }
 
+        //public void intakeDeploy(double position){
+        //    m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(position));
+        //    m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
+        //}
+
         public void intakeDeploy(double position){
             m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(position));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
+
         public void intakeBrake(){
         	m_intakeMotor.setControl(m_intakeRequest.withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
             m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(m_intakeDeployMotor.getPosition().getValueAsDouble()));
