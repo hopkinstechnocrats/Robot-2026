@@ -53,6 +53,8 @@ public class Swervedrive extends SubsystemBase{
     SwerveModule bL;
     SwerveModule bR;
 
+    double gyroOffset = 0;
+
     Gyro gyro;
 
     SwerveModuleState[] desiredModuleStates;
@@ -145,6 +147,11 @@ public class Swervedrive extends SubsystemBase{
     }
 
     public void resetHeading(){
-       gyro.resetGyro(); 
+        if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red){
+            m_poseEstimator.resetRotation(Rotation2d.k180deg);
+        }
+        else{
+            m_poseEstimator.resetRotation(Rotation2d.kZero);
+        }
     }
 }

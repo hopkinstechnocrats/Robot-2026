@@ -73,7 +73,7 @@ public class RobotContainer {
       //operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
       //operatorController.povUp().whileTrue(IntakeCommands.deploy(intakeSubsystem));
       //operatorController.povRight().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
-      driveController.a().onTrue(Commands.run(
+      driveController.a().onTrue(Commands.runOnce(
         () -> m_swerve.resetHeading(),
         m_swerve));
       /*

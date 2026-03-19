@@ -36,8 +36,4 @@ public class Gyro extends SubsystemBase{
     public double getAccelZ(){
         return pigeon.getAccelerationZ().getValueAsDouble();
     }
-
-    public void resetGyro(){
-        pigeon.setYaw(0);
-    }
 }
