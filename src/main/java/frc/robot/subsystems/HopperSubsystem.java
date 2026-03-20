@@ -32,6 +32,7 @@ public class HopperSubsystem extends SubsystemBase{
     TunableNumber kPInputHopper;
     TunableNumber kIInputHopper;
     TunableNumber kDInputHopper;
+    TunableNumber k_tunableHopperSpeed;
     final VelocityVoltage m_hopperRequest = new VelocityVoltage(0).withSlot(0);
 
     TalonFX hopperMotor;
@@ -43,6 +44,7 @@ public class HopperSubsystem extends SubsystemBase{
             kPInputHopper = new TunableNumber("/Tunable Numbers/kPInput Hopper", Constants.HopperConstants.k_hopperP);
             kIInputHopper = new TunableNumber("/Tunable Numbers/kIInput Hopper", Constants.HopperConstants.k_hopperI);
             kDInputHopper = new TunableNumber("/Tunable Numbers/kDInput Hopper", Constants.HopperConstants.k_hopperD);
+            k_tunableHopperSpeed = new TunableNumber("/Tunable Numbers/Hopper Speed Input", Constants.HopperConstants.k_hopperSpeedRPS);
 
             m_hopperMotor = new TalonFX(Constants.HopperConstants.k_hopperMotorCANID); //Need to getCANID
             m_talonConfig = new TalonFXConfiguration();
@@ -66,6 +68,10 @@ public class HopperSubsystem extends SubsystemBase{
       		HopperPIDDifference.set(m_hopperMotor.getClosedLoopError().getValueAsDouble()); 
      		//difference between desired state and real state as a double
 			HopperMotorVoltage.set(m_hopperMotor.getMotorVoltage().getValueAsDouble());
+
+            if(DriverStation.isTestEnabled() && k_tunableHopperSpeed.hasChanged(hashCode())){
+                Constants.HopperConstants.k_hopperSpeedRPS = k_tunableHopperSpeed.getAsDouble();
+            }
 
             if(DriverStation.isTestEnabled() && kPInputHopper.hasChanged(hashCode())){
                 m_talonConfig.Slot0.kP = kPInputHopper.getAsDouble();

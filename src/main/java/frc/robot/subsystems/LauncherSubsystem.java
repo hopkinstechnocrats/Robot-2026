@@ -42,6 +42,7 @@ import frc.robot.TunableNumber;
         TunableNumber kIInputLauncher;
         TunableNumber kDInputLauncher;
         TunableNumber kVInputLauncher;
+        TunableNumber k_TunableLauncherSpeedInput;
         
         final VelocityVoltage m_launcherRequest = new VelocityVoltage(0).withSlot(0);
         
@@ -79,6 +80,7 @@ import frc.robot.TunableNumber;
             kIInputLauncher = new TunableNumber("/Tunable Numbers/kIInput Launcher", Constants.LauncherConstants.k_launcherI);
             kDInputLauncher = new TunableNumber("/Tunable Numbers/kDInput Launcher", Constants.LauncherConstants.k_launcherD);
             kVInputLauncher = new TunableNumber("/Tunable Numbers/kVInput Launcher", Constants.LauncherConstants.k_launcherFeedForward);
+            k_TunableLauncherSpeedInput = new TunableNumber("/Tunable Numbers/Launcher Speed Input", Constants.LauncherConstants.k_launchSpeedRPS);
             
   
         }
@@ -91,6 +93,10 @@ import frc.robot.TunableNumber;
      		//difference between desired state and real state as a double
 			//LauncherMotorVoltage.set(m_launcherMotor.getMotorVoltage().getValueAsDouble());
 			//LauncherMotorVoltageSecond.set(m_launcherMotorSecond.getMotorVoltage().getValueAsDouble());
+
+            if(DriverStation.isTestEnabled() && k_TunableLauncherSpeedInput.hasChanged(hashCode())){
+                Constants.LauncherConstants.k_launchSpeedRPS = k_TunableLauncherSpeedInput.getAsDouble();
+            }
             
             if(DriverStation.isTestEnabled() && kPInputLauncher.hasChanged(hashCode())){
                 m_launcherConfig.kP = kPInputLauncher.getAsDouble();

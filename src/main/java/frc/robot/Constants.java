@@ -71,7 +71,7 @@ public final class Constants{
 //TODO: test and change all of these values
     public static final class FeederConstants{
         public static final int k_feederMotorCANID = 24;
-        public static final double k_feederSpeedRPS = -95;
+        public static double k_feederSpeedRPS = -95;
         public static final double k_reverseFeederSpeedRPS = 40;
         public static final double k_feederBreakSpeedRPS = 0;
         public static final double k_feederP = 0.3; 
@@ -82,7 +82,7 @@ public final class Constants{
     //TODO: test to find numbers for this whole block
     public static final class HopperConstants{
         public static final int k_hopperMotorCANID = 17;
-        public static final double k_hopperSpeedRPS = 30;
+        public static double k_hopperSpeedRPS = 30;
         public static final double k_reverseHopperSpeedRPS = -30;   
         public static final double k_hopperBrakeSpeedRPS = 0;
         public static final double k_hopperP = 0.3; 
@@ -93,7 +93,7 @@ public final class Constants{
 //TODO: change all of these numbers
     public static final class IntakeConstants{
         public static final int k_intakeMotorCANID = 14;
-        public static final double k_intakeSpeedRPS = -85;//TODO: change this speed
+        public static double k_intakeSpeedRPS = -85;//TODO: change this speed
         public static final double k_reverseIntakeSpeedRPS = 85;   
         public static final double k_intakeBrakeSpeedRPS = 0;
         public static final double k_intakeP = 0.3; 
@@ -117,7 +117,7 @@ public final class Constants{
         // TODO test numbers 73-78
         public static final int k_launcherMotorCANID = 25;//TODO: Change CANID
         public static final int k_launcherMotorSecondCANID = 26;//TODO: Change CANID
-        public static final double k_launchSpeedRPS = 90; //rotations per second
+        public static double k_launchSpeedRPS = 90; //rotations per second
         public static final double k_launcherBrakeSpeedRPS = 0;
         public static final double k_launcherP = 0.3; 
         public static final double k_launcherI = 0.1;

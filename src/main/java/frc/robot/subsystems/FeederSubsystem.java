@@ -28,6 +28,7 @@ public class FeederSubsystem extends SubsystemBase {
     TunableNumber k_IInputFeeder; 
     TunableNumber k_DInputFeeder;
     TunableNumber k_FeedForewardFeeder;
+    TunableNumber k_TunableFeederSpeed;
     
     Slot0Configs m_feederConfig;
     MotorOutputConfigs m_feederOutputConfig;
@@ -58,6 +59,7 @@ public class FeederSubsystem extends SubsystemBase {
         k_IInputFeeder = new TunableNumber("/Tunable Numbers/kIInput Feeder", Constants.FeederConstants.k_feederI);
         k_DInputFeeder = new TunableNumber("/Tunable Numbers/kDInput Feeder", Constants.FeederConstants.k_feederD);
         k_FeedForewardFeeder = new TunableNumber("/Tunable Numbers/FeedForeward Input Feeder", Constants.FeederConstants.k_feederFeedForward);
+        k_TunableFeederSpeed = new TunableNumber("/Tunable Numbers/Feeder Speed Input", Constants.FeederConstants.k_feederSpeedRPS);
         
     }
 
@@ -67,6 +69,10 @@ public class FeederSubsystem extends SubsystemBase {
       	FeederPIDDifference.set(m_feederMotor.getClosedLoopError().getValueAsDouble()); 
      	//difference between desired state and real state as a double
 		//FeederMotorVoltage.set(m_feederMotor.getMotorVoltage().getValueAsDouble());
+
+        if(DriverStation.isTestEnabled() && k_TunableFeederSpeed.hasChanged(hashCode())){
+                Constants.FeederConstants.k_feederSpeedRPS = k_TunableFeederSpeed.getAsDouble();
+            }
         
         if(DriverStation.isTestEnabled() && k_PInputFeeder.hasChanged(hashCode())){
                 m_feederConfig.kP = k_PInputFeeder.getAsDouble();
