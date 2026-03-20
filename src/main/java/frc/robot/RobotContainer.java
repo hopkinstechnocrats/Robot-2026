@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.swerve.Gyro;
 import frc.robot.autos.Autos;
@@ -75,10 +76,17 @@ public class RobotContainer {
         () -> m_swerve.resetHeading(),
         m_swerve));
       operatorController.x().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
-      operatorController.y().whileTrue(FeederCommands.unfeeder(feederSubsystem)); 
+      operatorController.y().whileTrue(FeederCommands.unfeeder(feederSubsystem));
       operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem)
               .alongWith(FeederCommands.feeder(feederSubsystem))
               .alongWith(HopperCommands.hopper(hopperSubsystem)));
+      /*operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem)
+              .andThen(FeederCommands.feeder(feederSubsystem)
+              .alongWith(HopperCommands.hopper(hopperSubsystem)))); Test this*/
+      /*operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem).withTimeout(5)
+              .andThen(FeederCommands.feeder(feederSubsystem)
+              .alongWith(HopperCommands.hopper(hopperSubsystem))
+              .alongWith(LauncherCommands.launcher(launcherSubsystem)))); Test this, most confident in this one*/
       operatorController.povLeft().whileTrue(LauncherCommands.inverseLauncher(launcherSubsystem));
     }
 }
