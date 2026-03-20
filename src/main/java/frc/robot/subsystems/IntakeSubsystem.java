@@ -7,6 +7,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.Slot1Configs;
@@ -14,7 +16,9 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -41,6 +45,10 @@ public class IntakeSubsystem extends SubsystemBase{
     TalonFX m_intakeDeployMotorFollower;
     TalonFXConfiguration m_intakeConfig;
     TalonFXConfiguration m_deployConfig;
+
+    CANcoder m_intakeAbsoluteEncoder;
+    CANcoderConfiguration m_intakeCanCoderConfig;
+    FeedbackConfigs m_intakeSensorConfigs;
     final VelocityVoltage m_intakeRequest = new VelocityVoltage(0).withSlot(0);
     //final PositionVoltage m_intakeDeployRequest = new PositionVoltage(0).withSlot(0);
     final MotionMagicVoltage m_intakeDeployRequest = new MotionMagicVoltage(0).withSlot(0);
@@ -51,6 +59,15 @@ public class IntakeSubsystem extends SubsystemBase{
         public IntakeSubsystem(){
             inst = NetworkTableInstance.getDefault();
             table = inst.getTable("Intake Info");
+
+
+            m_intakeAbsoluteEncoder = new CANcoder(Constants.IntakeConstants.k_absEncoderPortIntake, new CANBus("Rio")); //TODO make real  canbus
+            m_intakeCanCoderConfig = new CANcoderConfiguration();
+
+            m_intakeSensorConfigs = new FeedbackConfigs();
+            m_intakeSensorConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+            m_intakeSensorConfigs.RotorToSensorRatio = Constants.IntakeConstants.k_intakeTurnGearRatio; 
+            m_intakeSensorConfigs.FeedbackRemoteSensorID = m_intakeAbsoluteEncoder.getDeviceID();
 
             m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
             m_intakeDeployMotor = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorCANID); //TODO:Also needs CANID
