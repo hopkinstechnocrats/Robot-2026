@@ -63,6 +63,8 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeAbsoluteEncoder = new CANcoder(Constants.IntakeConstants.k_absEncoderPortIntake, new CANBus("Rio")); //TODO make real  canbus
             m_intakeCanCoderConfig = new CANcoderConfiguration();
 
+            m_intakeCanCoderConfig.MagnetSensor.MagnetOffset = Constants.IntakeConstants.intakeEncoderOffset;
+
             m_deployConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
             m_deployConfig.Feedback.RotorToSensorRatio = Constants.IntakeConstants.k_intakeTurnGearRatio; 
             m_deployConfig.Feedback.FeedbackRemoteSensorID = m_intakeAbsoluteEncoder.getDeviceID();
@@ -97,6 +99,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeMotor.getConfigurator().apply(m_intakeConfig);
             m_intakeDeployMotor.getConfigurator().apply(m_deployConfig);
             m_intakeDeployMotorFollower.getConfigurator().apply(m_deployConfig);
+            m_intakeAbsoluteEncoder.getConfigurator().apply(m_intakeCanCoderConfig);
 
             IntakeMotorVoltage = table.getDoubleTopic("Intake Motor Volated").getEntry(0);
             IntakePIDDifference = table.getDoubleTopic("Intake PID Difference").getEntry(0);
