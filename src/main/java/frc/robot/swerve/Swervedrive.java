@@ -66,6 +66,9 @@ public class Swervedrive extends SubsystemBase{
     ChassisSpeeds m_speeds;
 
     public Swervedrive(){
+        //Make it so that we can view a feed from the limelight.
+        LimelightHelpers.setupPortForwardingUSB(0);
+
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Swerve");
 
