@@ -19,6 +19,7 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -48,11 +49,9 @@ public class IntakeSubsystem extends SubsystemBase{
 
     CANcoder m_intakeAbsoluteEncoder;
     CANcoderConfiguration m_intakeCanCoderConfig;
-    FeedbackConfigs m_intakeSensorConfigs;
     final VelocityVoltage m_intakeRequest = new VelocityVoltage(0).withSlot(0);
     //final PositionVoltage m_intakeDeployRequest = new PositionVoltage(0).withSlot(0);
     final MotionMagicVoltage m_intakeDeployRequest = new MotionMagicVoltage(0).withSlot(0);
-
 
     TalonFX intakeMotor;
 
@@ -64,10 +63,9 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeAbsoluteEncoder = new CANcoder(Constants.IntakeConstants.k_absEncoderPortIntake, new CANBus("Rio")); //TODO make real  canbus
             m_intakeCanCoderConfig = new CANcoderConfiguration();
 
-            m_intakeSensorConfigs = new FeedbackConfigs();
-            m_intakeSensorConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
-            m_intakeSensorConfigs.RotorToSensorRatio = Constants.IntakeConstants.k_intakeTurnGearRatio; 
-            m_intakeSensorConfigs.FeedbackRemoteSensorID = m_intakeAbsoluteEncoder.getDeviceID();
+            m_deployConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+            m_deployConfig.Feedback.RotorToSensorRatio = Constants.IntakeConstants.k_intakeTurnGearRatio; 
+            m_deployConfig.Feedback.FeedbackRemoteSensorID = m_intakeAbsoluteEncoder.getDeviceID();
 
             m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
             m_intakeDeployMotor = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorCANID); //TODO:Also needs CANID
@@ -90,6 +88,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.Slot0.kD = Constants.IntakeConstants.k_intakeDeployD;
             m_deployConfig.Slot0.kG = Constants.IntakeConstants.k_intakeDeployG;
             m_deployConfig.Slot0.kV = Constants.IntakeConstants.k_intakeDeployV;
+            m_deployConfig.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
             
             m_deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             m_deployConfig.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.k_deployGearRatio;//TODO check gear ratio
