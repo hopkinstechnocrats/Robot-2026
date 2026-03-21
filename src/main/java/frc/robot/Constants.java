@@ -45,7 +45,7 @@ public final class Constants{
 
         public static final double k_maxLinearSpeedMeterPerSecond = 14;
         public static final double k_slowMaxLinearSpeenMetersPerSecond = 5;
-        public static final double k_bumpMaxLinearSpeenMetersPerSecond = 8;
+        public static final double k_midLinearSpeenMetersPerSecond = 8;
         public static final double k_maxAngularSpeedRadPerSec = 8.0 * Math.PI;
 
         public static final double k_driveGearRatio = 5.27;
