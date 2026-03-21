@@ -11,7 +11,6 @@ public class MatchTimer {
         gameData = DriverStation.getGameSpecificMessage();
     }
 
-
     public boolean allianceWin() {
         if(gameData.length() > 0){
             switch (gameData.charAt(0)){
