@@ -4,7 +4,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 public final class Constants{
-
+    public static final class limelightConstants{
+        public static final int limelightPort = 0;//TODO: update this 
+        
+    }
     public static final class SwerveConstants{
         public static final int k_frontLeftDriveCANID = 13;
         public static final int k_frontRightDriveCANID = 12;

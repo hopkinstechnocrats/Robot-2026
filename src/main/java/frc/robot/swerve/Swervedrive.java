@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -67,6 +68,7 @@ public class Swervedrive extends SubsystemBase{
 
     public Swervedrive(){
         //Make it so that we can view a feed from the limelight.
+        PortForwarder.add(Constants.limelightConstants.limelightPort, "wpilibpi.local", 80);//TODO: update this witht the remote port.
         LimelightHelpers.setupPortForwardingUSB(0);
 
         inst = NetworkTableInstance.getDefault();
