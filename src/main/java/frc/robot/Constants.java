@@ -93,6 +93,9 @@ public final class Constants{
         public static final double k_intakeDeployP = 12;
         public static final double k_intakeDeployI = 0;
         public static final double k_intakeDeployD = 0;
+        public static final double k_intakeDeployG = 0;//TODO: update G
+        public static final double k_intakeDeployV = 0;//TODO: update V
+        
         public static final double k_intakeDeployS = 0;
         public static final double k_intakeDeployFeedForeward = 0;
         public static final double k_intakeSetpointDeploy = 0.0;

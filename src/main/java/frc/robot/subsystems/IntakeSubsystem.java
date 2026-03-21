@@ -88,8 +88,11 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.Slot0.kP = Constants.IntakeConstants.k_intakeDeployP;
             m_deployConfig.Slot0.kI = Constants.IntakeConstants.k_intakeDeployI;
             m_deployConfig.Slot0.kD = Constants.IntakeConstants.k_intakeDeployD;
+            m_deployConfig.Slot0.kG = Constants.IntakeConstants.k_intakeDeployG;
+            m_deployConfig.Slot0.kV = Constants.IntakeConstants.k_intakeDeployV;
+            
             m_deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-            m_deployConfig.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.k_deployGearRatio;
+            m_deployConfig.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.k_deployGearRatio;//TODO check gear ratio
             m_deployConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.2;
 
             m_intakeMotor.getConfigurator().apply(m_intakeConfig);
