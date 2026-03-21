@@ -25,8 +25,8 @@ public class LaunchCommand extends Command {
 
     @Override
     public void execute(){
-        LauncherCommands.launcher(m_launch).withTimeout(2)
-        .andThen(FeederCommands.feeder(m_feeder).alongWith(HopperCommands.hopper(m_hopper)));
+        LauncherCommands.launcher(m_launch).withTimeout(0.5)
+        .andThen(FeederCommands.feeder(m_feeder).alongWith(HopperCommands.hopper(m_hopper).alongWith(LauncherCommands.launcher(m_launch))));
     }
 
     @Override

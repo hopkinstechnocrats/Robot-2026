@@ -21,6 +21,7 @@ import frc.robot.commands.HopperCommands;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.swerve.Swervedrive;
 import frc.robot.commands.IntakeCommands;
+import frc.robot.commands.LaunchCommand;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.commands.FeederCommands;
 import frc.robot.subsystems.LauncherSubsystem;
@@ -76,9 +77,7 @@ public class RobotContainer {
         m_swerve));
       operatorController.x().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
       operatorController.y().whileTrue(FeederCommands.unfeeder(feederSubsystem)); 
-      operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem)
-              .alongWith(FeederCommands.feeder(feederSubsystem))
-              .alongWith(HopperCommands.hopper(hopperSubsystem)));
+      operatorController.rightTrigger().whileTrue(new LaunchCommand(launcherSubsystem, feederSubsystem, hopperSubsystem));
       operatorController.povLeft().whileTrue(LauncherCommands.inverseLauncher(launcherSubsystem));
     }
 }
