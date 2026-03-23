@@ -23,7 +23,7 @@ public class TeleopDrive extends Command{
     private DoubleSupplier m_fastMode;
     private BooleanSupplier m_bumpAngle;
     
-    private Rotation2d desiredRotation = Rotation2d.fromDegrees(45);
+    private Rotation2d desiredRotation;
 
     private double m_xOut;
     private double m_yOut;
@@ -37,6 +37,8 @@ public class TeleopDrive extends Command{
         m_omega = omega;
         m_slowMode = slowMode;
         m_fastMode = fastMode;
+        m_bumpAngle = bumpAngle;
+        desiredRotation = new Rotation2d(Math.PI);
 
         addRequirements(swervedrive);
     }
@@ -54,7 +56,7 @@ public class TeleopDrive extends Command{
                 new ProfiledPIDController(
                     5.0, 0.0, 0.4, 
                     new TrapezoidProfile.Constraints(8, 20)); 
-                angleController.enableContinuousInput(-Math.PI, Math.PI);
+            angleController.enableContinuousInput(-Math.PI, Math.PI);
 
             // Calculate angular speed
             double omega =
