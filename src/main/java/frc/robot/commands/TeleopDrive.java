@@ -43,6 +43,9 @@ public class TeleopDrive extends Command{
         if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red){
             invert = -1;
         }
+        if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue){
+            invert = 1;
+        }
         m_xOut = MathUtil.applyDeadband(-m_x.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
         m_yOut = MathUtil.applyDeadband(-m_y.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
         m_omegaOut = MathUtil.applyDeadband(Constants.SwerveConstants.k_blaireMode*m_omega.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
