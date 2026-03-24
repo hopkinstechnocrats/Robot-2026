@@ -5,10 +5,28 @@ import java.util.Optional;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StringEntry;
+
+
 public class MatchTimer {
+    NetworkTableInstance inst;
+    NetworkTable table;
     String gameData;
+    StringEntry hubIsEnabled;
+    
     MatchTimer(){
         gameData = DriverStation.getGameSpecificMessage();
+        inst = NetworkTableInstance.getDefault();
+        table = inst.getTable("Game Phase");
+        if (isHubActive() == true){
+            hubIsEnabled = table.getStringTopic("Game phase").getEntry("Active!");
+        } else if (isHubActive() == false){
+            hubIsEnabled = table.getStringTopic("Game phase").getEntry("Inactive!");
+        } else {
+            hubIsEnabled = table.getStringTopic("Game phase").getEntry("Auto");
+        }
     }
 
     public boolean allianceWin() {
@@ -64,26 +82,51 @@ public class MatchTimer {
             case Blue -> redInactiveFirst;
         };
 
-        if (matchTime > 130) {
-            // Transition shift, hub is active.
-            return true;
-        } else if (matchTime > 105) {
-            // Shift 1
-            return shift1Active;
-        } else if (matchTime > 80) {
-            // Shift 2
-            return !shift1Active;
-        } else if (matchTime > 55) {
-            // Shift 3
-            return shift1Active;
-        } else if (matchTime > 30) {
-            // Shift 4
-            return !shift1Active;
+        if (redInactiveFirst == false){
+                if (matchTime > 130) {
+                // Transition shift, hub is active.
+                return true;
+            } else if (matchTime > 105) {
+                // Shift 1
+                return shift1Active;
+            } else if (matchTime > 80) {
+                // Shift 2
+                return !shift1Active;
+            } else if (matchTime > 55) {
+                // Shift 3
+                return shift1Active;
+            } else if (matchTime > 30) {
+                // Shift 4
+                return !shift1Active;
+            } else {
+                // End game, hub always active.
+                return true;
+            }
+        } else if (redInactiveFirst == true){
+            if (matchTime > 130) {
+                // Transition shift, hub is active.
+                return true;
+            } else if (matchTime > 105) {
+                // Shift 1
+                return !shift1Active;
+            } else if (matchTime > 80) {
+                // Shift 2
+                return shift1Active;
+            } else if (matchTime > 55) {
+                // Shift 3
+                return !shift1Active;
+            } else if (matchTime > 30) {
+                // Shift 4
+                return shift1Active;
+            } else {
+                // End game, hub always active.
+                return true;
+            }
         } else {
-            // End game, hub always active.
             return true;
         }
     }
+
 }
     
 
