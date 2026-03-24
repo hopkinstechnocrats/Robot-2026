@@ -93,6 +93,7 @@ public final class Constants{
 //TODO: change all of these numbers
     public static final class IntakeConstants{
         public static final int k_intakeMotorCANID = 14;
+        public static final int k_intakeMotorFollowerCANID = 123456789;//TODO: Find the actual CANID for this motor.
         public static final double k_intakeSpeedRPS = -85;//TODO: change this speed
         public static final double k_reverseIntakeSpeedRPS = 85;   
         public static final double k_intakeBrakeSpeedRPS = 0;

@@ -28,7 +28,9 @@ public class IntakeSubsystem extends SubsystemBase{
  	NetworkTableInstance inst;
   	NetworkTable table;
   	DoubleEntry IntakePIDDifference; 
-	DoubleEntry IntakeMotorVoltage; 
+	DoubleEntry IntakeMotorVoltage;
+    DoubleEntry IntakeFollowerPIDDifference; 
+	DoubleEntry IntakeMotorFollowerVoltage; 
     DoubleEntry DeployPIDDifference;
     DoubleEntry DeployMotorVoltage; 
     DoubleEntry DeployPIDFollowerDifference;
@@ -36,8 +38,10 @@ public class IntakeSubsystem extends SubsystemBase{
     DoubleEntry deployMotorPosition;
     TunableNumber m_tunableIntakeP;
     TunableNumber m_tunableIntakeI;
-    TunableNumber m_tunableIntakeD;
+    TunableNumber m_tunableIntakeD;    
+
     TalonFX m_intakeMotor;
+    TalonFX m_intakeMotorFollower;    
     TalonFX m_intakeDeployMotor;
     TalonFX m_intakeDeployMotorFollower;
     TalonFXConfiguration m_intakeConfig;
@@ -53,6 +57,7 @@ public class IntakeSubsystem extends SubsystemBase{
             table = inst.getTable("Intake Info");
 
             m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
+            m_intakeMotorFollower = new TalonFX(Constants.IntakeConstants.k_intakeMotorFollowerCANID);
             m_intakeDeployMotor = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorCANID); //TODO:Also needs CANID
             m_intakeDeployMotorFollower = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorFollowerCANID); //TODO:Also needs CANID
             
@@ -81,11 +86,14 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.5;
 
             m_intakeMotor.getConfigurator().apply(m_intakeConfig);
+            m_intakeMotorFollower.getConfigurator().apply(m_intakeConfig);
             m_intakeDeployMotor.getConfigurator().apply(m_deployConfig);
             m_intakeDeployMotorFollower.getConfigurator().apply(m_deployConfig);
 
             IntakeMotorVoltage = table.getDoubleTopic("Intake Motor Volated").getEntry(0);
             IntakePIDDifference = table.getDoubleTopic("Intake PID Difference").getEntry(0);
+            IntakeMotorFollowerVoltage =  table.getDoubleTopic("Follower Intake Motor Volated").getEntry(0);
+            IntakeFollowerPIDDifference = table.getDoubleTopic("Follower Intake Motor PID Difference").getEntry(0);
             DeployMotorVoltage = table.getDoubleTopic("Deploy Motor Volated").getEntry(0);
             DeployPIDDifference = table.getDoubleTopic("Deploy PID Difference").getEntry(0);
             DeployMotorFollowerVoltage = table.getDoubleTopic("Deploy Follower Motor Volated").getEntry(0);
@@ -96,6 +104,9 @@ public class IntakeSubsystem extends SubsystemBase{
     	public void periodic(){
       		IntakePIDDifference.set(m_intakeMotor.getClosedLoopError().getValueAsDouble()); 
 			IntakeMotorVoltage.set(m_intakeMotor.getMotorVoltage().getValueAsDouble());
+
+            IntakeMotorFollowerVoltage.set(m_intakeMotor.getMotorVoltage().getValueAsDouble());
+            IntakeFollowerPIDDifference.set(m_intakeMotor.getClosedLoopError().getValueAsDouble());
 
             DeployPIDDifference.set(m_intakeDeployMotor.getClosedLoopError().getValueAsDouble()); 
 			DeployMotorVoltage.set(m_intakeDeployMotor.getMotorVoltage().getValueAsDouble());
@@ -123,6 +134,8 @@ public class IntakeSubsystem extends SubsystemBase{
 
         public void intake(double intakeSpeed){
         	m_intakeMotor.setControl(m_intakeRequest.withVelocity(intakeSpeed));
+            m_intakeMotorFollower.setControl(new Follower(m_intakeMotor.getDeviceID(), MotorAlignmentValue.Aligned));
+            //TODO: Check if the motors are alligned or opposed and update the MotorAlignmentValue.
         }
 
         public void intakeDeploy(double position){
