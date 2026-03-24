@@ -79,9 +79,8 @@ public class RobotContainer {
       /*
       operatorController.x().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
       operatorController.y().whileTrue(FeederCommands.unfeeder(feederSubsystem)); 
-      operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem)
-              .alongWith(FeederCommands.feeder(feederSubsystem))
-              .alongWith(HopperCommands.hopper(hopperSubsystem)));
+      operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem).withTimeout(1)
+        .andThen(FeederCommands.feeder(feederSubsystem).alongWith(HopperCommands.hopper(hopperSubsystem).alongWith(LauncherCommands.launcher(launcherSubsystem)))));
       operatorController.povLeft().whileTrue(LauncherCommands.inverseLauncher(launcherSubsystem));
       */
     }
