@@ -45,7 +45,7 @@ public class RobotContainer {
         m_chooser.setDefaultOption("1 second", auto.oneSecond(m_swerve, 4)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),
-                ()->driveController.getRightTriggerAxis(), () -> driveController.getLeftTriggerAxis()) 
+                ()->driveController.getLeftTriggerAxis(), () -> driveController.getRightTriggerAxis(), () -> driveController.x().getAsBoolean()) 
         );
 
 
