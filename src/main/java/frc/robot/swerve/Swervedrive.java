@@ -1,5 +1,9 @@
 package frc.robot.swerve;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import java.util.Optional;
 
 import edu.wpi.first.math.estimator.PoseEstimator;
