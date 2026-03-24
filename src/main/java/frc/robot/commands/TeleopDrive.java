@@ -6,6 +6,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.swerve.Swervedrive;
@@ -29,6 +31,7 @@ public class TeleopDrive extends Command{
     private double m_yOut;
     private double m_omegaOut;
 
+    private double invert = 1;
 
     public TeleopDrive(Swervedrive swervedrive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier omega, DoubleSupplier slowMode, DoubleSupplier fastMode, BooleanSupplier bumpAngle){
         m_swerve = swervedrive;
@@ -99,6 +102,33 @@ public class TeleopDrive extends Command{
 
             m_swerve.Drive(speeds);
         }
+        if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red){
+            invert = -1;
+        }
+        if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue){
+            invert = 1;
+        }
+        m_xOut = MathUtil.applyDeadband(-m_x.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
+        m_yOut = MathUtil.applyDeadband(-m_y.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
+        m_omegaOut = MathUtil.applyDeadband(Constants.SwerveConstants.k_blaireMode*m_omega.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
+
+        if(m_fastMode.getAsDouble() > 0.5){
+            m_xOut *= Constants.SwerveConstants.k_slowMaxLinearSpeenMetersPerSecond;
+            m_yOut *= Constants.SwerveConstants.k_slowMaxLinearSpeenMetersPerSecond;
+        }else if(m_bumpMode.getAsDouble() > 0.5){
+            m_xOut *= Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
+            m_yOut *= Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
+
+        }else{
+            m_xOut *= Constants.SwerveConstants.k_bumpMaxLinearSpeenMetersPerSecond;
+            m_yOut *= Constants.SwerveConstants.k_bumpMaxLinearSpeenMetersPerSecond;
+        }
+        
+        
+        m_omegaOut *= Constants.SwerveConstants.k_maxAngularSpeedRadPerSec;
+
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(m_xOut * invert, m_yOut * invert, m_omegaOut, m_swerve.getRotation());
+        //ChassisSpeeds speeds = new ChassisSpeeds(m_xOut, m_yOut, m_omegaOut);
 
     }
 
