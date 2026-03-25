@@ -4,16 +4,17 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.swerve.Gyro;
-import frc.robot.autos.Autos;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.HopperSubsystem;
@@ -31,18 +32,16 @@ public class RobotContainer {
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
     //private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
-    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+    private final SendableChooser<Command> autoChooser;    
     //private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     //private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     //private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
     
-    Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
     
     public RobotContainer() {
         //feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
-        m_chooser.setDefaultOption("1 second", auto.oneSecond(m_swerve, 4)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),
                 ()->driveController.getRightTriggerAxis(), () -> driveController.getLeftTriggerAxis()) 
@@ -62,10 +61,13 @@ public class RobotContainer {
         //hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
 
         configureButtonBindings();
+
+        autoChooser = AutoBuilder.buildAutoChooser();
+        SmartDashboard.putData("Auto Chooser", autoChooser);
     } 
 
     public Command getAutonomousCommand() {
-        return auto.timeBased(m_swerve, 4);
+        return autoChooser.getSelected();
     }
 
     private void configureButtonBindings() {
