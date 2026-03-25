@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringEntry;
+import edu.wpi.first.networktables.DoubleEntry;
 
 
 public class MatchTimer {
@@ -15,11 +16,14 @@ public class MatchTimer {
     NetworkTable table;
     String gameData;
     StringEntry hubIsEnabled;
-    
+    DoubleEntry gameTime;
+    double matchTime = DriverStation.getMatchTime();
+
     MatchTimer(){
         gameData = DriverStation.getGameSpecificMessage();
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Game Phase");
+        table = inst.getTable("Aprox. Game Time");
         if (isHubActive() == true){
             hubIsEnabled = table.getStringTopic("Game phase").getEntry("Active!");
         } else if (isHubActive() == false){
@@ -27,6 +31,7 @@ public class MatchTimer {
         } else {
             hubIsEnabled = table.getStringTopic("Game phase").getEntry("Auto");
         }
+        gameTime = table.getDoubleTopic("Aprox. Game Time").getEntry(0);
     }
 
     public boolean allianceWin() {
@@ -60,7 +65,7 @@ public class MatchTimer {
         }
 
         // We're teleop enabled, compute.
-        double matchTime = DriverStation.getMatchTime();
+        
         String gameData = DriverStation.getGameSpecificMessage();
         // If we have no game data, we cannot compute, assume hub is active, as its likely early in teleop.
         if (gameData.isEmpty()) {
@@ -126,6 +131,12 @@ public class MatchTimer {
             return true;
         }
     }
+
+
+    /*@Override
+    public void periodic(){
+        gameTime.set(matchTime);
+    } */
 
 }
     
