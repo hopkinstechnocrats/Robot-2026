@@ -23,14 +23,7 @@ public class MatchTimer {
         gameData = DriverStation.getGameSpecificMessage();
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Game Phase");
-        table = inst.getTable("Aprox. Game Time");
-        if (isHubActive() == true){
-            hubIsEnabled = table.getStringTopic("Game phase").getEntry("Active!");
-        } else if (isHubActive() == false){
-            hubIsEnabled = table.getStringTopic("Game phase").getEntry("Inactive!");
-        } else {
-            hubIsEnabled = table.getStringTopic("Game phase").getEntry("Auto");
-        }
+        hubIsEnabled = table.getStringTopic("Game Phase").getEntry("default");
         gameTime = table.getDoubleTopic("Aprox. Game Time").getEntry(0);
     }
 
@@ -133,10 +126,19 @@ public class MatchTimer {
     }
 
 
-    /*@Override
-    public void periodic(){
+    
+    public void update(){
+        matchTime = DriverStation.getMatchTime();
+        if (isHubActive() == true){
+            hubIsEnabled.set("Active!");
+        } else if (isHubActive() == false){
+            hubIsEnabled.set("Inactive!");
+        } else {
+            hubIsEnabled.set("Auto");
+        }
         gameTime.set(matchTime);
-    } */
+            
+    }
 
 }
     
