@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.networktables.DoubleEntry;
 import frc.robot.Constants;
+import frc.robot.MatchTimer;
 
 public class Swervedrive extends SubsystemBase{
     
@@ -62,9 +63,13 @@ public class Swervedrive extends SubsystemBase{
 
     ChassisSpeeds m_speeds;
 
+    MatchTimer matchTimer;
+
     public Swervedrive(){
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Swerve");
+
+        matchTimer = new MatchTimer();
 
         desiredStatePublisher = table.getStructArrayTopic("Desired Module States", SwerveModuleState.struct).publish();
         actualStatePublisher = table.getStructArrayTopic("Actual Module States", SwerveModuleState.struct).publish();
@@ -106,6 +111,8 @@ public class Swervedrive extends SubsystemBase{
             gyro.set180();
         }
         */
+
+        matchTimer.update();
 
         m_pose = m_poseEstimator.update(gyro.getRotation(), new SwerveModulePosition[]{
              fL.getModulePosition(), fR.getModulePosition(), bL.getModulePosition(), bR.getModulePosition()
