@@ -117,10 +117,10 @@ public class Swervedrive extends SubsystemBase{
 
         AutoBuilder.configure(
             ()->m_poseEstimator.getEstimatedPosition(),// Robot pose supplier
-            (Pose2d pose)->this.resetOdometry(pose), // Method to reset odometry (will be called if your auto has a starting pose)
-            ()->m_speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            (m_speeds, feedforwards) -> Drive(m_speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+            (Pose2d pose)->this.resetOdometry(pose), // Method to reset odometry
+            ()->m_speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE.
+            (m_speeds, feedforwards) -> Drive(m_speeds), // Method that will drive the robot said ChassisSpeeds
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path follower
             new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
             new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
             ),
