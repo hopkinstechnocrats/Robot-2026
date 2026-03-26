@@ -43,12 +43,12 @@ public final class Constants{
         public static final double k_blAbsEncoderOffset = 0.325;
         public static final double k_brAbsEncoderOffset = 0.221;
 
-        public static final double k_maxLinearSpeedMeterPerSecond = 14;
-        public static final double k_slowMaxLinearSpeenMetersPerSecond = 5;
-        public static final double k_bumpMaxLinearSpeenMetersPerSecond = 8;
+        public static final double k_maxLinearSpeedMeterPerSecond = 18;
+        public static final double k_slowMaxLinearSpeenMetersPerSecond = 8;
+        public static final double k_bumpMaxLinearSpeenMetersPerSecond = 12;
         public static final double k_maxAngularSpeedRadPerSec = 8.0 * Math.PI;
 
-        public static final double k_driveGearRatio = 5.27;
+        public static final double k_driveGearRatio = 6.03;
         public static final double k_turnGearRatio = 287/11;
         public static final double k_wheelCircumferenceMeters = 0.1016 * Math.PI;
 

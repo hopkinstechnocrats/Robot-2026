@@ -53,7 +53,6 @@ public class Swervedrive extends SubsystemBase{
     SwerveModule bL;
     SwerveModule bR;
 
-    double gyroOffset = 0;
 
     Gyro gyro;
 
@@ -101,12 +100,6 @@ public class Swervedrive extends SubsystemBase{
 
     @Override
     public void periodic(){
-        /*
-        if(m_pose == Constants.SwerveConstants.k_startPose && DriverStation.getAlliance().get() == Alliance.Red){
-            gyro.set180();
-        }
-        */
-
         m_pose = m_poseEstimator.update(gyro.getRotation(), new SwerveModulePosition[]{
              fL.getModulePosition(), fR.getModulePosition(), bL.getModulePosition(), bR.getModulePosition()
         });
