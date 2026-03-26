@@ -54,10 +54,19 @@ public class TeleopDrive extends Command{
         m_yOut = MathUtil.applyDeadband(-m_y.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
         m_omegaOut = MathUtil.applyDeadband(Constants.SwerveConstants.k_blaireMode*m_omega.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
 
-        m_omegaOut = m_swerve.getRotation().getRotations();
+        //GOTO set angle code.
         if( m_controller.x().getAsBoolean() ){
-            //If X is being pressed keep the heading
-            m_omegaOut = 0;
+            //deltaAngle is in rotations
+	    double deltaAngle = Constants.ControlConstants.bumpSetAngle - m_swerve.getRotation().getRotations();
+	    if( deltaAngle > 0.5 ){
+		//Spin in the opposite direction if it's faster.
+		deltaAngle = 1 - deltaAngle;
+	    }
+	    
+	    //this can be updated to a more complex formula if we get time.
+	    double omegaChangeAmount = -deltaAngle;
+
+            m_omegaOut = omegaChangeAmount;
         }
 
         //lastOmegaOut = m_omegaOut;

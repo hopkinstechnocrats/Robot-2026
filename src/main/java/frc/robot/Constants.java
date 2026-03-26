@@ -63,7 +63,7 @@ public final class Constants{
         public static final double k_operatorControllerDeadband = 0.1;
         public static final int k_driverPort = 0;
         public static final int k_operatorXboxControllerPort = 1;
-        public static final double setAngle = 0.3;
+        public static final double bumpSetAngle = 0.3;
     }
     
     public static final class GyroConstants{
