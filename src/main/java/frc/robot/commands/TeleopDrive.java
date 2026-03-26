@@ -57,14 +57,16 @@ public class TeleopDrive extends Command{
         //GOTO set angle code.
         if( m_controller.x().getAsBoolean() ){
             //deltaAngle is in rotations
-	    double deltaAngle = Constants.ControlConstants.bumpSetAngle - m_swerve.getRotation().getRotations();
-	    if( deltaAngle > 0.5 ){
-		//Spin in the opposite direction if it's faster.
-		deltaAngle = 1 - deltaAngle;
-	    }
+	        double deltaAngle = Constants.ControlConstants.bumpSetAngle - m_swerve.getRotation().getRotations();
+	        if( deltaAngle > 0.5 ){
+		        //Spin in the opposite direction if it's faster.
+		        deltaAngle = 1 - deltaAngle;
+	        }
 	    
-	    //this can be updated to a more complex formula if we get time.
-	    double omegaChangeAmount = -deltaAngle;
+	        /*This can be updated to a more complex formula if we get time.
+            possibly a parabolic formula?
+            */
+	        double omegaChangeAmount = -deltaAngle;
 
             m_omegaOut = omegaChangeAmount;
         }
