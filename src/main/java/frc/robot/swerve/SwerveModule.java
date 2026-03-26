@@ -74,6 +74,8 @@ public class SwerveModule extends SubsystemBase{
         m_driveConfig = new TalonFXConfiguration(); 
         m_turnConfig = new TalonFXConfiguration();
 
+        //TODO: tune all drive PID values
+
         m_driveConfig.Slot0.kP = Constants.SwerveConstants.k_driveKP;
         m_driveConfig.Slot0.kI = Constants.SwerveConstants.k_driveKI;
         m_driveConfig.Slot0.kD = Constants.SwerveConstants.k_driveKD;
