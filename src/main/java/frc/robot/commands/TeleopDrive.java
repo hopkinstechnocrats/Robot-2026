@@ -55,12 +55,12 @@ public class TeleopDrive extends Command{
             m_xOut *= 30;
             m_yOut *= 30;
         }else if(m_bumpMode.getAsDouble() > 0.5){
-            m_xOut *= Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
-            m_yOut *= Constants.SwerveConstants.k_maxLinearSpeedMeterPerSecond;
+            m_xOut *= 20;
+            m_yOut *= 20;
 
         }else{
-            m_xOut *= Constants.SwerveConstants.k_bumpMaxLinearSpeenMetersPerSecond;
-            m_yOut *= Constants.SwerveConstants.k_bumpMaxLinearSpeenMetersPerSecond;
+            m_xOut *= 10;
+            m_yOut *= 10;
         }
         
         

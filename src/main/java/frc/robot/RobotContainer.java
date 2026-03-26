@@ -41,7 +41,7 @@ public class RobotContainer {
         //none->, right trigger->, left trigger->
         //fast hardcoded to 30
         //right trigger is fast mode
-        //TODO: tune in correct right trigger speed
+        //TODO: tune in correct right trigger speed (30), left (20), none (10)
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),
                 ()->driveController.getRightTriggerAxis(), () -> driveController.getLeftTriggerAxis()) 
