@@ -4,23 +4,17 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.swerve.Gyro;
 import frc.robot.swerve.Swervedrive;
 import frc.robot.autos.Autos;
-import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.commands.HopperCommands;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.swerve.Swervedrive;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.commands.FeederCommands;
@@ -44,6 +38,9 @@ public class RobotContainer {
         feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
         m_chooser.setDefaultOption("1 second", auto.oneSecond(m_swerve, 4)); //spped x & y is meters/second
+        //none->, right trigger->, left trigger->
+        //fast hardcoded to 30
+        //right trigger is fast mode
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),
                 ()->driveController.getRightTriggerAxis(), () -> driveController.getLeftTriggerAxis()) 

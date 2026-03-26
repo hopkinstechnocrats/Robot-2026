@@ -68,7 +68,6 @@ public final class Constants{
     public static final class GyroConstants{
         public static final int k_gyroID = 15;
     }
-//TODO: test and change all of these values
     public static final class FeederConstants{
         public static final int k_feederMotorCANID = 24;
         public static final double k_feederSpeedRPS = -95;
@@ -79,7 +78,6 @@ public final class Constants{
         public static final double k_feederD = 0;
         public static final double k_feederFeedForward = 0; 
     }
-    //TODO: test to find numbers for this whole block
     public static final class HopperConstants{
         public static final int k_hopperMotorCANID = 17;
         public static final double k_hopperSpeedRPS = 30;
@@ -90,11 +88,10 @@ public final class Constants{
         public static final double k_hopperD = 0;
         public static final double k_feedForward = 0.1; 
     }
-//TODO: change all of these numbers
     public static final class IntakeConstants{
         public static final int k_intakeMotorCANID = 14;
-        public static final int k_intakeFollowerCANID = 28;//TODO get canid
-        public static final double k_intakeSpeedRPS = -60;//TODO: change this speed
+        public static final int k_intakeFollowerCANID = 28;
+        public static final double k_intakeSpeedRPS = -60;
         public static final double k_reverseIntakeSpeedRPS = 60;   
         public static final double k_intakeBrakeSpeedRPS = 0;
         public static final double k_intakeP = 0.3; 
@@ -117,9 +114,8 @@ public final class Constants{
     }
 
     public static final class LauncherConstants{
-        // TODO test numbers 73-78
-        public static final int k_launcherMotorCANID = 25;//TODO: Change CANID
-        public static final int k_launcherMotorSecondCANID = 26;//TODO: Change CANID
+        public static final int k_launcherMotorCANID = 25;
+        public static final int k_launcherMotorSecondCANID = 26;
         public static final double k_launchSpeedRPS = 90; //rotations per second
         public static final double k_launcherBrakeSpeedRPS = 0;
         public static final double k_launcherP = 0.3; 
