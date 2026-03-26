@@ -58,10 +58,10 @@ public class TeleopDrive extends Command{
         if( m_controller.x().getAsBoolean() ){
             //deltaAngle is in rotations
 	        double deltaAngle = Constants.ControlConstants.bumpSetAngle - m_swerve.getRotation().getRotations();
-	        if( deltaAngle > 0.5 ){
+	        if(  deltaAngle > 0.5 || deltaAngle < -0.5 ){
 		        //Spin in the opposite direction if it's faster.
-		        deltaAngle = 1 - deltaAngle;
-	        }
+		        deltaAngle -= Math.signum(deltaAngle);
+	        }	        
 	    
 	        /*This can be updated to a more complex formula if we get time.
             possibly a parabolic formula?
