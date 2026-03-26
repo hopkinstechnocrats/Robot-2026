@@ -80,7 +80,7 @@ public class SwerveModule extends SubsystemBase{
         m_driveConfig = new TalonFXConfiguration(); 
         m_turnConfig = new TalonFXConfiguration();
 
-        //TODO: tune all drive PID values
+        //TODO: tune all drive PID values (low priority)
 
         m_driveConfig.Slot0.kP = Constants.SwerveConstants.k_driveKP;
         m_driveConfig.Slot0.kI = Constants.SwerveConstants.k_driveKI;
@@ -105,7 +105,6 @@ public class SwerveModule extends SubsystemBase{
         m_turnConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
 
-//TODO: play with current limit
         m_driveConfig.CurrentLimits.StatorCurrentLimit =80;
 
         m_driveMotor.getConfigurator().apply(m_driveConfig);
@@ -177,16 +176,16 @@ public class SwerveModule extends SubsystemBase{
     public double getAbsEncoderPositionRot(){
         return m_absoluteEncoder.getPosition().getValueAsDouble();
     }
-//TODO: pick which of thse 3 to uses
     public double getDriveVelocityMeterPerSec(){
         return m_driveMotor.getVelocity().getValueAsDouble() * Constants.SwerveConstants.k_wheelCircumferenceMeters;
     }
-
-    public double getDriveVelocityMeterPerSec2(){
-        return m_driveMotor.getRotorVelocity().getValueAsDouble() * Constants.SwerveConstants.k_wheelCircumferenceMeters*Constants.SwerveConstants.k_driveGearRatio;
-    }
-
-    public double getDriveVelocityMeterPerSec3(){
-        return m_driveMotor.getRotorVelocity().getValueAsDouble() * Constants.SwerveConstants.k_wheelCircumferenceMeters/Constants.SwerveConstants.k_driveGearRatio;
-    }
 }
+//Ideas on things that could be tested to actaully get correct velocity
+//     public double getDriveVelocityMeterPerSec2(){
+//         return m_driveMotor.getRotorVelocity().getValueAsDouble() * Constants.SwerveConstants.k_wheelCircumferenceMeters*Constants.SwerveConstants.k_driveGearRatio;
+//     }
+
+//     public double getDriveVelocityMeterPerSec3(){
+//         return m_driveMotor.getRotorVelocity().getValueAsDouble() * Constants.SwerveConstants.k_wheelCircumferenceMeters/Constants.SwerveConstants.k_driveGearRatio;
+//     }
+// }

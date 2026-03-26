@@ -38,8 +38,6 @@ public class RobotContainer {
         feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
         m_chooser.setDefaultOption("1 second", auto.oneSecond(m_swerve, 4)); //spped x & y is meters/second
-        //TODO: tune in correct right trigger speed (30), left (20), none (10)
-        //above working as intended
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),
                 ()->driveController.getRightTriggerAxis(), () -> driveController.getLeftTriggerAxis()) 
