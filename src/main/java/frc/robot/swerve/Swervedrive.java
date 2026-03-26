@@ -110,7 +110,7 @@ public class Swervedrive extends SubsystemBase{
 
         desiredStatePublisher.set(desiredModuleStates);
 
-        this.updateVisionReading(gyro.getYawDegrees(), gyro.getAccelZ(), m_poseEstimator);
+        this.updateVisionReading(m_pose.getRotation().getDegrees(), gyro.getAccelZ(), m_poseEstimator);
         this.updateActualStates();
 
         actualStatePublisher.set(actualModuleState);
