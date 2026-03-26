@@ -2,6 +2,9 @@ package frc.robot.swerve;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import java.util.Optional;
+
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,6 +22,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.networktables.DoubleEntry;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
@@ -51,6 +56,8 @@ public class Swervedrive extends SubsystemBase{
     SwerveModule fR;
     SwerveModule bL;
     SwerveModule bR;
+
+    double gyroOffset = 0;
 
     Gyro gyro;
 
@@ -98,6 +105,12 @@ public class Swervedrive extends SubsystemBase{
 
     @Override
     public void periodic(){
+        /*
+        if(m_pose == Constants.SwerveConstants.k_startPose && DriverStation.getAlliance().get() == Alliance.Red){
+            gyro.set180();
+        }
+        */
+
         m_pose = m_poseEstimator.update(gyro.getRotation(), new SwerveModulePosition[]{
              fL.getModulePosition(), fR.getModulePosition(), bL.getModulePosition(), bR.getModulePosition()
         });
@@ -133,7 +146,16 @@ public class Swervedrive extends SubsystemBase{
     }
 
     public Rotation2d getRotation(){
-        return gyro.getRotation();
+        return m_pose.getRotation();
+    }
+
+    public void resetHeading(){
+        if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red){
+            m_poseEstimator.resetRotation(Rotation2d.k180deg);
+        }
+        else{
+            m_poseEstimator.resetRotation(Rotation2d.kZero);
+        }
     }
 
     public void updateVisionReading(double yawDegrees, double yawAngularVelocityDegreesPerSecond, 
