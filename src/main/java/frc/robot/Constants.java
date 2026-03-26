@@ -104,6 +104,7 @@ public final class Constants{
         
         public static final int k_intakeDeployMotorCANID = 18;
         public static final int k_intakeDeployMotorFollowerCANID = 16;
+        public static final int k_absEncoderPortIntake = 40;
         public static final double k_intakeDeployP = 20;
         public static final double k_intakeDeployI = 1;
         public static final double k_intakeDeployD = 0;
@@ -112,6 +113,7 @@ public final class Constants{
         public static final double k_intakeSetpointDeploy = 0.0;
         public static final double k_intakeSetpointRetract = -0.1694;
         public static final double k_deployGearRatio = 20*(84/14);
+        public static final double k_intakeTurnGearRatio = 9;
     }
 
     public static final class LauncherConstants{

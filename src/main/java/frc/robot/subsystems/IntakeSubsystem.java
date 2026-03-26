@@ -15,9 +15,13 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -37,6 +41,9 @@ public class IntakeSubsystem extends SubsystemBase{
     TunableNumber m_tunableIntakeP;
     TunableNumber m_tunableIntakeI;
     TunableNumber m_tunableIntakeD;
+    CANcoder m_intakeAbsoluteEncoder;
+    CANcoderConfiguration m_intakeCanCoderConfig;
+    FeedbackConfigs m_intakeSensorConfigs;
     TalonFX m_intakeMotor;
     TalonFX m_intakeFollowerMotor;
     TalonFX m_intakeDeployMotor;
@@ -52,6 +59,14 @@ public class IntakeSubsystem extends SubsystemBase{
         public IntakeSubsystem(){
             inst = NetworkTableInstance.getDefault();
             table = inst.getTable("Intake Info");
+
+            m_intakeAbsoluteEncoder = new CANcoder(Constants.IntakeConstants.k_absEncoderPortIntake);
+            m_intakeCanCoderConfig = new CANcoderConfiguration();
+
+            m_intakeSensorConfigs = new FeedbackConfigs();
+            m_intakeSensorConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+            m_intakeSensorConfigs.RotorToSensorRatio = Constants.IntakeConstants.k_intakeTurnGearRatio; 
+            m_intakeSensorConfigs.FeedbackRemoteSensorID = m_intakeAbsoluteEncoder.getDeviceID();
 
             m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
             m_intakeFollowerMotor = new TalonFX(Constants.IntakeConstants.k_intakeFollowerCANID);
