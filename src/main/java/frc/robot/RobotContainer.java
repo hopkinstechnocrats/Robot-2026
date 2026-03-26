@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.swerve.Gyro;
+import frc.robot.swerve.Swervedrive;
 import frc.robot.autos.Autos;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
@@ -65,7 +66,7 @@ public class RobotContainer {
     } 
 
     public Command getAutonomousCommand() {
-        return auto.timeBased(m_swerve, 4);
+        return Commands.print("No autonomous command configured");
     }
 
     private void configureButtonBindings() {
@@ -82,6 +83,5 @@ public class RobotContainer {
       operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem).withTimeout(0.5)
         .andThen(FeederCommands.feeder(feederSubsystem).alongWith(HopperCommands.hopper(hopperSubsystem).alongWith(LauncherCommands.launcher(launcherSubsystem)))));
       operatorController.povLeft().whileTrue(LauncherCommands.inverseLauncher(launcherSubsystem));
-      
     }
 }
