@@ -106,7 +106,7 @@ public class SwerveModule extends SubsystemBase{
 
 
 //TODO: play with current limit
-        m_driveConfig.CurrentLimits.StatorCurrentLimit = 120;
+        m_driveConfig.CurrentLimits.StatorCurrentLimit =100;
 
         m_driveMotor.getConfigurator().apply(m_driveConfig);
         m_turnMotor.getConfigurator().apply(m_turnConfig);
