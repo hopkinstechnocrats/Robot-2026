@@ -63,6 +63,8 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeAbsoluteEncoder = new CANcoder(Constants.IntakeConstants.k_absEncoderPortIntake);
             m_intakeCanCoderConfig = new CANcoderConfiguration();
 
+            m_intakeCanCoderConfig.MagnetSensor.MagnetOffset = 0.00;
+
             m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
             m_intakeFollowerMotor = new TalonFX(Constants.IntakeConstants.k_intakeFollowerCANID);
             m_intakeDeployMotor = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorCANID); //TODO:Also needs CANID
@@ -93,6 +95,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.Slot0.kI = Constants.IntakeConstants.k_intakeDeployI;
             m_deployConfig.Slot0.kD = Constants.IntakeConstants.k_intakeDeployD;
             m_deployConfig.Slot0.kG = Constants.IntakeConstants.k_intakeDeployG;
+            m_deployConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
             m_deployConfig.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
             m_deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             m_deployConfig.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.k_deployGearRatio;
@@ -102,6 +105,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeFollowerMotor.getConfigurator().apply(m_intakeConfig);
             m_intakeDeployMotor.getConfigurator().apply(m_deployConfig);
             m_intakeDeployMotorFollower.getConfigurator().apply(m_deployConfig);
+            m_intakeAbsoluteEncoder.getConfigurator().apply(m_intakeCanCoderConfig);
 
             IntakeMotorVoltage = table.getDoubleTopic("Intake Motor Volated").getEntry(0);
             IntakePIDDifference = table.getDoubleTopic("Intake PID Difference").getEntry(0);

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.swerve.Gyro;
+import frc.robot.swerve.Swervedrive;
 import frc.robot.autos.Autos;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopDrive;
@@ -30,17 +31,17 @@ public class RobotContainer {
     
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
-    //private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
+    private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-    //private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-    //private final FeederSubsystem feederSubsystem = new FeederSubsystem();
-    //private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
+    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    private final FeederSubsystem feederSubsystem = new FeederSubsystem();
+    private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
     
     Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
     
     public RobotContainer() {
-        //feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
+        feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
         m_chooser.setDefaultOption("1 second", auto.oneSecond(m_swerve, 4)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(
@@ -49,39 +50,38 @@ public class RobotContainer {
         );
 
 
-        //launcherSubsystem.setDefaultCommand(LauncherCommands.launcherBreak(launcherSubsystem));
-        /*
+        launcherSubsystem.setDefaultCommand(LauncherCommands.launcherBreak(launcherSubsystem));
+        
 		    intakeSubsystem.setDefaultCommand(
             new RunCommand(
                     () -> {
                     intakeSubsystem.intakeBrake();
                   }, intakeSubsystem
         ));
-        */
+        
 
-        //hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
+        hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
 
         configureButtonBindings();
     } 
 
     public Command getAutonomousCommand() {
-        return auto.timeBased(m_swerve, 4);
+        return Commands.print("No autonomous command configured");
     }
 
     private void configureButtonBindings() {
-      //operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
-      //operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
-      //operatorController.povUp().whileTrue(IntakeCommands.deploy(intakeSubsystem));
-      //operatorController.povRight().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
+      operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
+      operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
+      operatorController.povUp().whileTrue(IntakeCommands.deploy(intakeSubsystem));
+      operatorController.povRight().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
       driveController.a().onTrue(Commands.runOnce(
         () -> m_swerve.resetHeading(),
         m_swerve));
-      /*
+      
       operatorController.x().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
       operatorController.y().whileTrue(FeederCommands.unfeeder(feederSubsystem)); 
-      operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem).withTimeout(1)
+      operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem).withTimeout(0.5)
         .andThen(FeederCommands.feeder(feederSubsystem).alongWith(HopperCommands.hopper(hopperSubsystem).alongWith(LauncherCommands.launcher(launcherSubsystem)))));
       operatorController.povLeft().whileTrue(LauncherCommands.inverseLauncher(launcherSubsystem));
-      */
     }
 }

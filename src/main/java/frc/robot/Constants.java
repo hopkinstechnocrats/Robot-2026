@@ -112,7 +112,7 @@ public final class Constants{
         public static final double k_intakeDeployG = 0.1;
         public static final double k_intakeDeployFeedForeward = 0;
         public static final double k_intakeSetpointDeploy = 0.0;
-        public static final double k_intakeSetpointRetract = -0.1694;
+        public static final double k_intakeSetpointRetract = 0.1625;
         public static final double k_deployGearRatio = 20*(84/14);
     }
 
