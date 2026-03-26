@@ -168,8 +168,16 @@ public class SwerveModule extends SubsystemBase{
     public double getAbsEncoderPositionRot(){
         return m_absoluteEncoder.getPosition().getValueAsDouble();
     }
-
+//TODO: pick which of thse 3 to uses
     public double getDriveVelocityMeterPerSec(){
         return m_driveMotor.getVelocity().getValueAsDouble() * Constants.SwerveConstants.k_wheelCircumferenceMeters;
+    }
+
+    public double getDriveVelocityMeterPerSec2(){
+        return m_driveMotor.getRotorVelocity().getValueAsDouble() * Constants.SwerveConstants.k_wheelCircumferenceMeters*Constants.SwerveConstants.k_driveGearRatio;
+    }
+
+    public double getDriveVelocityMeterPerSec3(){
+        return m_driveMotor.getRotorVelocity().getValueAsDouble() * Constants.SwerveConstants.k_wheelCircumferenceMeters/Constants.SwerveConstants.k_driveGearRatio;
     }
 }
