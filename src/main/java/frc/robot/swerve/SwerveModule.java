@@ -14,6 +14,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.DoubleEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
@@ -35,6 +36,9 @@ public class SwerveModule extends SubsystemBase{
 
     NetworkTableInstance inst;
     NetworkTable table;
+    NetworkTable table2;
+
+    DoubleEntry moduleStateSpeedMPS;
 
     TunableNumber kPInputTurn;
     TunableNumber kIInputTurn;
@@ -52,7 +56,9 @@ public class SwerveModule extends SubsystemBase{
     SwerveModule(int driveID, int turnID, int absEncoderPort, double absEncoderOffset){
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Tunable Numbers");
-
+        table2 = inst.getTable("Swerve Modules");
+        
+        moduleStateSpeedMPS = table2.getDoubleTopic("module state mps").getEntry(0);
         kPInputTurn = new TunableNumber("/Tunable Numbers/kPInput Turn", Constants.SwerveConstants.k_turnKP);
         kIInputTurn = new TunableNumber("/Tunable Numbers/kIInput Turn", Constants.SwerveConstants.k_turnKI);
         kDInputTurn = new TunableNumber("/Tunable Numbers/kDInput Turn", Constants.SwerveConstants.k_turnKD);
@@ -143,6 +149,7 @@ public class SwerveModule extends SubsystemBase{
         m_moduleState = moduleState;
         m_moduleState.optimize(this.getAngleRotation2d());
         m_moduleState.speedMetersPerSecond *= m_moduleState.angle.minus(this.getAngleRotation2d()).getCos();
+        moduleStateSpeedMPS.set(m_moduleState.speedMetersPerSecond);
         m_driveMotor.setControl(m_driveRequest.withVelocity(m_moduleState.speedMetersPerSecond));
         m_turnMotor.setControl(m_turnRequest.withPosition(m_moduleState.angle.getRotations()));
     }
