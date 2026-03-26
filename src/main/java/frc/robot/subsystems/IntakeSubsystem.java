@@ -63,7 +63,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeAbsoluteEncoder = new CANcoder(Constants.IntakeConstants.k_absEncoderPortIntake);
             m_intakeCanCoderConfig = new CANcoderConfiguration();
 
-            m_intakeCanCoderConfig.MagnetSensor.MagnetOffset = 0.00;
+            m_intakeCanCoderConfig.MagnetSensor.MagnetOffset = 0.536;
 
             m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
             m_intakeFollowerMotor = new TalonFX(Constants.IntakeConstants.k_intakeFollowerCANID);
@@ -95,7 +95,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.Slot0.kI = Constants.IntakeConstants.k_intakeDeployI;
             m_deployConfig.Slot0.kD = Constants.IntakeConstants.k_intakeDeployD;
             m_deployConfig.Slot0.kG = Constants.IntakeConstants.k_intakeDeployG;
-            m_deployConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+            m_deployConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
             m_deployConfig.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
             m_deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             m_deployConfig.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.k_deployGearRatio;
