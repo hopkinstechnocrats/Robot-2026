@@ -109,11 +109,11 @@ public final class Constants{
         public static final double k_intakeDeployI = 1;
         public static final double k_intakeDeployD = 0;
         public static final double k_intakeDeployS = 0;
+        public static final double k_intakeDeployG = 0.1;
         public static final double k_intakeDeployFeedForeward = 0;
         public static final double k_intakeSetpointDeploy = 0.0;
         public static final double k_intakeSetpointRetract = -0.1694;
         public static final double k_deployGearRatio = 20*(84/14);
-        public static final double k_intakeTurnGearRatio = 9;
     }
 
     public static final class LauncherConstants{

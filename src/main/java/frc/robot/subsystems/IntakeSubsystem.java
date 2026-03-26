@@ -16,6 +16,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -43,7 +44,6 @@ public class IntakeSubsystem extends SubsystemBase{
     TunableNumber m_tunableIntakeD;
     CANcoder m_intakeAbsoluteEncoder;
     CANcoderConfiguration m_intakeCanCoderConfig;
-    FeedbackConfigs m_intakeSensorConfigs;
     TalonFX m_intakeMotor;
     TalonFX m_intakeFollowerMotor;
     TalonFX m_intakeDeployMotor;
@@ -63,11 +63,6 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeAbsoluteEncoder = new CANcoder(Constants.IntakeConstants.k_absEncoderPortIntake);
             m_intakeCanCoderConfig = new CANcoderConfiguration();
 
-            m_intakeSensorConfigs = new FeedbackConfigs();
-            m_intakeSensorConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
-            m_intakeSensorConfigs.RotorToSensorRatio = Constants.IntakeConstants.k_intakeTurnGearRatio; 
-            m_intakeSensorConfigs.FeedbackRemoteSensorID = m_intakeAbsoluteEncoder.getDeviceID();
-
             m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
             m_intakeFollowerMotor = new TalonFX(Constants.IntakeConstants.k_intakeFollowerCANID);
             m_intakeDeployMotor = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorCANID); //TODO:Also needs CANID
@@ -82,6 +77,10 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeConfig = new TalonFXConfiguration();
             m_deployConfig = new TalonFXConfiguration();
 
+            m_deployConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+            m_deployConfig.Feedback.RotorToSensorRatio = Constants.IntakeConstants.k_deployGearRatio; 
+            m_deployConfig.Feedback.FeedbackRemoteSensorID = m_intakeAbsoluteEncoder.getDeviceID();
+
             m_intakeConfig.Slot0.kP = Constants.IntakeConstants.k_intakeP;
             m_intakeConfig.Slot0.kI = Constants.IntakeConstants.k_intakeI;
             m_intakeConfig.Slot0.kD = Constants.IntakeConstants.k_intakeD;
@@ -93,6 +92,8 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.Slot0.kP = Constants.IntakeConstants.k_intakeDeployP;
             m_deployConfig.Slot0.kI = Constants.IntakeConstants.k_intakeDeployI;
             m_deployConfig.Slot0.kD = Constants.IntakeConstants.k_intakeDeployD;
+            m_deployConfig.Slot0.kG = Constants.IntakeConstants.k_intakeDeployG;
+            m_deployConfig.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
             m_deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             m_deployConfig.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.k_deployGearRatio;
             m_deployConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.5;
