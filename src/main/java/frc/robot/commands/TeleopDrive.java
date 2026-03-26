@@ -51,15 +51,15 @@ public class TeleopDrive extends Command{
         m_omegaOut = MathUtil.applyDeadband(Constants.SwerveConstants.k_blaireMode*m_omega.getAsDouble(), Constants.ControlConstants.k_driveControllerDeadband);
 
         if(m_fastMode.getAsDouble() > 0.5){
-            m_xOut *= 30;
-            m_yOut *= 30;
+            m_xOut *= 75; // right
+            m_yOut *= 75;
         }else if(m_bumpMode.getAsDouble() > 0.5){
-            m_xOut *= 20;
-            m_yOut *= 20;
+            m_xOut *= 30; // left
+            m_yOut *= 30;
 
         }else{
-            m_xOut *= 10;
-            m_yOut *= 10;
+            m_xOut *= 40; // none
+            m_yOut *= 40;
         }
         
         
