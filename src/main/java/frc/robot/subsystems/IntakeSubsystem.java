@@ -5,6 +5,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -45,6 +46,7 @@ public class IntakeSubsystem extends SubsystemBase{
     TalonFXConfiguration m_deployConfig;
     final VelocityVoltage m_intakeRequest = new VelocityVoltage(0).withSlot(0);
     final PositionVoltage m_intakeDeployRequest = new PositionVoltage(0).withSlot(0);
+    final DutyCycleOut m_intakeDeployDutyCycle = new DutyCycleOut(0);
 
 
     TalonFX intakeMotor;
@@ -149,7 +151,15 @@ public class IntakeSubsystem extends SubsystemBase{
         public void intakeBrake(){
         	m_intakeMotor.setControl(m_intakeRequest.withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
             m_intakeMotor.setControl(new Follower(m_intakeMotor.getDeviceID(), MotorAlignmentValue.Opposed));
-            m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(m_intakeDeployMotor.getPosition().getValueAsDouble()));
+        }
+
+        public void intakeUp(){
+            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(0.2));
+            m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
+        }
+
+        public void intakeDown(){
+            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(-0.1));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
 
