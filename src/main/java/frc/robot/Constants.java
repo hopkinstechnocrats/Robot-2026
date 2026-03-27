@@ -116,7 +116,7 @@ public final class Constants{
     public static final class LauncherConstants{
         public static final int k_launcherMotorCANID = 25;
         public static final int k_launcherMotorSecondCANID = 26;
-        public static final double k_launchSpeedRPS = 90; //rotations per second
+        public static final double k_launchSpeedRPS = 95; //rotations per second
         public static final double k_launcherBrakeSpeedRPS = 0;
         public static final double k_launcherP = 0.3; 
         public static final double k_launcherI = 0.1;
