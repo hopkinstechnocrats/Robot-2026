@@ -157,7 +157,7 @@ public class IntakeSubsystem extends SubsystemBase{
         }
 
         public void intakeUp(){
-            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(0.10));
+            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(0.12));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
 
