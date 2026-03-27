@@ -151,15 +151,18 @@ public class IntakeSubsystem extends SubsystemBase{
         public void intakeBrake(){
         	m_intakeMotor.setControl(m_intakeRequest.withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
             m_intakeMotor.setControl(new Follower(m_intakeMotor.getDeviceID(), MotorAlignmentValue.Opposed));
+            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(0.02));
+            m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
+
         }
 
         public void intakeUp(){
-            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(0.2));
+            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(0.10));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
 
         public void intakeDown(){
-            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(-0.1));
+            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(-0.07));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
 
