@@ -72,8 +72,8 @@ public class RobotContainer {
     private void configureButtonBindings() {
       operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
       operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
-      operatorController.povUp().whileTrue(IntakeCommands.deploy(intakeSubsystem));
-      operatorController.povRight().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
+      operatorController.povUp().whileTrue(IntakeCommands.up(intakeSubsystem));
+      operatorController.povRight().whileTrue(IntakeCommands.down(intakeSubsystem));
       driveController.a().onTrue(Commands.runOnce(
         () -> m_swerve.resetHeading(),
         m_swerve));
