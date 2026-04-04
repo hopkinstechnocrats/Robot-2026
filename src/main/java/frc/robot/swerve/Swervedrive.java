@@ -20,6 +20,7 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.networktables.DoubleEntry;
+import edu.wpi.first.networktables.DoublePublisher;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 
@@ -46,6 +47,12 @@ public class Swervedrive extends SubsystemBase{
     DoubleEntry frAnalog;
     DoubleEntry blAnalog;
     DoubleEntry brAnalog;
+
+    DoublePublisher robotPositionfl;
+    DoublePublisher robotPositionfr;
+    DoublePublisher robotPositionbl;
+    DoublePublisher robotPositionbr;
+
 
     SwerveModule fL;
     SwerveModule fR;
@@ -94,14 +101,24 @@ public class Swervedrive extends SubsystemBase{
         brAnalog = table.getDoubleTopic("BR Absolute Encoder").getEntry(0);
 
         robotPosition = table.getStructTopic("Robot Position", Pose2d.struct).publish();
-    }
 
+        robotPositionfl = table.getDoubleTopic("robotfl").publish();
+        robotPositionfr = table.getDoubleTopic("robotfr").publish();
+        robotPositionbl = table.getDoubleTopic("robotbl").publish();
+        robotPositionbr = table.getDoubleTopic("robotbr").publish();
+    }  
 
     @Override
     public void periodic(){
         m_pose = m_poseEstimator.update(gyro.getRotation(), new SwerveModulePosition[]{
              fL.getModulePosition(), fR.getModulePosition(), bL.getModulePosition(), bR.getModulePosition()
         });
+
+        
+        robotPositionfl.set(fL.getDriveDistanceMeters());
+        robotPositionfr.set(fR.getDriveDistanceMeters());
+        robotPositionbl.set(bL.getDriveDistanceMeters());
+        robotPositionbr.set(bR.getDriveDistanceMeters());
 
         desiredStatePublisher.set(desiredModuleStates);
 
