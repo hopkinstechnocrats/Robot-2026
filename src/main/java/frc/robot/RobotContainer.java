@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.swerve.Gyro;
-import frc.robot.commands.DriveCommands;
+import frc.robot.swerve.Swervedrive;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.commands.HopperCommands;
@@ -29,13 +29,8 @@ public class RobotContainer {
     
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
-    //private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
-    private final SendableChooser<Command> autoChooser;    
-    //private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-    //private final FeederSubsystem feederSubsystem = new FeederSubsystem();
-    //private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
     private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
-    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+    private final SendableChooser<Command> autoChooser;
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
