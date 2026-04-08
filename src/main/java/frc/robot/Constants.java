@@ -91,12 +91,14 @@ public final class Constants{
     public static final class IntakeConstants{
         public static final int k_intakeMotorCANID = 14;
         public static final int k_intakeFollowerCANID = 28;
-        public static final double k_intakeSpeedRPS = -70;
-        public static final double k_reverseIntakeSpeedRPS = 70;   
+        public static final double k_intakeSpeedRPS = -50;
+        public static final double k_reverseIntakeSpeedRPS = 50;   
         public static final double k_intakeBrakeSpeedRPS = 0;
-        public static final double k_intakeP = 0.3; 
+        public static final double k_intakeP = 0.3; //was 0.3
         public static final double k_intakeI = 0;
         public static final double k_intakeD = 0;
+        public static final double k_intakeV = 0.12;
+        
         public static final double k_intakeFeedForward = 0.1;
         
         public static final int k_intakeDeployMotorCANID = 18;
