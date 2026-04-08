@@ -41,6 +41,7 @@ public class IntakeSubsystem extends SubsystemBase{
     DoubleEntry DeployPIDFollowerDifference;
     DoubleEntry DeployMotorFollowerVoltage;
     DoubleEntry deployMotorPosition;
+    DoubleEntry absoluteEncoderPosition;
   	TalonFX m_intakeMotor;
     TalonFX m_intakeDeployMotor;
     TalonFX m_intakeDeployMotorFollower;
@@ -58,7 +59,6 @@ public class IntakeSubsystem extends SubsystemBase{
         public IntakeSubsystem(){
             inst = NetworkTableInstance.getDefault();
             table = inst.getTable("Intake Info");
-
 
             m_intakeAbsoluteEncoder = new CANcoder(Constants.IntakeConstants.k_absEncoderPortIntake, new CANBus("Rio")); //TODO make real  canbus
             m_intakeCanCoderConfig = new CANcoderConfiguration();
@@ -107,6 +107,7 @@ public class IntakeSubsystem extends SubsystemBase{
             DeployPIDDifference = table.getDoubleTopic("Deploy PID Difference").getEntry(0);
             DeployMotorFollowerVoltage = table.getDoubleTopic("Deploy Follower Motor Volated").getEntry(0);
             DeployPIDFollowerDifference = table.getDoubleTopic("Deploy Follower PID Difference").getEntry(0);
+            absoluteEncoderPosition = table.getDoubleTopic("Encoder Position").getEntry(0);
         }
     
 		@Override
@@ -121,6 +122,7 @@ public class IntakeSubsystem extends SubsystemBase{
 			DeployMotorFollowerVoltage.set(m_intakeDeployMotorFollower.getMotorVoltage().getValueAsDouble());
 
             deployMotorPosition.set(m_intakeDeployMotor.getPosition().getValueAsDouble());
+            absoluteEncoderPosition.set(m_intakeAbsoluteEncoder.getAbsolutePosition().getValueAsDouble());
     	}
 
         public void intake(double intakeSpeed){
