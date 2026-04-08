@@ -39,6 +39,7 @@ public class SwerveModule extends SubsystemBase{
     NetworkTable table2;
 
     DoubleEntry moduleStateSpeedMPS;
+    DoubleEntry PIDDifference;
 
     TunableNumber kPInputTurn;
     TunableNumber kIInputTurn;
@@ -47,6 +48,7 @@ public class SwerveModule extends SubsystemBase{
     TunableNumber kPInputDrive;
     TunableNumber kIInputDrive;
     TunableNumber kDInputDrive;
+    TunableNumber kFFInputDrive;
 
     final PositionVoltage m_turnRequest = new PositionVoltage(0).withSlot(0);
     final VelocityVoltage m_driveRequest = new VelocityVoltage(0).withSlot(0);
@@ -57,12 +59,15 @@ public class SwerveModule extends SubsystemBase{
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Tunable Numbers");
         table2 = inst.getTable("Swerve Modules");
+
+        PIDDifference = table2.getDoubleTopic("Module PID Difference").getEntry(0);
         
         moduleStateSpeedMPS = table2.getDoubleTopic("module state mps").getEntry(0);
         kPInputTurn = new TunableNumber("/Tunable Numbers/kPInput Turn", Constants.SwerveConstants.k_turnKP);
         kIInputTurn = new TunableNumber("/Tunable Numbers/kIInput Turn", Constants.SwerveConstants.k_turnKI);
         kDInputTurn = new TunableNumber("/Tunable Numbers/kDInput Turn", Constants.SwerveConstants.k_turnKD);
-
+        
+        kFFInputDrive = new TunableNumber("/Tunable Numbers/kFFInput Drive", 0);
         kPInputDrive = new TunableNumber("/Tunable Numbers/kPInput Drive", Constants.SwerveConstants.k_driveKP);
         kIInputDrive = new TunableNumber("/Tunable Numbers/kIInput Drive", Constants.SwerveConstants.k_driveKI);
         kDInputDrive = new TunableNumber("/Tunable Numbers/kDInput Drive", Constants.SwerveConstants.k_driveKD);
@@ -82,9 +87,9 @@ public class SwerveModule extends SubsystemBase{
 
         //TODO: tune all drive PID values (low priority)
 
-        m_driveConfig.Slot0.kP = Constants.SwerveConstants.k_driveKP;
-        m_driveConfig.Slot0.kI = Constants.SwerveConstants.k_driveKI;
-        m_driveConfig.Slot0.kD = Constants.SwerveConstants.k_driveKD;
+        m_driveConfig.Slot0.kP = 0;
+        m_driveConfig.Slot0.kI = 0;
+        m_driveConfig.Slot0.kD = 0;
 
         m_turnConfig.Slot0.kP = Constants.SwerveConstants.k_turnKP;
         m_turnConfig.Slot0.kI = Constants.SwerveConstants.k_turnKI;
@@ -142,6 +147,10 @@ public class SwerveModule extends SubsystemBase{
             m_driveConfig.Slot0.kD = kDInputDrive.getAsDouble();
             m_driveMotor.getConfigurator().apply(m_driveConfig);            
         }
+        if(DriverStation.isTestEnabled() && kFFInputDrive.hasChanged(hashCode())){
+            m_driveConfig.Slot0.kV = kFFInputDrive.getAsDouble();
+            m_driveMotor.getConfigurator().apply(m_driveConfig);
+        }
     }
 
     public void Drive(SwerveModuleState moduleState){
@@ -149,8 +158,8 @@ public class SwerveModule extends SubsystemBase{
         m_moduleState.optimize(this.getAngleRotation2d());
         m_moduleState.speedMetersPerSecond *= m_moduleState.angle.minus(this.getAngleRotation2d()).getCos();
         moduleStateSpeedMPS.set(m_moduleState.speedMetersPerSecond);
-        m_driveMotor.setControl(m_driveRequest.withVelocity(m_moduleState.speedMetersPerSecond /Constants.SwerveConstants.k_wheelCircumferenceMeters));
-        m_turnMotor.setControl(m_turnRequest.withPosition(m_moduleState.angle.getRotations()));
+        m_driveMotor.setControl(m_driveRequest.withVelocity(3));
+        m_turnMotor.setControl(m_turnRequest.withPosition(0));
     }
 
     public double getAnglePositionRot(){
