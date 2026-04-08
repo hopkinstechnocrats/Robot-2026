@@ -30,6 +30,11 @@ public class RobotContainer {
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
     private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
+
+    //public void configureNamedCommands() {
+    //  NamedCommands.registerCommand("launcher", new LauncherCommands.launcher());
+    //}
+
     private final SendableChooser<Command> autoChooser;
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
@@ -60,7 +65,8 @@ public class RobotContainer {
 
         configureButtonBindings();
 
-        autoChooser = AutoBuilder.buildAutoChooser();
+        autoChooser = AutoBuilder.buildAutoChooser("SmallSquareAuto");
+
         SmartDashboard.putData("Auto Chooser", autoChooser);
     } 
 
