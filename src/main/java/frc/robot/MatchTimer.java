@@ -31,8 +31,9 @@ public class MatchTimer {
         gameData = DriverStation.getGameSpecificMessage();
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Game Phase");
-        hubIsEnabled = table.getStringTopic("Game Phase").getEntry("default");
-        gameTime = table.getDoubleTopic("Aprox. Game Time").getEntry(0);
+
+        hubIsEnabled = table.getStringTopic("/Game Phase/Testing Phases").getEntry("default");
+        gameTime = table.getDoubleTopic("/Game Phase/Aprox. Game Time").getEntry(0);
     }
 
     public boolean allianceWin() {
