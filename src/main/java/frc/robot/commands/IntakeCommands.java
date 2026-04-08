@@ -46,4 +46,20 @@ public class IntakeCommands extends Command {
             },
         intake);
     }
+
+    public static Command up(IntakeSubsystem intake){
+        return Commands.run(
+            () -> {
+                intake.intakeUp();
+            },
+            intake);
+    }
+
+    public static Command down(IntakeSubsystem intake){
+        return Commands.run(
+            () -> {
+                intake.intakeDown();
+            },
+            intake);
+    }
 }

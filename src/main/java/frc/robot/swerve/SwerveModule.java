@@ -2,11 +2,6 @@ package frc.robot.swerve;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.ClosedLoopGeneralConfigs;
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.FeedbackConfigs;
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -15,14 +10,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.ctre.phoenix6.swerve.SwerveModuleConstantsFactory;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.DoubleEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.AnalogEncoder;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -41,6 +36,9 @@ public class SwerveModule extends SubsystemBase{
 
     NetworkTableInstance inst;
     NetworkTable table;
+    NetworkTable table2;
+
+    DoubleEntry moduleStateSpeedMPS;
 
     TunableNumber kPInputTurn;
     TunableNumber kIInputTurn;
@@ -58,7 +56,9 @@ public class SwerveModule extends SubsystemBase{
     SwerveModule(int driveID, int turnID, int absEncoderPort, double absEncoderOffset){
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Tunable Numbers");
-
+        table2 = inst.getTable("Swerve Modules");
+        
+        moduleStateSpeedMPS = table2.getDoubleTopic("module state mps").getEntry(0);
         kPInputTurn = new TunableNumber("/Tunable Numbers/kPInput Turn", Constants.SwerveConstants.k_turnKP);
         kIInputTurn = new TunableNumber("/Tunable Numbers/kIInput Turn", Constants.SwerveConstants.k_turnKI);
         kDInputTurn = new TunableNumber("/Tunable Numbers/kDInput Turn", Constants.SwerveConstants.k_turnKD);
@@ -79,6 +79,8 @@ public class SwerveModule extends SubsystemBase{
 
         m_driveConfig = new TalonFXConfiguration(); 
         m_turnConfig = new TalonFXConfiguration();
+
+        //TODO: tune all drive PID values (low priority)
 
         m_driveConfig.Slot0.kP = Constants.SwerveConstants.k_driveKP;
         m_driveConfig.Slot0.kI = Constants.SwerveConstants.k_driveKI;
@@ -102,7 +104,8 @@ public class SwerveModule extends SubsystemBase{
         m_driveConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         m_turnConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-        m_driveConfig.CurrentLimits.StatorCurrentLimit = 120;
+
+        m_driveConfig.CurrentLimits.StatorCurrentLimit =80;
 
         m_driveMotor.getConfigurator().apply(m_driveConfig);
         m_turnMotor.getConfigurator().apply(m_turnConfig);
@@ -145,6 +148,7 @@ public class SwerveModule extends SubsystemBase{
         m_moduleState = moduleState;
         m_moduleState.optimize(this.getAngleRotation2d());
         m_moduleState.speedMetersPerSecond *= m_moduleState.angle.minus(this.getAngleRotation2d()).getCos();
+        moduleStateSpeedMPS.set(m_moduleState.speedMetersPerSecond);
         m_driveMotor.setControl(m_driveRequest.withVelocity(m_moduleState.speedMetersPerSecond));
         m_turnMotor.setControl(m_turnRequest.withPosition(m_moduleState.angle.getRotations()));
     }
@@ -172,8 +176,16 @@ public class SwerveModule extends SubsystemBase{
     public double getAbsEncoderPositionRot(){
         return m_absoluteEncoder.getPosition().getValueAsDouble();
     }
-
     public double getDriveVelocityMeterPerSec(){
         return m_driveMotor.getVelocity().getValueAsDouble() * Constants.SwerveConstants.k_wheelCircumferenceMeters;
     }
 }
+//Ideas on things that could be tested to actaully get correct velocity
+//     public double getDriveVelocityMeterPerSec2(){
+//         return m_driveMotor.getRotorVelocity().getValueAsDouble() * Constants.SwerveConstants.k_wheelCircumferenceMeters*Constants.SwerveConstants.k_driveGearRatio;
+//     }
+
+//     public double getDriveVelocityMeterPerSec3(){
+//         return m_driveMotor.getRotorVelocity().getValueAsDouble() * Constants.SwerveConstants.k_wheelCircumferenceMeters/Constants.SwerveConstants.k_driveGearRatio;
+//     }
+// }

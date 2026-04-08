@@ -8,25 +8,28 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.estimator.PoseEstimator;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.networktables.DoubleEntry;
 import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
 
 public class Swervedrive extends SubsystemBase{
     
@@ -36,7 +39,6 @@ public class Swervedrive extends SubsystemBase{
     Translation2d m_backLeftPosition;
     Translation2d m_backRightPosition;
 
-    SwerveDriveOdometry swerveOdometry;
     Pose2d m_pose;
     SwerveDrivePoseEstimator m_poseEstimator;
     
@@ -58,7 +60,6 @@ public class Swervedrive extends SubsystemBase{
     SwerveModule bL;
     SwerveModule bR;
 
-    double gyroOffset = 0;
 
     Gyro gyro;
 
@@ -141,19 +142,14 @@ public class Swervedrive extends SubsystemBase{
 
     @Override
     public void periodic(){
-        /*
-        if(m_pose == Constants.SwerveConstants.k_startPose && DriverStation.getAlliance().get() == Alliance.Red){
-            gyro.set180();
-        }
-        */
-
         m_pose = m_poseEstimator.update(gyro.getRotation(), new SwerveModulePosition[]{
              fL.getModulePosition(), fR.getModulePosition(), bL.getModulePosition(), bR.getModulePosition()
         });
 
         desiredStatePublisher.set(desiredModuleStates);
 
-        updateActualStates();
+        this.updateVisionReading(m_pose.getRotation().getDegrees(), gyro.getAccelZ(), m_poseEstimator);
+        this.updateActualStates();
 
         stateToChassisSpeeds();
 
@@ -180,7 +176,6 @@ public class Swervedrive extends SubsystemBase{
         actualModuleState[1] = new SwerveModuleState(fR.getDriveVelocityMeterPerSec(), fR.getAngleRotation2d());
         actualModuleState[2] = new SwerveModuleState(bL.getDriveVelocityMeterPerSec(), bL.getAngleRotation2d());
         actualModuleState[3] = new SwerveModuleState(bR.getDriveVelocityMeterPerSec(), bR.getAngleRotation2d());
-
     }
     
     private void stateToChassisSpeeds(){
@@ -214,6 +209,47 @@ public class Swervedrive extends SubsystemBase{
         }
         else{
             m_poseEstimator.resetRotation(Rotation2d.kZero);
+        }
+    }
+
+    public void updateVisionReading(double yawDegrees, double yawAngularVelocityDegreesPerSecond, 
+            SwerveDrivePoseEstimator poseEstimator){
+        //boolean for whether or not we should use the update
+        boolean doRejectUpdate = false;
+        //sets the limelight to use an outside gyro
+        //make sure to set the limelight name to your limelights name
+        LimelightHelpers.SetIMUMode("limelight", 0);
+
+        //use gyro to set orientation
+        LimelightHelpers.SetRobotOrientation("limelight", yawDegrees,0, 0, 0, 0, 0);
+        //gets the pose with bottom blue corner at 0,0
+        //make sure name of limelight is currect
+        
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+
+        /*for(int i = 0; i < mt2.tagCount;i++){
+            //loop through all of the april tags that the limelight can see.
+            LimelightHelpers.RawFiducial curntAprilTag = rawFiducials[i];
+        }*/
+
+        //makes sure we have an estimate
+        if(mt2 != null){
+        // if our angular velocity is greater than 360 degrees per second, ignore vision updates
+            if(Math.abs(yawAngularVelocityDegreesPerSecond) > 360)
+            {
+                doRejectUpdate = true;
+            }
+            //reject update if we don't have tags or a reading
+            if(mt2.tagCount == 0 || mt2 == null)
+            {
+                doRejectUpdate = true;
+            }
+            //add measurement to pose estimator
+            if(!doRejectUpdate)
+            {
+                poseEstimator.setVisionMeasurementStdDevs(new Matrix<N3,N1>(VecBuilder.fill(.7,.7,999999)));
+                poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+            }
         }
     }
 }

@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.swerve.Gyro;
 import frc.robot.commands.DriveCommands;
@@ -20,7 +19,6 @@ import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.commands.HopperCommands;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.swerve.Swervedrive;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.commands.FeederCommands;
@@ -36,11 +34,16 @@ public class RobotContainer {
     //private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     //private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     //private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
+    private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
+    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    private final FeederSubsystem feederSubsystem = new FeederSubsystem();
+    private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
     
     Swervedrive m_swerve = new Swervedrive();
     
     public RobotContainer() {
-        //feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
+        feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),
@@ -48,17 +51,17 @@ public class RobotContainer {
         );
 
 
-        //launcherSubsystem.setDefaultCommand(LauncherCommands.launcherBreak(launcherSubsystem));
-        /*
+        launcherSubsystem.setDefaultCommand(LauncherCommands.launcherBreak(launcherSubsystem));
+        
 		    intakeSubsystem.setDefaultCommand(
             new RunCommand(
                     () -> {
                     intakeSubsystem.intakeBrake();
                   }, intakeSubsystem
         ));
-        */
+        
 
-        //hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
+        hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
 
         configureButtonBindings();
 
@@ -71,19 +74,18 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-      //operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
-      //operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
-      //operatorController.povUp().whileTrue(IntakeCommands.deploy(intakeSubsystem));
-      //operatorController.povRight().whileTrue(IntakeCommands.undeploy(intakeSubsystem));
+      operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
+      operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
+      operatorController.povUp().whileTrue(IntakeCommands.up(intakeSubsystem));
+      operatorController.povRight().whileTrue(IntakeCommands.down(intakeSubsystem));
       driveController.a().onTrue(Commands.runOnce(
         () -> m_swerve.resetHeading(),
         m_swerve));
-      /*
+      
       operatorController.x().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
       operatorController.y().whileTrue(FeederCommands.unfeeder(feederSubsystem)); 
-      operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem).withTimeout(1)
+      operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem).withTimeout(0.5)
         .andThen(FeederCommands.feeder(feederSubsystem).alongWith(HopperCommands.hopper(hopperSubsystem).alongWith(LauncherCommands.launcher(launcherSubsystem)))));
       operatorController.povLeft().whileTrue(LauncherCommands.inverseLauncher(launcherSubsystem));
-      */
     }
 }
