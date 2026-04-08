@@ -124,5 +124,16 @@ public final class Constants{
         public static final double k_launcherFeedForward = 1.2/10; 
     }
 
+    public static final class TurretConstants{
+
+        public static final double k_turretP = 0.3; 
+        public static final double k_turretI = 0;
+        public static final double k_turretD = 0;
+        public static final double k_turretFeedForward = 0; 
+        public static final double k_turretSpeedRPS = 0.1; //rotations per second
+        public static final double k_turretBrakeSpeedRPS = 0;
+
+    }
+
 
 }
