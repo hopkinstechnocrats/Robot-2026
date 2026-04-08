@@ -1,5 +1,13 @@
 package frc.robot.swerve;
 
+import java.util.Optional;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -60,6 +68,11 @@ public class Swervedrive extends SubsystemBase{
 
     ChassisSpeeds m_speeds;
 
+    Optional<Alliance> alliance;
+    boolean isAllienceColorRed;
+
+    RobotConfig pathPlannerConfig;
+
     public Swervedrive(){
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Swerve");
@@ -94,6 +107,36 @@ public class Swervedrive extends SubsystemBase{
         brAnalog = table.getDoubleTopic("BR Absolute Encoder").getEntry(0);
 
         robotPosition = table.getStructTopic("Robot Position", Pose2d.struct).publish();
+    
+        try{
+            //TODO: check that the main/deploy/pathplanner/settings.json file exists and has up to date info. 
+            //It should be created/updated by filling out the pathplanner GUI.
+            pathPlannerConfig = RobotConfig.fromGUISettings();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        AutoBuilder.configure(
+            ()->m_poseEstimator.getEstimatedPosition(),// Robot pose supplier
+            (Pose2d pose)->this.resetOdometry(pose), // Method to reset odometry
+            ()->m_speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE.
+            (m_speeds, feedforwards) -> Drive(m_speeds), // Method that will drive the robot said ChassisSpeeds
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path follower
+            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            ),
+            pathPlannerConfig,// The robot configuration 
+            ()->{
+                alliance = DriverStation.getAlliance();
+                if(alliance.isPresent()){
+                    /*If our robot is on the red alliance, then return true to flip our auto's path 
+                      The Origin remains on the blue side.*/
+                    isAllienceColorRed = alliance.get() == DriverStation.Alliance.Red;
+                }
+                return isAllienceColorRed;
+            },
+            this
+        );
     }
 
 
@@ -107,6 +150,8 @@ public class Swervedrive extends SubsystemBase{
 
         this.updateVisionReading(m_pose.getRotation().getDegrees(), gyro.getAccelZ(), m_poseEstimator);
         this.updateActualStates();
+
+        stateToChassisSpeeds();
 
         actualStatePublisher.set(actualModuleState);
 
@@ -132,9 +177,30 @@ public class Swervedrive extends SubsystemBase{
         actualModuleState[2] = new SwerveModuleState(bL.getDriveVelocityMeterPerSec(), bL.getAngleRotation2d());
         actualModuleState[3] = new SwerveModuleState(bR.getDriveVelocityMeterPerSec(), bR.getAngleRotation2d());
     }
+    
+    private void stateToChassisSpeeds(){
+        m_speeds = m_swerveKinematics.toChassisSpeeds(actualModuleState[0], actualModuleState[1], actualModuleState[2], actualModuleState[3]);
+    }
 
     public Rotation2d getRotation(){
         return m_pose.getRotation();
+    }
+
+    public void resetOdometry(Pose2d pose) {
+        m_poseEstimator.resetPosition(gyro.getRotation(), this.getModulePositions(), pose);
+        ChassisSpeeds robotRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(new ChassisSpeeds(0, 0, 0), gyro.getRotation());
+        m_swerveKinematics.toSwerveModuleStates(robotRelativeSpeeds);
+    }
+
+    public SwerveModulePosition[] getModulePositions(){
+        SwerveModulePosition[] positions = new SwerveModulePosition[]{
+            fL.getModulePosition(),
+            fR.getModulePosition(),
+            bL.getModulePosition(),
+            bR.getModulePosition()
+        };
+
+        return positions;
     }
 
     public void resetHeading(){
