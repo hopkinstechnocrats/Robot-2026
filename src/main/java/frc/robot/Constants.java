@@ -9,7 +9,7 @@ public final class Constants{
         public static final int k_frontLeftDriveCANID = 13;
         public static final int k_frontRightDriveCANID = 12;
         public static final int k_backLeftDriveCANID = 11;
-        public static final int k_backRightDriveCANID = 10;
+        //public static final int k_backRightDriveCANID = 10;
 
         public static final int k_frontLeftTurnCANID = 6;
         public static final int k_frontRightTurnCANID = 7;
@@ -70,9 +70,9 @@ public final class Constants{
     }
 //TODO: test and change all of these values
     public static final class FeederConstants{
-        public static final int k_feederMotorCANID = 24;
-        public static final double k_feederSpeedRPS = -95;
-        public static final double k_reverseFeederSpeedRPS = 40;
+        public static final int k_feederMotorCANID = 10;
+        public static final double k_feederSpeedRPS = -1;
+        public static final double k_reverseFeederSpeedRPS = 1;
         public static final double k_feederBreakSpeedRPS = 0;
         public static final double k_feederP = 0.3; 
         public static final double k_feederI = 0;

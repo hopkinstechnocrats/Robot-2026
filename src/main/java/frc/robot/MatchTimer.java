@@ -4,11 +4,13 @@ import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringEntry;
 import edu.wpi.first.networktables.DoubleEntry;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+
 
 
 public class MatchTimer {
@@ -18,6 +20,12 @@ public class MatchTimer {
     StringEntry hubIsEnabled;
     DoubleEntry gameTime;
     double matchTime = DriverStation.getMatchTime();
+    CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
+    CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
+
+    public static void main(String[] args) {
+        System.out.println(DriverStation.getMatchTime());
+    }
 
     MatchTimer(){
         gameData = DriverStation.getGameSpecificMessage();
@@ -80,7 +88,7 @@ public class MatchTimer {
             case Blue -> redInactiveFirst;
         };
 
-        if (redInactiveFirst == false){
+        if (shift1Active == false){
                 if (matchTime > 130) {
                 // Transition shift, hub is active.
                 return true;
@@ -100,7 +108,7 @@ public class MatchTimer {
                 // End game, hub always active.
                 return true;
             }
-        } else if (redInactiveFirst == true){
+        } else if (shift1Active == true){
             if (matchTime > 130) {
                 // Transition shift, hub is active.
                 return true;
@@ -124,8 +132,6 @@ public class MatchTimer {
             return true;
         }
     }
-
-
     
     public void update(){
         matchTime = DriverStation.getMatchTime();
@@ -136,8 +142,32 @@ public class MatchTimer {
         } else {
             hubIsEnabled.set("Auto");
         }
-        gameTime.set(matchTime);
-            
+        gameTime.set(matchTime);    
+    }
+
+    public void rumble(){
+        if (matchTime > 125 && matchTime < 130 && !DriverStation.isAutonomousEnabled()){
+            driveController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+            operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+                // transition shift
+            } else if (matchTime > 100 && matchTime < 105 && !DriverStation.isAutonomousEnabled()) {
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+                // Shift 1
+            } else if (matchTime > 75 && matchTime < 80 && !DriverStation.isAutonomousEnabled()) {
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+                // Shift 2
+            } else if (matchTime > 50 && matchTime < 55 && !DriverStation.isAutonomousEnabled()) {
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+                // Shift 3
+            } else if (matchTime > 25 && matchTime < 30 && !DriverStation.isAutonomousEnabled()) {
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+                // Shift 4                
+            } else {       
+            }
     }
 
 }
