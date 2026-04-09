@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,6 +23,7 @@ import frc.robot.commands.HopperCommands;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.commands.FeederCommand;
 import frc.robot.commands.FeederCommands;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.commands.LauncherCommands;
@@ -30,15 +33,15 @@ public class RobotContainer {
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
     private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
-
-    //public void configureNamedCommands() {
-    //  NamedCommands.registerCommand("launcher", new LauncherCommands.launcher());
-    //}
-
-    private final SendableChooser<Command> autoChooser;
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
+
+    private final SendableChooser<Command> autoChooser;
+
+    public void configureNamedCommands() {
+      NamedCommands.registerCommand("feeder", new FeederCommand(feederSubsystem));
+    }
     
     Swervedrive m_swerve = new Swervedrive();
     
