@@ -2,32 +2,32 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.Constants;
 
 public class TurretCommands extends Command {
 
-    public static Command turretSpin(LauncherSubsystem wheel) {
+    public static Command turretSpin(TurretSubsystem turret) {
             return Commands.run(
                 () -> {
-                    wheel.launcher(Constants.TurretConstants.k_turretSpeedRPS);
+                    turret.turretSpin(Constants.TurretConstants.k_turretSpeedRPS);
                 },
-            wheel);
+            turret);
     }
-    public static Command turretBrake(LauncherSubsystem wheel){
+    public static Command turretBrake(TurretSubsystem turret){
         return Commands.run(
             () -> {
-                wheel.launcher(Constants.TurretConstants.k_turretBrakeSpeedRPS);
+                turret.turretBrake(Constants.TurretConstants.k_turretBrakeSpeedRPS);
             },
-            wheel);
+            turret);
     }
 
-    public static Command turretReverse(LauncherSubsystem launcher){
+    public static Command turretReverse(TurretSubsystem turret){
         return Commands.run(
             () -> {
-                launcher.launcher(-Constants.TurretConstants.k_turretSpeedRPS);
+                turret.turretSpin(-Constants.TurretConstants.k_turretSpeedRPS);
             },
-            launcher);
+            turret);
     }
         
 }

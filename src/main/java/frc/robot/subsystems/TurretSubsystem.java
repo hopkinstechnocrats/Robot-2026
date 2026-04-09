@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.TunableNumber;
 
-    public class TurretSubsystem {
+    public class TurretSubsystem extends SubsystemBase{
 
         NetworkTableInstance inst;
         NetworkTable table;
@@ -71,10 +71,8 @@ import frc.robot.TunableNumber;
         public void turretSpin(double turretSpeed){
         	m_turretMotor.setControl(m_turretRequest.withVelocity(turretSpeed));
         }
-        public void turretReverse(double turretSpeed){
-        	m_turretMotor.setControl(m_turretRequest.withVelocity(turretSpeed));
-        }
         public void turretBrake(double turretSpeed){
         	m_turretMotor.setControl(m_turretRequest.withVelocity(turretSpeed));
         }
 }
+
