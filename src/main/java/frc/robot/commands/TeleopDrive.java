@@ -56,7 +56,6 @@ public class TeleopDrive extends Command{
         }else if(m_bumpMode.getAsDouble() > 0.5){
             m_xOut *= 50; // left
             m_yOut *= 50;
-
         }else{
             m_xOut *= 27; // none
             m_yOut *= 27;
@@ -72,7 +71,9 @@ public class TeleopDrive extends Command{
     }
 
     @Override
-    public void end(boolean interrupted){}
+    public void end(boolean interrupted) {
+        
+    }
 
     @Override
     public boolean isFinished(){
