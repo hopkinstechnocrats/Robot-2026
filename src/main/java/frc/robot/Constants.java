@@ -126,12 +126,16 @@ public final class Constants{
 
     public static final class TurretConstants{
         public static final int k_turretMotorCANID = 67;
+        public static final double k_TurretRotation = 0;
         public static final double k_turretP = 0.3; 
         public static final double k_turretI = 0;
         public static final double k_turretD = 0;
         public static final double k_turretFeedForward = 0; 
         public static final double k_turretSpeedRPS = 0.1; //rotations per second
         public static final double k_turretBrakeSpeedRPS = 0;
+        public static final double k_turretCenterPosition = 0;
+        public static final double k_turretRightPosition = 0.2;
+        public static final double k_turretLeftPosition = -0.2;
 
     }
 

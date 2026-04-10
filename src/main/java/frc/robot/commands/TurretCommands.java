@@ -7,25 +7,25 @@ import frc.robot.Constants;
 
 public class TurretCommands extends Command {
 
-    public static Command turretSpin(TurretSubsystem turret) {
+    public static Command turretPositionRight(TurretSubsystem turret) {
             return Commands.run(
                 () -> {
-                    turret.turretSpin(Constants.TurretConstants.k_turretSpeedRPS);
+                    turret.turretPositionRight(Constants.TurretConstants.k_turretRightPosition);
                 },
             turret);
     }
-    public static Command turretBrake(TurretSubsystem turret){
+    public static Command turretPositionCenter(TurretSubsystem turret){
         return Commands.run(
             () -> {
-                turret.turretBrake(Constants.TurretConstants.k_turretBrakeSpeedRPS);
+                turret.turretPositionCenter(Constants.TurretConstants.k_turretCenterPosition);
             },
             turret);
     }
 
-    public static Command turretReverse(TurretSubsystem turret){
+    public static Command turretPositionLeft(TurretSubsystem turret){
         return Commands.run(
             () -> {
-                turret.turretSpin(-Constants.TurretConstants.k_turretSpeedRPS);
+                turret.turretPositionLeft(-Constants.TurretConstants.k_turretLeftPosition);
             },
             turret);
     }
