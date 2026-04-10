@@ -49,9 +49,9 @@ public class HopperSubsystem extends SubsystemBase{
             m_talonConfig.Slot0.kD = Constants.HopperConstants.k_hopperD;
 			m_talonConfig.Slot0.kV = Constants.HopperConstants.k_feedForward;
             m_talonConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-            m_talonConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.3;
+            m_talonConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = 1;
             m_talonConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-            m_talonConfig.CurrentLimits.StatorCurrentLimit = 10;
+            m_talonConfig.CurrentLimits.StatorCurrentLimit = 30;
             m_hopperMotor.getConfigurator().apply(m_talonConfig);
 
             HopperMotorVoltage = table.getDoubleTopic("Hopper Motor Volated").getEntry(0);
