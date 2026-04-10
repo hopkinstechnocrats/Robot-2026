@@ -28,6 +28,8 @@ import frc.robot.commands.FeederCommand;
 import frc.robot.commands.FeederCommands;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.commands.LauncherCommands;
+import frc.robot.commands.NewHopperCommands;
+import frc.robot.commands.NewLauncherCommands;
 
 public class RobotContainer {
     
@@ -44,6 +46,8 @@ public class RobotContainer {
       NamedCommands.registerCommand("Feeder", new FeederCommand(feederSubsystem));
       NamedCommands.registerCommand("Intake", new IntakeCommand(intakeSubsystem, false));
       NamedCommands.registerCommand("IntakeDeploy", new IntakeCommand(intakeSubsystem, true));
+      NamedCommands.registerCommand("Hopper", new NewHopperCommands(hopperSubsystem));
+      NamedCommands.registerCommand("Launcher", new NewLauncherCommands(launcherSubsystem));
     }
     
     Swervedrive m_swerve = new Swervedrive();
