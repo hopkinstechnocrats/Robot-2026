@@ -44,7 +44,7 @@ import frc.robot.TunableNumber;
             inst = NetworkTableInstance.getDefault();
             table = inst.getTable("Turret Info");
 
-            m_turretMotor = new TalonFX(Constants.LauncherConstants.k_launcherMotorCANID);
+            m_turretMotor = new TalonFX(Constants.TurretConstants.k_turretMotorCANID);
             m_turretConfig = new Slot0Configs();
             m_turretCurrentLimits = new CurrentLimitsConfigs();
             m_turretOutputConfig = new MotorOutputConfigs();

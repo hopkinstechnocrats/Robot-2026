@@ -125,7 +125,7 @@ public final class Constants{
     }
 
     public static final class TurretConstants{
-
+        public static final int k_turretMotorCANID = 67;
         public static final double k_turretP = 0.3; 
         public static final double k_turretI = 0;
         public static final double k_turretD = 0;
