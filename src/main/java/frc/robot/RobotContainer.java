@@ -20,6 +20,7 @@ import frc.robot.swerve.Swervedrive;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.commands.HopperCommands;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.subsystems.FeederSubsystem;
@@ -40,7 +41,9 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public void configureNamedCommands() {
-      NamedCommands.registerCommand("feeder", new FeederCommand(feederSubsystem));
+      NamedCommands.registerCommand("Feeder", new FeederCommand(feederSubsystem));
+      NamedCommands.registerCommand("Intake", new IntakeCommand(intakeSubsystem, false));
+      NamedCommands.registerCommand("IntakeDeploy", new IntakeCommand(intakeSubsystem, true));
     }
     
     Swervedrive m_swerve = new Swervedrive();
