@@ -23,17 +23,14 @@ public class MatchTimer {
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
 
-    public static void main(String[] args) {
-        System.out.println(DriverStation.getMatchTime());
-    }
 
     MatchTimer(){
         gameData = DriverStation.getGameSpecificMessage();
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Game Phase");
 
-        hubIsEnabled = table.getStringTopic("/Game Phase/Testing Phases").getEntry("default");
-        gameTime = table.getDoubleTopic("/Game Phase/Aprox. Game Time").getEntry(0);
+        hubIsEnabled = table.getStringTopic("Hub Status").getEntry("default");
+        gameTime = table.getDoubleTopic("Game Time").getEntry(0);
     }
 
     public boolean allianceWin() {
@@ -143,30 +140,48 @@ public class MatchTimer {
         } else {
             hubIsEnabled.set("Auto");
         }
-        gameTime.set(matchTime);    
-    }
-
-    public void rumble(){
-        if (matchTime > 125 && matchTime < 130 && !DriverStation.isAutonomousEnabled()){
-            driveController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
-            operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+        gameTime.set(matchTime);
+        
+        if (matchTime > 130 && matchTime < 135 && !DriverStation.isAutonomousEnabled()){
+            driveController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+            operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
                 // transition shift
-            } else if (matchTime > 100 && matchTime < 105 && !DriverStation.isAutonomousEnabled()) {
-                driveController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
-                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+            } else if (matchTime > 129 && matchTime < 130 && !DriverStation.isAutonomousEnabled()) {
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, .0);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .0);
+                //rumble stop
+            } else if (matchTime > 105 && matchTime < 110 && !DriverStation.isAutonomousEnabled()) {
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
                 // Shift 1
-            } else if (matchTime > 75 && matchTime < 80 && !DriverStation.isAutonomousEnabled()) {
-                driveController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
-                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+            } else if (matchTime > 104 && matchTime < 105 && !DriverStation.isAutonomousEnabled()) {
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, .0);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .0);
+                //rumble stop
+            } else if (matchTime > 80 && matchTime < 85 && !DriverStation.isAutonomousEnabled()) {
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
                 // Shift 2
-            } else if (matchTime > 50 && matchTime < 55 && !DriverStation.isAutonomousEnabled()) {
-                driveController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
-                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
+            } else if (matchTime > 79 && matchTime < 80 && !DriverStation.isAutonomousEnabled()) {
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, .0);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .0);
+                //rumble stop
+            } else if (matchTime > 55 && matchTime < 60 && !DriverStation.isAutonomousEnabled()) {
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
                 // Shift 3
-            } else if (matchTime > 25 && matchTime < 30 && !DriverStation.isAutonomousEnabled()) {
-                driveController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
-                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .1);
-                // Shift 4                
+            } else if (matchTime > 54 && matchTime < 55 && !DriverStation.isAutonomousEnabled()) {
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, .0);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .0);
+                //rumble stop
+            } else if (matchTime > 30 && matchTime < 35 && !DriverStation.isAutonomousEnabled()) {
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+                // Shift 4
+            } else if (matchTime > 29 && matchTime < 30 && !DriverStation.isAutonomousEnabled()) {
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, .0);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, .0);
+                //rumble stop                
             } else {       
             }
     }

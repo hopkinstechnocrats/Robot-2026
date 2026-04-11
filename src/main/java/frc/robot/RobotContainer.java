@@ -17,14 +17,10 @@ public class RobotContainer {
     
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
-    /*private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
-    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-    private final FeederSubsystem feederSubsystem = new FeederSubsystem();
-    private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();*/
-
+    EmptySubsystem emptySubsystem;
     
     public RobotContainer() {
+      emptySubsystem = new EmptySubsystem();
         /*feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
 
@@ -36,10 +32,8 @@ public class RobotContainer {
                     intakeSubsystem.intakeBrake();
                   }, intakeSubsystem
         ));
-        
 
         hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));*/
-
         configureButtonBindings();
     } 
 
