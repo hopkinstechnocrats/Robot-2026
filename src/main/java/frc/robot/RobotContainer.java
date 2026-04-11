@@ -74,7 +74,9 @@ public class RobotContainer {
       driveController.a().onTrue(Commands.runOnce(
         () -> m_swerve.resetHeading(),
         m_swerve));
-      //TODO
+      operatorController.povDown().whileTrue(TurretCommands.turretPositionCenter(turretSubsystem));
+      operatorController.rightBumper().whileTrue(TurretCommands.turretPositionRight(turretSubsystem));
+      operatorController.leftBumper().whileTrue(TurretCommands.turretPositionLeft(turretSubsystem));
       operatorController.x().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
       operatorController.y().whileTrue(FeederCommands.unfeeder(feederSubsystem)); 
       operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem).withTimeout(0.5)

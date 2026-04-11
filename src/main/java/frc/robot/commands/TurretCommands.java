@@ -29,5 +29,12 @@ public class TurretCommands extends Command {
             },
             turret);
     }
-        
+    
+    public static Command turretBrake(TurretSubsystem turret) {
+            return Commands.run(
+                () -> {
+                    turret.turretPositionRight(Constants.TurretConstants.k_turretRightPosition);
+                },
+            turret);
+    }
 }
