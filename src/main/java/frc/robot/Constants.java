@@ -98,11 +98,11 @@ public final class Constants{
         
         public static final double k_intakeDeployS = 0;
         public static final double k_intakeDeployFeedForeward = 0;
-        public static final double k_intakeSetpointDeploy = 0.0;
-        public static final double k_intakeSetpointRetract = -0.1694;
+        public static final double k_intakeSetpointDeploy = 0.02124;
+        public static final double k_intakeSetpointRetract = 0.179;
         public static final double k_deployGearRatio = 20*(84/14);
         public static final int k_absEncoderPortIntake = 40; //TODO check this.
-        public static final double intakeEncoderOffset = 0;//TODO update this
+        public static final double intakeEncoderOffset = 0.568085;//TODO update this
         public static final double k_intakeTurnGearRatio = 9;
     } 
 

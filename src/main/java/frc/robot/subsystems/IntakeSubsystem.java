@@ -64,10 +64,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeCanCoderConfig = new CANcoderConfiguration();
 
             m_intakeCanCoderConfig.MagnetSensor.MagnetOffset = Constants.IntakeConstants.intakeEncoderOffset;
-
-            m_deployConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
-            m_deployConfig.Feedback.RotorToSensorRatio = Constants.IntakeConstants.k_intakeTurnGearRatio; 
-            m_deployConfig.Feedback.FeedbackRemoteSensorID = m_intakeAbsoluteEncoder.getDeviceID();
+            m_intakeAbsoluteEncoder.getConfigurator().apply(m_intakeCanCoderConfig);
 
             m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
             m_intakeDeployMotor = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorCANID); //TODO:Also needs CANID
@@ -77,6 +74,11 @@ public class IntakeSubsystem extends SubsystemBase{
 
             m_intakeConfig = new TalonFXConfiguration();
             m_deployConfig = new TalonFXConfiguration();
+
+            m_deployConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+            m_deployConfig.Feedback.RotorToSensorRatio = Constants.IntakeConstants.k_intakeTurnGearRatio; 
+            m_deployConfig.Feedback.FeedbackRemoteSensorID = m_intakeAbsoluteEncoder.getDeviceID();
+            /* Encoder position - current robot arm position = offset*/
 
             m_intakeConfig.Slot0.kP = Constants.IntakeConstants.k_intakeP;
             m_intakeConfig.Slot0.kI = Constants.IntakeConstants.k_intakeI;
@@ -99,7 +101,6 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeMotor.getConfigurator().apply(m_intakeConfig);
             m_intakeDeployMotor.getConfigurator().apply(m_deployConfig);
             m_intakeDeployMotorFollower.getConfigurator().apply(m_deployConfig);
-            m_intakeAbsoluteEncoder.getConfigurator().apply(m_intakeCanCoderConfig);
 
             IntakeMotorVoltage = table.getDoubleTopic("Intake Motor Volated").getEntry(0);
             IntakePIDDifference = table.getDoubleTopic("Intake PID Difference").getEntry(0);
