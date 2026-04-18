@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -118,6 +119,11 @@ import frc.robot.TunableNumber;
         
         public void launcher(double launcherSpeed){
         	m_launcherMotor.setControl(m_launcherRequest.withVelocity(launcherSpeed));
+        	m_launcherMotorSecond.setControl(new Follower(m_launcherMotor.getDeviceID(), MotorAlignmentValue.Opposed));
+        }
+
+        public void launcherBrake(){
+            m_launcherMotor.setControl(new DutyCycleOut(0));
         	m_launcherMotorSecond.setControl(new Follower(m_launcherMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
     }

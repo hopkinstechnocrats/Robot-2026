@@ -116,12 +116,12 @@ public final class Constants{
     public static final class LauncherConstants{
         public static final int k_launcherMotorCANID = 25;
         public static final int k_launcherMotorSecondCANID = 26;
-        public static final double k_launchSpeedRPS = 90; //rotations per second
+        public static final double k_launchSpeedRPS = 80; //rotations per second, max ~80, 85 if you strain it
         public static final double k_launcherBrakeSpeedRPS = 0;
-        public static final double k_launcherP = 0.3; 
-        public static final double k_launcherI = 0.1;
+        public static final double k_launcherP = .25; 
+        public static final double k_launcherI = .1;
         public static final double k_launcherD = 0;
-        public static final double k_launcherFeedForward = 1.2/10; 
+        public static final double k_launcherFeedForward = .12; 
     }
 
 
