@@ -54,7 +54,7 @@ public final class Constants{
 
         public static final Pose2d k_startPose = new Pose2d(0, 0, new Rotation2d(0));
         //1 for inverted turning, -1 for non inverted
-        public static final double k_blaireMode = 1;
+        public static final double k_blaireMode = -1;
     }
  
  
@@ -116,7 +116,7 @@ public final class Constants{
     public static final class LauncherConstants{
         public static final int k_launcherMotorCANID = 25;
         public static final int k_launcherMotorSecondCANID = 26;
-        public static final double k_launchSpeedRPS = 90; //rotations per second
+        public static final double k_launchSpeedRPS = 50; //rotations per second
         public static final double k_launcherBrakeSpeedRPS = 0;
         public static final double k_launcherP = 0.3; 
         public static final double k_launcherI = 0.1;
