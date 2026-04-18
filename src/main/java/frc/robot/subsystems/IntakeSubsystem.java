@@ -58,7 +58,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeAbsoluteEncoder = new CANcoder(Constants.IntakeConstants.k_absEncoderPortIntake);
             m_intakeCanCoderConfig = new CANcoderConfiguration();
 
-            m_intakeCanCoderConfig.MagnetSensor.MagnetOffset = 0.536;
+            m_intakeCanCoderConfig.MagnetSensor.MagnetOffset = Constants.IntakeConstants.k_intakeDeployEncoderOffset;
 
             m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
             m_intakeFollowerMotor = new TalonFX(Constants.IntakeConstants.k_intakeFollowerCANID);
