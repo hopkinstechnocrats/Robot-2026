@@ -47,6 +47,7 @@ public class IntakeSubsystem extends SubsystemBase{
     final VelocityVoltage m_intakeRequest = new VelocityVoltage(0).withSlot(0);
     final PositionVoltage m_intakeDeployRequest = new PositionVoltage(0).withSlot(0);
     final DutyCycleOut m_intakeDeployDutyCycle = new DutyCycleOut(0);
+    double m_intakeSetpoint;
 
 
     TalonFX intakeMotor;
@@ -108,6 +109,8 @@ public class IntakeSubsystem extends SubsystemBase{
             DeployPIDDifference = table.getDoubleTopic("Deploy PID Difference").getEntry(0);
             DeployMotorFollowerVoltage = table.getDoubleTopic("Deploy Follower Motor Volated").getEntry(0);
             DeployPIDFollowerDifference = table.getDoubleTopic("Deploy Follower PID Difference").getEntry(0);
+
+            m_intakeSetpoint = m_intakeDeployMotor.getPosition().getValueAsDouble();
         }
     
 		@Override
@@ -145,7 +148,8 @@ public class IntakeSubsystem extends SubsystemBase{
         }
 
         public void intakeDeploy(double position){
-            m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(position));
+            m_intakeSetpoint = position;
+            m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(m_intakeSetpoint));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
         public void intakeBrake(){
