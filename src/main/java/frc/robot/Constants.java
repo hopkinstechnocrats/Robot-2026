@@ -133,9 +133,9 @@ public final class Constants{
         public static final double k_turretFeedForward = 0; 
         public static final double k_turretSpeedRPS = 0.1; //rotations per second
         public static final double k_turretBrakeSpeedRPS = 0;
-        public static final double k_turretCenterPosition = 0;
-        public static final double k_turretRightPosition = 0.2;
-        public static final double k_turretLeftPosition = -0.2;
+        public static final double k_turretCenterPosition = 0 * 10; // 10:1 gear ratio, rotations
+        public static final double k_turretRightPosition = 0.02 * 10; // 10:1 gear ratio, rotations
+        public static final double k_turretLeftPosition = -0.02 * 10; // 10:1 gear ratio, rotations
 
     }
 
