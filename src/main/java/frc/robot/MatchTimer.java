@@ -24,6 +24,8 @@ public class MatchTimer {
     IntegerEntry timeLeftInShift;
     int matchTime = (int)DriverStation.getMatchTime();
     int timeDifference = 0;
+    boolean powerRumble = false;
+    boolean shift1Active = false;
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
 
@@ -152,41 +154,72 @@ public class MatchTimer {
         if (DriverStation.isAutonomousEnabled()){
             shift.set("Auto");
             timeLeftInShift.set(matchTime);
+            gameTime.set(matchTime + 140);
         }
 
-        if (matchTime-timeDifference == 5 && !DriverStation.isAutonomousEnabled()){
-            driveController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
-            operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+        if(powerRumble == true){
+            if (timeLeftInShift.get() == 5 && !DriverStation.isAutonomousEnabled()){
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+            }
+        }else{
+            if (timeLeftInShift.get() == 5 && !DriverStation.isAutonomousEnabled()){
+                driveController.setRumble(GenericHID.RumbleType.kLeftRumble, .25);
+                operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, .25);
+            }
         }
-
-        if (matchTime == timeDifference && !DriverStation.isAutonomousEnabled()){
+        
+        if (timeLeftInShift.get() == 0 && !DriverStation.isAutonomousEnabled()){
             driveController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
             operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
         }
 
-        gameTime.set(matchTime);
-        timeLeftInShift.set(matchTime - timeDifference);//to get the difference
+        if(!DriverStation.isAutonomousEnabled()){
+            gameTime.set(matchTime);
+        }
 
+        timeLeftInShift.set(matchTime - timeDifference);//to get the difference
 
         if (matchTime == 139 && !DriverStation.isAutonomousEnabled()){
             shift.set("Transition Shift");
-            timeDifference = 139-10;
+            timeDifference = 140 - 10;
+            if (shift1Active == true){
+                    powerRumble = true;
+                }else{
+                    powerRumble = false;
+                }
             //start transition shift
             } else if (matchTime == 130 && !DriverStation.isAutonomousEnabled()) {
                 shift.set("Shift 1");
                 timeDifference = 130-25;
+                if (isHubActive() == false){
+                    powerRumble = true;
+                }else{
+                    powerRumble = false;
+                }
                 //start shift 1
             } else if (matchTime == 105 && !DriverStation.isAutonomousEnabled()) {
                 shift.set("Shift 2");
                 timeDifference = 105-25;
+                if (isHubActive() == false){
+                    powerRumble = true;
+                }else{
+                    powerRumble = false;
+                }
                 //start shift 2
             } else if (matchTime == 80 && !DriverStation.isAutonomousEnabled()) {
                 shift.set("Shift 3");
                 timeDifference = 80-25;
+                if (isHubActive() == false){
+                    powerRumble = true;
+                }else{
+                    powerRumble = false;
+                }
                 //start shift 3
             } else if (matchTime == 55 && !DriverStation.isAutonomousEnabled()) {
                 shift.set("Shift 4");
                 timeDifference = 55-25;
+                powerRumble = true;
                 //start shift 4
             } else if (matchTime == 30 && !DriverStation.isAutonomousEnabled()) {
                 shift.set("Endgame");
