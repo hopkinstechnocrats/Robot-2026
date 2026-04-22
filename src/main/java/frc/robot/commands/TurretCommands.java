@@ -10,14 +10,14 @@ public class TurretCommands extends Command {
     public static Command turretPositionRight(TurretSubsystem turret) {
             return Commands.run(
                 () -> {
-                    turret.turretPositionRight(Constants.TurretConstants.k_turretRightPosition);
+                    turret.turretPosition(Constants.TurretConstants.k_turretRightPosition);
                 },
             turret);
     }
     public static Command turretPositionCenter(TurretSubsystem turret){
         return Commands.run(
             () -> {
-                turret.turretPositionCenter(Constants.TurretConstants.k_turretCenterPosition);
+                turret.turretPosition(Constants.TurretConstants.k_turretCenterPosition);
             },
             turret);
     }
@@ -25,7 +25,7 @@ public class TurretCommands extends Command {
     public static Command turretPositionLeft(TurretSubsystem turret){
         return Commands.run(
             () -> {
-                turret.turretPositionLeft(-Constants.TurretConstants.k_turretLeftPosition);
+                turret.turretPosition(-Constants.TurretConstants.k_turretLeftPosition);
             },
             turret);
     }
@@ -33,7 +33,7 @@ public class TurretCommands extends Command {
     public static Command turretBrake(TurretSubsystem turret) {
             return Commands.run(
                 () -> {
-                    turret.turretPositionRight(Constants.TurretConstants.k_turretRightPosition);
+                    turret.turretPosition(Constants.TurretConstants.k_turretRightPosition);
                 },
             turret);
     }

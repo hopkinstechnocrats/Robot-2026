@@ -30,13 +30,14 @@ import frc.robot.Constants.TurretConstants;
         NetworkTable table;
         
         DoubleEntry TurretPIDDifference; 
+        Boolean TurretSwitchStatus;
 
         TalonFX m_turretMotor;
         Slot0Configs m_turretConfig;
         MotorOutputConfigs m_turretOutputConfig;
         CurrentLimitsConfigs m_turretCurrentLimits;
-        DigitalInput m_resetLimitSwitch;
-        
+        DigitalInput m_turretLimitSwitch;
+        boolean turretSwitchOutput = m_turretLimitSwitch.get();         
 
         TunableNumber kPInputTurret;
         TunableNumber kIInputTurret;
@@ -59,12 +60,14 @@ import frc.robot.Constants.TurretConstants;
             m_turretConfig = new Slot0Configs();
             m_turretCurrentLimits = new CurrentLimitsConfigs();
             m_turretOutputConfig = new MotorOutputConfigs();
-            m_resetLimitSwitch = new DigitalInput(0);
+            m_turretLimitSwitch = new DigitalInput(0);
 
             m_turretConfig.kP = Constants.TurretConstants.k_turretP;
             m_turretConfig.kI = Constants.TurretConstants.k_turretI;
             m_turretConfig.kD = Constants.TurretConstants.k_turretD;
 			m_turretConfig.kV = Constants.TurretConstants.k_turretFeedForward;
+
+
             
             m_turretOutputConfig.NeutralMode = NeutralModeValue.Brake;
             m_turretCurrentLimits.StatorCurrentLimit = 80;
@@ -74,7 +77,6 @@ import frc.robot.Constants.TurretConstants;
             m_turretMotor.getConfigurator().apply(m_turretConfig);
 
             TurretPIDDifference = table.getDoubleTopic("PID Difference").getEntry(0);
-
             kPInputTurret = new TunableNumber("/Tunable Numbers/kPInput Launcher", Constants.TurretConstants.k_turretP);
             kIInputTurret = new TunableNumber("/Tunable Numbers/kIInput Launcher", Constants.TurretConstants.k_turretI);
             kDInputTurret = new TunableNumber("/Tunable Numbers/kDInput Launcher", Constants.TurretConstants.k_turretD);
@@ -84,17 +86,24 @@ import frc.robot.Constants.TurretConstants;
             tunableTurretPositionLeft = new TunableNumber("/Tunable Numbers/Turret Position Left", Constants.TurretConstants.k_turretLeftPosition);
         
 
-
+        
         }  
 
 
 
 public void turretPosition(double position){
-    if(m_resetLimitSwitch.get()){
+    if(m_turretLimitSwitch.get()){
         
     } else {
         m_turretMotor.setControl(m_turretRequest.withPosition(position));
         }
     }
+
+
+
 }
 
+/*@Override
+public voide periodic{
+
+}*/
