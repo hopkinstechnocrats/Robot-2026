@@ -33,6 +33,7 @@ public class IntakeSubsystem extends SubsystemBase{
     DoubleEntry DeployPIDFollowerDifference;
     DoubleEntry DeployMotorFollowerVoltage;
     DoubleEntry deployMotorPosition;
+    DoubleEntry DeployCommandedPosition;
     TunableNumber m_tunableIntakeP;
     TunableNumber m_tunableIntakeI;
     TunableNumber m_tunableIntakeD;
@@ -67,6 +68,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeDeployMotorFollower = new TalonFX(Constants.IntakeConstants.k_intakeDeployMotorFollowerCANID);
             
             deployMotorPosition = table.getDoubleTopic("Deploy Position").getEntry(0);
+            DeployCommandedPosition = table.getDoubleTopic("Deploy Commanded Position").getEntry(m_intakeSetpoint);
 
             m_tunableIntakeP = new TunableNumber("IntakeTuning/IntakeP", Constants.IntakeConstants.k_intakeP);
             m_tunableIntakeI = new TunableNumber("IntakeTuning/IntakeI", Constants.IntakeConstants.k_intakeI);
@@ -78,6 +80,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
             m_deployConfig.Feedback.RotorToSensorRatio = Constants.IntakeConstants.k_deployGearRatio; 
             m_deployConfig.Feedback.FeedbackRemoteSensorID = m_intakeAbsoluteEncoder.getDeviceID();
+            m_deployConfig.ClosedLoopGeneral.ContinuousWrap = false;
 
             m_intakeConfig.Slot0.kP = Constants.IntakeConstants.k_intakeP;
             m_intakeConfig.Slot0.kI = Constants.IntakeConstants.k_intakeI;
