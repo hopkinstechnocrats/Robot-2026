@@ -6,7 +6,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.LauncherSubsystem;
 
 public class NewLauncherCommands extends Command {
-private final Timer m_timer = new Timer();
+    private final Timer m_timer = new Timer();
     LauncherSubsystem m_launcherSubsystem;
 
     public NewLauncherCommands(LauncherSubsystem launcherSubsystem){
@@ -16,7 +16,7 @@ private final Timer m_timer = new Timer();
     @Override
     public void initialize(){ 
         m_timer.reset();
-    m_timer.start();
+        m_timer.start();
     }
 
     @Override
