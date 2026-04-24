@@ -23,6 +23,10 @@ public class IntakeCommands extends Command {
         intake);
     }
 
+    public static Command brakeIntake(IntakeSubsystem intake){
+        return  Commands.run(()->{intake.intakeBrake();},intake);
+    }
+
     public static Command deploy(IntakeSubsystem intake) {
         return Commands.run(
             () -> {

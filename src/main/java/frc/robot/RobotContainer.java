@@ -20,16 +20,13 @@ import frc.robot.swerve.Swervedrive;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.commands.HopperCommands;
-import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.subsystems.FeederSubsystem;
-import frc.robot.commands.FeederCommand;
+import frc.robot.commands.AutonomusCommands;
 import frc.robot.commands.FeederCommands;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.commands.LauncherCommands;
-import frc.robot.commands.NewHopperCommands;
-import frc.robot.commands.NewLauncherCommands;
 
 public class RobotContainer {
     
@@ -41,14 +38,6 @@ public class RobotContainer {
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
 
     private final SendableChooser<Command> autoChooser;
-
-    public void configureNamedCommands() {
-      NamedCommands.registerCommand("Feeder", new FeederCommand(feederSubsystem));
-      NamedCommands.registerCommand("Intake", new IntakeCommand(intakeSubsystem, false));
-      NamedCommands.registerCommand("IntakeDeploy", new IntakeCommand(intakeSubsystem, true));
-      NamedCommands.registerCommand("Hopper", new NewHopperCommands(hopperSubsystem));
-      NamedCommands.registerCommand("Launcher", new NewLauncherCommands(launcherSubsystem));
-    }
     
     Swervedrive m_swerve = new Swervedrive();
     
@@ -81,7 +70,8 @@ public class RobotContainer {
     } 
 
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+      return AutonomusCommands.runTimedLauncher(5);
+      //return autoChooser.getSelected();
     }
 
     private void configureButtonBindings() {
