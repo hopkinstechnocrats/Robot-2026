@@ -2,13 +2,13 @@ package frc.robot;
 
 import java.util.Optional;
 
-import java.text.DecimalFormat;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringEntry;
+import edu.wpi.first.networktables.BooleanEntry;
 import edu.wpi.first.networktables.IntegerEntry;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -22,6 +22,7 @@ public class MatchTimer {
     StringEntry shift;
     IntegerEntry gameTime;
     IntegerEntry timeLeftInShift;
+    BooleanEntry hubColors;
     int matchTime = (int)DriverStation.getMatchTime();
     int timeDifference = 0;
     boolean powerRumble = false;
@@ -34,12 +35,13 @@ public class MatchTimer {
         
         gameData = DriverStation.getGameSpecificMessage();
         inst = NetworkTableInstance.getDefault();
-        table = inst.getTable("Game Phase");
+        table = inst.getTable("Game Data For Drive Team");
 
         hubIsEnabled = table.getStringTopic("Hub Status").getEntry("default");
-        gameTime = table.getIntegerTopic("Game Time").getEntry(0);
-        shift = table.getStringTopic("Active Shift").getEntry("Not Enabled");
+        gameTime = table.getIntegerTopic("Total Game Time Remaining").getEntry(0);
+        shift = table.getStringTopic("Current Shift").getEntry("default");
         timeLeftInShift = table.getIntegerTopic("Time Left In Shift").getEntry(0);
+        hubColors = table.getBooleanTopic("Hub Status Color").getEntry(false);
 
     }
 
@@ -145,10 +147,13 @@ public class MatchTimer {
         matchTime = (int)DriverStation.getMatchTime();
         if (isHubActive() == true){
             hubIsEnabled.set("Active!");
+            hubColors.set(true);
         } else if (isHubActive() == false){
-            hubIsEnabled.set("Inactive!");
+            hubIsEnabled.set("Inactive!"); 
+            hubColors.set(false);
         } else {
             hubIsEnabled.set("Auto");
+            hubColors.set(true);
         }
 
         if (DriverStation.isAutonomousEnabled()){
@@ -219,14 +224,20 @@ public class MatchTimer {
             } else if (matchTime == 55 && !DriverStation.isAutonomousEnabled()) {
                 shift.set("Shift 4");
                 timeDifference = 55-25;
-                powerRumble = true;
+                if (isHubActive() == false){
+                    powerRumble = true;
+                }else{
+                    powerRumble = false;
+                }
                 //start shift 4
             } else if (matchTime == 30 && !DriverStation.isAutonomousEnabled()) {
                 shift.set("Endgame");
                 timeDifference = 30-30;
+                powerRumble = true;
                 //start endgame
             } else if (matchTime == 0 && !DriverStation.isAutonomousEnabled()) {
                 timeDifference = 0;
+                shift.set("Game Over");
                 //End          
             } else {       
             }
