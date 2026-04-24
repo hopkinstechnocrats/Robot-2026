@@ -99,6 +99,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             m_deployConfig.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.k_deployGearRatio;
             m_deployConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.5;
+            m_deployConfig.CurrentLimits.StatorCurrentLimit = 20;
 
             m_intakeMotor.getConfigurator().apply(m_intakeConfig);
             m_intakeFollowerMotor.getConfigurator().apply(m_intakeConfig);
