@@ -41,14 +41,16 @@ import frc.robot.TunableNumber;
         TunableNumber kIInputLauncher;
         TunableNumber kDInputLauncher;
         TunableNumber kVInputLauncher;
+
+        TunableNumber k_launchRPS;
         
         final VelocityVoltage m_launcherRequest = new VelocityVoltage(0).withSlot(0);
         
 		public LauncherSubsystem(){
             inst = NetworkTableInstance.getDefault();
             table = inst.getTable("Launcher Info");
-            m_launcherMotor = new TalonFX(Constants.LauncherConstants.k_launcherMotorCANID); //Need to getCANID
-            m_launcherMotorSecond = new TalonFX(Constants.LauncherConstants.k_launcherMotorSecondCANID); //need CANID
+            m_launcherMotor = new TalonFX(Constants.LauncherConstants.k_launcherMotorCANID); //don't Need to get CANID
+            m_launcherMotorSecond = new TalonFX(Constants.LauncherConstants.k_launcherMotorSecondCANID); //don't need CANID
             m_launcherConfig = new Slot0Configs();
             m_currentLimits = new CurrentLimitsConfigs();
             m_launcherOutputConfig = new MotorOutputConfigs();
@@ -79,6 +81,7 @@ import frc.robot.TunableNumber;
             kDInputLauncher = new TunableNumber("/Tunable Numbers/kDInput Launcher", Constants.LauncherConstants.k_launcherD);
             kVInputLauncher = new TunableNumber("/Tunable Numbers/kVInput Launcher", Constants.LauncherConstants.k_launcherFeedForward);
             
+            k_launchRPS = new TunableNumber("/Tunable Numbers/k_launchSpeedRPS Launcher", Constants.LauncherConstants.k_launchSpeedRPS);
   
         }
         
@@ -115,6 +118,9 @@ import frc.robot.TunableNumber;
                 m_launcherMotorSecond.getConfigurator().apply(m_launcherConfig);
             }
             
+            if(DriverStation.isTestEnabled() && k_launchRPS.hasChanged(hashCode())){
+                Constants.LauncherConstants.k_launchSpeedRPS = k_launchRPS.get();
+            }
     	}
         
         public void launcher(double launcherSpeed){
