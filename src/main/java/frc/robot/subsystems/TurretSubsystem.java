@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.BooleanEntry;
 import edu.wpi.first.networktables.DoubleEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -24,13 +25,13 @@ import frc.robot.Constants;
 import frc.robot.TunableNumber;
 import frc.robot.Constants.TurretConstants;
 
-    public class TurretSubsystem extends SubsystemBase{
+public class TurretSubsystem extends SubsystemBase{
 
-        NetworkTableInstance inst;
-        NetworkTable table;
+    NetworkTableInstance inst;
+    NetworkTable table;
         
         DoubleEntry TurretPIDDifference; 
-        Boolean TurretSwitchStatus;
+        BooleanEntry turretLimitSwitch;
 
         TalonFX m_turretMotor;
         Slot0Configs m_turretConfig;
@@ -55,6 +56,8 @@ import frc.robot.Constants.TurretConstants;
 
             inst = NetworkTableInstance.getDefault();
             table = inst.getTable("Turret Info");
+
+            turretLimitSwitch = table.getBooleanTopic("").getEntry(false);
 
             m_turretMotor = new TalonFX(Constants.TurretConstants.k_turretMotorCANID);
             m_turretConfig = new Slot0Configs();
@@ -88,22 +91,7 @@ import frc.robot.Constants.TurretConstants;
 
         
         }  
-
-
-
-public void turretPosition(double position){
-    if(m_turretLimitSwitch.get()){
-        
-    } else {
-        m_turretMotor.setControl(m_turretRequest.withPosition(position));
+        public void turretPosition(double position){
+            m_turretMotor.setControl(m_turretRequest.withPosition(position));
         }
-    }
-
-
-
 }
-
-/*@Override
-public voide periodic{
-
-}*/
