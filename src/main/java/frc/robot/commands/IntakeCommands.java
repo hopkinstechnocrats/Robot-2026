@@ -50,7 +50,7 @@ public class IntakeCommands extends Command {
     public static Command up(IntakeSubsystem intake){
         return Commands.run(
             () -> {
-                intake.intakeDeploy(0.179);
+                intake.intakeDeploy(0.14);
             },
             intake);
     }
