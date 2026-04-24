@@ -10,7 +10,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 
 public class AutonomusCommands {
-    //Timer matchTimer = new Timer();
     static FeederSubsystem m_FeederSubsystem;
     static FeederCommands m_FeederCommands;
     static HopperSubsystem m_HopperSubsystem;
@@ -30,7 +29,6 @@ public class AutonomusCommands {
         LauncherSubsystem launcherSubsystem,
         LauncherCommands launcherCommands
         ){
-        //matchTimer.start();
         m_FeederSubsystem = feederSubsystem;
         m_FeederCommands = feederCommands;
         m_HopperSubsystem = hopperSubsystem;
@@ -46,8 +44,15 @@ public class AutonomusCommands {
     }
 
     public static Command runTimedLauncher(double durationSeconds){
-        return Commands.sequence(
+        //Hyper-commented example
+        return Commands.sequence( //Just runs a groups of commands in parallel
+
+            /*The parallel just runs two commands at the same time and waits until they both finish
+             * the first command starts the launcher
+             * and the second command (Commands.waitSeconds) waits for the required amount of time*/
             Commands.parallel(m_LauncherCommands.launcher(m_launcherSubsystem),Commands.waitSeconds(durationSeconds)),
+            
+            //brake after the launcher has been running for the required amount of time.
             m_LauncherCommands.launcherBreak(m_launcherSubsystem)
         );
     }
