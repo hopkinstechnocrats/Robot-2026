@@ -26,9 +26,15 @@ public class MatchTimer {
     int matchTime = (int)DriverStation.getMatchTime();
     int timeDifference = 0;
     boolean powerRumble = false;
-    boolean shift1Active = false;
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
+    Optional<Alliance> alliance = DriverStation.getAlliance();
+    boolean redInactiveFirst = false;
+
+        boolean shift1Active = switch (alliance.get()) {
+            case Red -> !redInactiveFirst;
+            case Blue -> redInactiveFirst;
+        };
 
 
     MatchTimer(){
@@ -61,7 +67,7 @@ public class MatchTimer {
     }
 
     public boolean isHubActive() {
-        Optional<Alliance> alliance = DriverStation.getAlliance();
+        
         // If we have no alliance, we cannot be enabled, therefore no hub.
         if (alliance.isEmpty()) {
             return false;
@@ -82,21 +88,17 @@ public class MatchTimer {
         if (gameData.isEmpty()) {
             return true;
         }
-        boolean redInactiveFirst = false;
-        switch (gameData.charAt(0)) {
+        redInactiveFirst = switch (gameData.charAt(0)) {
             case 'R' -> redInactiveFirst = true;
             case 'B' -> redInactiveFirst = false;
             default -> {
                 // If we have invalid game data, assume hub is active.
-                return true;
+                
             }
-        }
+        };
 
         // Shift was is active for blue if red won auto, or red if blue won auto.
-        boolean shift1Active = switch (alliance.get()) {
-            case Red -> !redInactiveFirst;
-            case Blue -> redInactiveFirst;
-        };
+        
 
         if (shift1Active == false){
                 if (matchTime > 130) {
@@ -143,6 +145,8 @@ public class MatchTimer {
         }
     }
     
+
+
     public void update(){
         matchTime = (int)DriverStation.getMatchTime();
         if (isHubActive() == true){
@@ -156,7 +160,7 @@ public class MatchTimer {
             hubColors.set(true);
         }
 
-        if (DriverStation.isAutonomousEnabled()){
+        if (!DriverStation.isTeleopEnabled()){
             shift.set("Auto");
             timeLeftInShift.set(matchTime);
             gameTime.set(matchTime + 140);
@@ -169,8 +173,8 @@ public class MatchTimer {
             }
         }else{
             if (timeLeftInShift.get() == 5 && !DriverStation.isAutonomousEnabled()){
-                driveController.setRumble(GenericHID.RumbleType.kLeftRumble, .25);
-                operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, .25);
+                driveController.setRumble(GenericHID.RumbleType.kLeftRumble, .3);
+                operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, .3);
             }
         }
         
