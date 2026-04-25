@@ -4,10 +4,20 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.estimator.PoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -33,11 +43,13 @@ public class RobotContainer {
     
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
-    /*private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
+    private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
-    private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();*/
+    private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
     private final AutonomusCommands autonomusCommands = new AutonomusCommands();
+        RobotConfig pathPlannerConfig;
+
 
     private final SendableChooser<Command> autoChooser;
 
@@ -45,10 +57,10 @@ public class RobotContainer {
     //Command exampleAutoCommand = new PathPlannerAuto("SmallSquareAuto");
 
     public void configureNamedCommands() {
-      /*NamedCommands.registerCommand("Intake5", autonomusCommands.runTimedIntake(5));
+      NamedCommands.registerCommand("Intake5", autonomusCommands.runTimedIntake(5));
       NamedCommands.registerCommand("Launcher5", autonomusCommands.runTimedLauncher(5));
       NamedCommands.registerCommand("Feeder5", autonomusCommands.runTimedFeeder(5));
-      NamedCommands.registerCommand("Hopper5", autonomusCommands.runTimedHopper(5));*/
+      NamedCommands.registerCommand("Hopper5", autonomusCommands.runTimedHopper(5));
       NamedCommands.registerCommand("PrintHello", autonomusCommands.runTimedCommand(
         autonomusCommands.logCommand("Worked!!"),
         autonomusCommands.logCommand("Hello World"),
@@ -56,10 +68,11 @@ public class RobotContainer {
       );
     }
 
-    
-    //Swervedrive m_swerve = new Swervedrive();
 
-    public RobotContainer() {/* 
+    
+    Swervedrive m_swerve = new Swervedrive();
+
+    public RobotContainer() {
         feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
         m_swerve.setDefaultCommand(
@@ -79,7 +92,8 @@ public class RobotContainer {
         
 
         hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
-      */
+      
+
         configureButtonBindings();
 
         configureNamedCommands();
@@ -91,7 +105,7 @@ public class RobotContainer {
       return autoChooser.getSelected();
     }
 
-    private void configureButtonBindings() {/* 
+    private void configureButtonBindings() {
       operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
       operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
       operatorController.povUp().whileTrue(IntakeCommands.up(intakeSubsystem));
@@ -104,6 +118,6 @@ public class RobotContainer {
       operatorController.y().whileTrue(FeederCommands.unfeeder(feederSubsystem)); 
       operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem).withTimeout(0.5)
         .andThen(FeederCommands.feeder(feederSubsystem).alongWith(HopperCommands.hopper(hopperSubsystem).alongWith(LauncherCommands.launcher(launcherSubsystem)))));
-      operatorController.povLeft().whileTrue(LauncherCommands.inverseLauncher(launcherSubsystem));*/
+      operatorController.povLeft().whileTrue(LauncherCommands.inverseLauncher(launcherSubsystem));
     }
 }

@@ -35,7 +35,7 @@ public class AutonomusCommands {
             table = inst.getTable("Autonomus Logging");
             logMessage= table.getStringTopic("Log message").getEntry(":3");
     }
-    
+
     public AutonomusCommands(
         FeederSubsystem feederSubsystem,
         HopperSubsystem hopperSubsystem,
@@ -80,7 +80,7 @@ public class AutonomusCommands {
              * and the second command (Commands.waitSeconds) waits for the required amount of time*/
             Commands.parallel(m_LauncherCommands.launcher(m_launcherSubsystem),Commands.waitSeconds(durationSeconds)),
             
-            //brake after the launcher has been running for the required amount of time.
+            //stop launching after the launcher has been running for the required amount of time.
             m_LauncherCommands.launcherBreak(m_launcherSubsystem)
         );
     }
