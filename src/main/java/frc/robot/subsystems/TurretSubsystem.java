@@ -6,6 +6,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -38,7 +39,7 @@ public class TurretSubsystem extends SubsystemBase{
         MotorOutputConfigs m_turretOutputConfig;
         CurrentLimitsConfigs m_turretCurrentLimits;
         DigitalInput m_turretLimitSwitch;
-        boolean turretSwitchOutput = m_turretLimitSwitch.get();         
+        Boolean turretSwitchOutput = m_turretLimitSwitch.get();         
 
         TunableNumber kPInputTurret;
         TunableNumber kIInputTurret;
@@ -51,13 +52,14 @@ public class TurretSubsystem extends SubsystemBase{
 
 
         final PositionDutyCycle m_turretRequest = new PositionDutyCycle(0).withSlot(0);
+        final VelocityVoltage m_turretHomingRequest = new VelocityVoltage(0).withSlot(0);
 
         public TurretSubsystem(){
 
             inst = NetworkTableInstance.getDefault();
             table = inst.getTable("Turret Info");
 
-            turretLimitSwitch = table.getBooleanTopic("").getEntry(false);
+            turretLimitSwitch = table.getBooleanTopic("Turret Limit Switch").getEntry(false);
 
             m_turretMotor = new TalonFX(Constants.TurretConstants.k_turretMotorCANID);
             m_turretConfig = new Slot0Configs();
@@ -94,4 +96,14 @@ public class TurretSubsystem extends SubsystemBase{
         public void turretPosition(double position){
             m_turretMotor.setControl(m_turretRequest.withPosition(position));
         }
+        
+
+
+       /* public void turretHoming(double voltage){
+            if(turretSwitchOutput = true) {
+            m_turretMotor.
+            } else {
+            m_turretMotor.setControl(m_turretHomingRequest.withVelocity(.05));
+            }
+        }*/
 }
