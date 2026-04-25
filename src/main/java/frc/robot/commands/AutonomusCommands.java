@@ -28,6 +28,14 @@ public class AutonomusCommands {
 
     //remove the block comments to get back commands for launcher, intake, etc.
 
+    public AutonomusCommands(){
+            //Only use this for testing, please.
+            // doesn't initialize the subsystems
+            inst = NetworkTableInstance.getDefault();
+            table = inst.getTable("Autonomus Logging");
+            logMessage= table.getStringTopic("Log message").getEntry(":3");
+    }
+    
     public AutonomusCommands(
         FeederSubsystem feederSubsystem,
         HopperSubsystem hopperSubsystem,
