@@ -47,7 +47,6 @@ public class RobotContainer {
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
-    private final AutonomusCommands autonomusCommands = new AutonomusCommands();
         RobotConfig pathPlannerConfig;
 
 
@@ -57,15 +56,14 @@ public class RobotContainer {
     //Command exampleAutoCommand = new PathPlannerAuto("SmallSquareAuto");
 
     public void configureNamedCommands() {
-      NamedCommands.registerCommand("Intake5", autonomusCommands.runTimedIntake(5));
-      NamedCommands.registerCommand("Launcher5", autonomusCommands.runTimedLauncher(5));
-      NamedCommands.registerCommand("Feeder5", autonomusCommands.runTimedFeeder(5));
-      NamedCommands.registerCommand("Hopper5", autonomusCommands.runTimedHopper(5));
-      NamedCommands.registerCommand("PrintHello", autonomusCommands.runTimedCommand(
-        autonomusCommands.logCommand("Worked!!"),
-        autonomusCommands.logCommand("Hello World"),
-        5)
-      );
+      NamedCommands.registerCommand("runIntake", IntakeCommands.intake(intakeSubsystem));
+      NamedCommands.registerCommand("brakeIntake", IntakeCommands.brakeIntake(intakeSubsystem));
+      NamedCommands.registerCommand("runHopper", HopperCommands.hopper(hopperSubsystem));
+      NamedCommands.registerCommand("brakeHopper", HopperCommands.brake(hopperSubsystem));
+      NamedCommands.registerCommand("runFeeder", FeederCommands.feeder(feederSubsystem));
+      NamedCommands.registerCommand("brakeFeeder", FeederCommands.brakeFeeder(feederSubsystem));
+      NamedCommands.registerCommand("runLauncher", LauncherCommands.launcher(launcherSubsystem));
+      NamedCommands.registerCommand("brakeLauncher", LauncherCommands.launcherBreak(launcherSubsystem)); 
     }
 
 
