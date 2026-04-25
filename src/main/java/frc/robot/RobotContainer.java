@@ -50,8 +50,8 @@ public class RobotContainer {
       NamedCommands.registerCommand("Feeder5", autonomusCommands.runTimedFeeder(5));
       NamedCommands.registerCommand("Hopper5", autonomusCommands.runTimedHopper(5));
       NamedCommands.registerCommand("PrintHello", autonomusCommands.runTimedCommand(
-        Commands.waitSeconds(0),
-        Commands.run(()->{System.out.printf("Hello\n");}),
+        autonomusCommands.logCommand("Worked!!"),
+        autonomusCommands.logCommand("Hello World"),
         5)
       );
     }
