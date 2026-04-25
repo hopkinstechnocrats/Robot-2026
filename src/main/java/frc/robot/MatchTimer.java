@@ -25,20 +25,15 @@ public class MatchTimer {
     BooleanEntry hubColors;
     int matchTime = (int)DriverStation.getMatchTime();
     int timeDifference = 0;
+    public boolean firstShift;
     boolean powerRumble = false;
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
-    Optional<Alliance> alliance = DriverStation.getAlliance();
-    boolean redInactiveFirst = false;
-
-        boolean shift1Active = switch (alliance.get()) {
-            case Red -> !redInactiveFirst;
-            case Blue -> redInactiveFirst;
-        };
-
+    
 
     MatchTimer(){
-        
+
+
         gameData = DriverStation.getGameSpecificMessage();
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Game Data For Drive Team");
@@ -67,8 +62,8 @@ public class MatchTimer {
     }
 
     public boolean isHubActive() {
-        
-        // If we have no alliance, we cannot be enabled, therefore no hub.
+        Optional<Alliance> alliance = DriverStation.getAlliance();
+    // If we have no alliance, we cannot be enabled, therefore no hub.
         if (alliance.isEmpty()) {
             return false;
         }
@@ -88,66 +83,47 @@ public class MatchTimer {
         if (gameData.isEmpty()) {
             return true;
         }
-        redInactiveFirst = switch (gameData.charAt(0)) {
+        boolean redInactiveFirst = false;
+        switch (gameData.charAt(0)) {
             case 'R' -> redInactiveFirst = true;
             case 'B' -> redInactiveFirst = false;
             default -> {
                 // If we have invalid game data, assume hub is active.
-                
+                return true;
             }
+        }
+        // Shift was is active for blue if red won auto, or red if blue won auto.
+        boolean shift1Active = switch (alliance.get()) {
+            case Red -> !redInactiveFirst;
+            case Blue -> redInactiveFirst;
         };
 
-        // Shift was is active for blue if red won auto, or red if blue won auto.
-        
+        firstShift = shift1Active;
+        // to bypass the variavble scope. couldn't think of another way to do it :p
 
-        if (shift1Active == false){
-                if (matchTime > 130) {
-                // Transition shift, hub is active.
-                return true;
-            } else if (matchTime > 105) {
-                // Shift 1
-                return shift1Active;
-            } else if (matchTime > 80) {
-                // Shift 2
-                return !shift1Active;
-            } else if (matchTime > 55) {
-                // Shift 3
-                return shift1Active;
-            } else if (matchTime > 30) {
-                // Shift 4
-                return !shift1Active;
-            } else {
-                // End game, hub always active.
-                return true;
-            }
-        } else if (shift1Active == true){
-            if (matchTime > 130) {
-                // Transition shift, hub is active.
-                return true;
-            } else if (matchTime > 105) {
-                // Shift 1
-                return shift1Active;
-            } else if (matchTime > 80) {
-                // Shift 2
-                return !shift1Active;
-            } else if (matchTime > 55) {
-                // Shift 3
-                return shift1Active;
-            } else if (matchTime > 30) {
-                // Shift 4
-                return !shift1Active;
-            } else {
-                // End game, hub always active.
-                return true;
-            }
-        } else {
+        if (matchTime > 130) {
+        // Transition shift, hub is active.
             return true;
+            } else if (matchTime > 105) {
+                // Shift 1
+                return shift1Active;
+            } else if (matchTime > 80) {
+                // Shift 2
+                return !shift1Active;
+            } else if (matchTime > 55) {
+                // Shift 3
+                return shift1Active;
+            } else if (matchTime > 30) {
+                // Shift 4
+                return !shift1Active;
+            } else {
+                // End game, hub always active.
+                return true;
+            }
         }
-    }
     
-
-
-    public void update(){
+    public void update(){        
+            
         matchTime = (int)DriverStation.getMatchTime();
         if (isHubActive() == true){
             hubIsEnabled.set("Active!");
@@ -160,23 +136,30 @@ public class MatchTimer {
             hubColors.set(true);
         }
 
-        if (!DriverStation.isTeleopEnabled()){
+        if (DriverStation.isAutonomousEnabled()){
             shift.set("Auto");
-            timeLeftInShift.set(matchTime);
             gameTime.set(matchTime + 140);
+            timeDifference = 0;
         }
 
         if(powerRumble == true){
-            if (timeLeftInShift.get() == 5 && !DriverStation.isAutonomousEnabled()){
-                driveController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
-                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+            if (timeLeftInShift.get() % 2 == 1 && timeLeftInShift.get() < 6  && !DriverStation.isAutonomousEnabled()){
+                driveController.setRumble(GenericHID.RumbleType.kBothRumble, 1.5);
+                operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 1.5);
+            }
+
+            if(timeLeftInShift.get() % 2 == 0 && timeLeftInShift.get() < 5 && !DriverStation.isAutonomousEnabled()){
+            driveController.setRumble(GenericHID.RumbleType.kLeftRumble, .3);
+            operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, .3);
             }
         }else{
+        
             if (timeLeftInShift.get() == 5 && !DriverStation.isAutonomousEnabled()){
                 driveController.setRumble(GenericHID.RumbleType.kLeftRumble, .3);
                 operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, .3);
             }
         }
+    
         
         if (timeLeftInShift.get() == 0 && !DriverStation.isAutonomousEnabled()){
             driveController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
@@ -192,7 +175,7 @@ public class MatchTimer {
         if (matchTime == 139 && !DriverStation.isAutonomousEnabled()){
             shift.set("Transition Shift");
             timeDifference = 140 - 10;
-            if (shift1Active == true){
+            if (firstShift== true){
                     powerRumble = true;
                 }else{
                     powerRumble = false;
