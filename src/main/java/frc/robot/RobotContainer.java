@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -36,10 +37,32 @@ public class RobotContainer {
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
+    private final AutonomusCommands autonomusCommands = new AutonomusCommands(feederSubsystem,hopperSubsystem,intakeSubsystem,launcherSubsystem);
 
     private final SendableChooser<Command> autoChooser;
+
+
+    //Command exampleAutoCommand = new PathPlannerAuto("SmallSquareAuto");
+
+    public void configureNamedCommands() {
+      NamedCommands.registerCommand("Intake5", autonomusCommands.runTimedIntake(5));
+      NamedCommands.registerCommand("Launcher5", autonomusCommands.runTimedLauncher(5));
+      NamedCommands.registerCommand("Feeder5", autonomusCommands.runTimedFeeder(5));
+      NamedCommands.registerCommand("Hopper5", autonomusCommands.runTimedHopper(5));
+      NamedCommands.registerCommand("PrintHello", autonomusCommands.runTimedCommand(
+        Commands.waitSeconds(0),
+        Commands.run(()->{System.out.printf("Hello\n");}),
+        5)
+      );
+    }
+
     
     Swervedrive m_swerve = new Swervedrive();
+
+    boolean configureAutos(){
+
+      return true;
+    }
     
     public RobotContainer() {
         feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
@@ -64,14 +87,13 @@ public class RobotContainer {
 
         configureButtonBindings();
 
-        autoChooser = AutoBuilder.buildAutoChooser("SmallSquareAuto");
-
+        configureNamedCommands();
+        autoChooser = AutoBuilder.buildAutoChooser("HelloWorldTest");
         SmartDashboard.putData("Auto Chooser", autoChooser);
     } 
 
     public Command getAutonomousCommand() {
-      return AutonomusCommands.runTimedLauncher(5);
-      //return autoChooser.getSelected();
+      return autoChooser.getSelected();
     }
 
     private void configureButtonBindings() {

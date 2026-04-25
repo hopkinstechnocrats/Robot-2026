@@ -19,35 +19,37 @@ public class AutonomusCommands {
     static LauncherSubsystem m_launcherSubsystem;
     static LauncherCommands m_LauncherCommands;
 
-    AutonomusCommands(
+    //remove the block comments to get back commands for launcher, intake, etc.
+
+    public AutonomusCommands(
         FeederSubsystem feederSubsystem,
-        FeederCommands feederCommands,
         HopperSubsystem hopperSubsystem,
-        HopperCommands hopperCommands,
         IntakeSubsystem intakeSubsystem,
-        IntakeCommands intakeCommands,
-        LauncherSubsystem launcherSubsystem,
-        LauncherCommands launcherCommands
+        LauncherSubsystem launcherSubsystem
         ){
         m_FeederSubsystem = feederSubsystem;
-        m_FeederCommands = feederCommands;
+        m_FeederCommands = new FeederCommands();
         m_HopperSubsystem = hopperSubsystem;
-        m_HopperCommands = hopperCommands;
+        m_HopperCommands = new HopperCommands();
         m_IntakeSubsystem = intakeSubsystem;
-        m_IntakeCommands = intakeCommands;
+        m_IntakeCommands = new IntakeCommands();
         m_launcherSubsystem = launcherSubsystem;
-        m_LauncherCommands = launcherCommands;
+        m_LauncherCommands = new LauncherCommands();
+    }//*/
+
+    public Command runTimedCommand( Command startCommand, Command endCommand, double duration){
+        //The generic version of the rest of the commands
+        return Commands.parallel(
+            Commands.parallel(startCommand,Commands.waitSeconds(duration)),
+            endCommand
+        );
     }
 
-    Command runTimedCommand( Command inputCommand, double duration){
-        return Commands.parallel(inputCommand,Commands.waitSeconds(duration));
-    }
-
-    public static Command runTimedLauncher(double durationSeconds){
+    public Command runTimedLauncher(double durationSeconds){
         //Hyper-commented example
         return Commands.sequence( //Just runs a groups of commands in parallel
-
-            /*The parallel just runs two commands at the same time and waits until they both finish
+            /* 
+            The parallel just runs two commands at the same time and waits until they both finish
              * the first command starts the launcher
              * and the second command (Commands.waitSeconds) waits for the required amount of time*/
             Commands.parallel(m_LauncherCommands.launcher(m_launcherSubsystem),Commands.waitSeconds(durationSeconds)),
@@ -57,25 +59,24 @@ public class AutonomusCommands {
         );
     }
 
-    public static Command runTimedIntake(double durationSeconds){
+    public Command runTimedIntake(double durationSeconds){
         return Commands.sequence(
             Commands.parallel(m_IntakeCommands.intake(m_IntakeSubsystem),Commands.waitSeconds(durationSeconds)),
             Commands.run(()->{m_IntakeSubsystem.intakeBrake();},m_IntakeSubsystem)//brake at the end.
         );
     }
 
-    public static Command runTimedHopper(double durationSeconds){
+    public Command runTimedHopper(double durationSeconds){
         return Commands.sequence(
             Commands.parallel(m_HopperCommands.hopper(m_HopperSubsystem),Commands.waitSeconds(durationSeconds)),
             m_HopperCommands.brake(m_HopperSubsystem)
         );
     }
 
-    public static Command runTimedFeeder(double durationSeconds){
+    public Command runTimedFeeder(double durationSeconds){
         return Commands.sequence(
             Commands.parallel(m_FeederCommands.feeder(m_FeederSubsystem), Commands.waitSeconds(durationSeconds)),
             m_FeederCommands.brakeFeeder(m_FeederSubsystem)
         );
     }
-
 }
