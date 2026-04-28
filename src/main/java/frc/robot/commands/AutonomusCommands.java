@@ -106,4 +106,18 @@ public class AutonomusCommands {
             m_FeederCommands.brakeFeeder(m_FeederSubsystem)
         );
     }
+    
+    public Command timedIntakeDeploy(){
+        return Commands.sequence(
+            m_IntakeCommands.deploy(m_IntakeSubsystem),
+            Commands.waitSeconds(Constants.IntakeConstants.k_intakeDeploySeconds)
+        );
+    }
+
+    public Command timedIntakeUndeploy(){
+        return Commands.sequence(
+            m_IntakeCommands.undeploy(m_IntakeSubsystem),
+            Commands.waitSeconds(Constants.IntakeConstants.k_intakeUndeploySeconds)
+        );
+    }
 }

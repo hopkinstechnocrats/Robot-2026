@@ -47,7 +47,8 @@ public class RobotContainer {
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
-        RobotConfig pathPlannerConfig;
+    private final AutonomusCommands autonomusCommands = new AutonomusCommands(feederSubsystem,hopperSubsystem,intakeSubsystem,launcherSubsystem);
+    RobotConfig pathPlannerConfig;
 
 
     private final SendableChooser<Command> autoChooser;
@@ -55,7 +56,7 @@ public class RobotContainer {
 
     //Command exampleAutoCommand = new PathPlannerAuto("SmallSquareAuto");
 
-    public void configureNamedCommands() {
+    public void configureNamedAutoCommands() {
       NamedCommands.registerCommand("runIntake", IntakeCommands.intake(intakeSubsystem));
       NamedCommands.registerCommand("brakeIntake", IntakeCommands.brakeIntake(intakeSubsystem));
       NamedCommands.registerCommand("runHopper", HopperCommands.hopper(hopperSubsystem));
@@ -64,6 +65,8 @@ public class RobotContainer {
       NamedCommands.registerCommand("brakeFeeder", FeederCommands.brakeFeeder(feederSubsystem));
       NamedCommands.registerCommand("runLauncher", LauncherCommands.launcher(launcherSubsystem));
       NamedCommands.registerCommand("brakeLauncher", LauncherCommands.launcherBreak(launcherSubsystem)); 
+      NamedCommands.registerCommand("deployIntake", autonomusCommands.timedIntakeDeploy()); 
+      NamedCommands.registerCommand("undeployIntake", autonomusCommands.timedIntakeUndeploy()); 
     }
 
 
@@ -94,7 +97,7 @@ public class RobotContainer {
 
         configureButtonBindings();
 
-        configureNamedCommands();
+        configureNamedAutoCommands();
         autoChooser = AutoBuilder.buildAutoChooser("MoveForwardAuto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
     } 

@@ -111,6 +111,9 @@ public final class Constants{
         public static final double k_intakeSetpointDeploy = 0.0;
         public static final double k_intakeSetpointRetract = 0.1625/2;
         public static final double k_deployGearRatio = 20*(84/14);
+
+        public static final double k_intakeDeploySeconds = 5;//TODO: update the deploy and undeploy times
+        public static final double k_intakeUndeploySeconds = 5;
     }
 
     public static final class LauncherConstants{
