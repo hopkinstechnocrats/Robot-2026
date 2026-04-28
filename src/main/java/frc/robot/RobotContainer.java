@@ -95,7 +95,7 @@ public class RobotContainer {
         configureButtonBindings();
 
         configureNamedCommands();
-        autoChooser = AutoBuilder.buildAutoChooser("HelloWorldTest");
+        autoChooser = AutoBuilder.buildAutoChooser("MoveForwardAuto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
     } 
 
