@@ -64,8 +64,8 @@ public class IntakeSubsystem extends SubsystemBase{
 
             m_intakeCanCoderConfig.MagnetSensor.MagnetOffset = 0.536;
 
-            m_PWMintakeMotor = new PWMTalonFX(Constants.IntakeConstants.k_intakeMotorCANID); 
-            m_PWMintakeFollowerMotor = new PWMTalonFX(Constants.IntakeConstants.k_intakeFollowerCANID);
+            m_PWMintakeMotor = new PWMTalonFX(Constants.IntakeConstants.k_intakeMotorPWMPort); 
+            m_PWMintakeFollowerMotor = new PWMTalonFX(Constants.IntakeConstants.k_intakeFollowerPWMPort);
 
             //m_intakeMotor = new TalonFX(Constants.IntakeConstants.k_intakeMotorCANID); //Need to getCANID
             //m_intakeFollowerMotor = new TalonFX(Constants.IntakeConstants.k_intakeFollowerCANID);
