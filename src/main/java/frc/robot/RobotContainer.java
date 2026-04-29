@@ -20,6 +20,7 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.commands.FeederCommands;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.commands.LauncherCommands;
+import com.pathplanner.lib.auto.NamedCommands;
 
 public class RobotContainer {
     
@@ -53,6 +54,8 @@ public class RobotContainer {
                   }, intakeSubsystem
         ));
         
+      NamedCommands.registerCommand("runLauncher", LauncherCommands.launcher(launcherSubsystem));
+      NamedCommands.registerCommand("brakeLauncher", LauncherCommands.launcherBreak(launcherSubsystem)); 
 
         hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
 
