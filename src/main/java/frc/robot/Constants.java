@@ -104,7 +104,7 @@ public final class Constants{
         public static final int k_absEncoderPortIntake = 40;
         public static final double k_intakeDeployEncoderOffset = .565; //0.4445;
         public static final double k_intakeDeployP = 60;
-        public static final double k_intakeDeployI = 0;
+        public static final double k_intakeDeployI = 0.01;
         public static final double k_intakeDeployD = 0;
         public static final double k_intakeDeployS = 0;
         public static final double k_intakeDeployG = 0.25;
