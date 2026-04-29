@@ -89,8 +89,8 @@ public final class Constants{
         public static final double k_feedForward = 0.1; 
     }
     public static final class IntakeConstants{
-        public static final int k_intakeMotorCANID = 14;
-        public static final int k_intakeFollowerCANID = 28;
+        public static final int k_intakeMotorPWMPort = 0;
+        public static final int k_intakeFollowerPWMPort = 1;
         public static final double k_intakeSpeedRPS = -70;
         public static final double k_reverseIntakeSpeedRPS = 70;   
         public static final double k_intakeBrakeSpeedRPS = 0;
@@ -117,7 +117,7 @@ public final class Constants{
     public static final class LauncherConstants{
         public static final int k_launcherMotorCANID = 25;
         public static final int k_launcherMotorSecondCANID = 26;
-        public static final double k_launchSpeedRPS = 90; //rotations per second
+        public static double k_launchSpeedRPS = 90; //rotations per second
         public static final double k_launcherBrakeSpeedRPS = 0;
         public static final double k_launcherP = 0.3; 
         public static final double k_launcherI = 0.1;
