@@ -139,16 +139,16 @@ public class IntakeSubsystem extends SubsystemBase{
             }
     	}
 
-        public void intake(double intakeSpeed){
+        public void intake(double intakeSpeed){ // spins the rollers at a speed
         	m_intakeMotor.setControl(m_intakeRequest.withVelocity(intakeSpeed));
             m_intakeFollowerMotor.setControl(new Follower(m_intakeMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
 
-        public void intakeDeploy(double position){
+        public void intakeDeploy(double position){ // moves arm to specific pos
             m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(position));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
-        public void intakeBrake(){
+        public void intakeBrake(){ // holds arm in place?
         	m_intakeMotor.setControl(m_intakeRequest.withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
             m_intakeMotor.setControl(new Follower(m_intakeMotor.getDeviceID(), MotorAlignmentValue.Opposed));
             m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(0.02));
@@ -156,7 +156,7 @@ public class IntakeSubsystem extends SubsystemBase{
 
         }
 
-        public void intakeUp(){
+        public void intakeUp(){ // moves arm up?
             m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(0.12));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
