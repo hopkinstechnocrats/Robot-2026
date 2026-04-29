@@ -36,6 +36,25 @@ public class AutonomusCommands {
             table = inst.getTable("Autonomus Logging");
             logMessage= table.getStringTopic("Log message").getEntry(":3");
     }
+    public AutonomusCommands(
+        FeederSubsystem feederSubsystem,
+        HopperSubsystem hopperSubsystem,
+        LauncherSubsystem launcherSubsystem
+        ){
+
+            inst = NetworkTableInstance.getDefault();
+            table = inst.getTable("Autonomus Logging");
+            logMessage= table.getStringTopic("Log message").getEntry(":3");
+
+            
+            m_FeederSubsystem = feederSubsystem;
+            m_FeederCommands = new FeederCommands();
+            m_HopperSubsystem = hopperSubsystem;
+            m_HopperCommands = new HopperCommands();
+            //m_IntakeCommands = new IntakeCommands();
+            m_launcherSubsystem = launcherSubsystem;
+            m_LauncherCommands = new LauncherCommands();
+    }//*/
 
     public AutonomusCommands(
         FeederSubsystem feederSubsystem,
@@ -106,7 +125,7 @@ public class AutonomusCommands {
             m_FeederCommands.brakeFeeder(m_FeederSubsystem)
         );
     }
-    
+
     public Command timedIntakeDeploy(){
         return Commands.sequence(
             m_IntakeCommands.deploy(m_IntakeSubsystem),

@@ -44,10 +44,10 @@ public class RobotContainer {
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
     private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
-    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    //private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
-    private final AutonomusCommands autonomusCommands = new AutonomusCommands(feederSubsystem,hopperSubsystem,intakeSubsystem,launcherSubsystem);
+    private final AutonomusCommands autonomusCommands = new AutonomusCommands(feederSubsystem,hopperSubsystem,launcherSubsystem);
     RobotConfig pathPlannerConfig;
 
 
@@ -57,8 +57,8 @@ public class RobotContainer {
     //Command exampleAutoCommand = new PathPlannerAuto("SmallSquareAuto");
 
     public void configureNamedAutoCommands() {
-      NamedCommands.registerCommand("runIntake", IntakeCommands.intake(intakeSubsystem));
-      NamedCommands.registerCommand("brakeIntake", IntakeCommands.brakeIntake(intakeSubsystem));
+      //NamedCommands.registerCommand("runIntake", IntakeCommands.intake(intakeSubsystem));
+      //NamedCommands.registerCommand("brakeIntake", IntakeCommands.brakeIntake(intakeSubsystem));
       NamedCommands.registerCommand("runHopper", HopperCommands.hopper(hopperSubsystem));
       NamedCommands.registerCommand("brakeHopper", HopperCommands.brake(hopperSubsystem));
       NamedCommands.registerCommand("runFeeder", FeederCommands.feeder(feederSubsystem));
@@ -84,13 +84,13 @@ public class RobotContainer {
 
 
         launcherSubsystem.setDefaultCommand(LauncherCommands.launcherBreak(launcherSubsystem));
-        
+        /* 
 		    intakeSubsystem.setDefaultCommand(
             new RunCommand(
                     () -> {
                     intakeSubsystem.intakeBrake();
                   }, intakeSubsystem
-        ));
+        ));*/
         
 
         hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
@@ -107,11 +107,11 @@ public class RobotContainer {
       return autoChooser.getSelected();
     }
 
-    private void configureButtonBindings() {
+    private void configureButtonBindings() {/* 
       operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
       operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
       operatorController.povUp().whileTrue(IntakeCommands.up(intakeSubsystem));
-      operatorController.povRight().whileTrue(IntakeCommands.down(intakeSubsystem));
+      operatorController.povRight().whileTrue(IntakeCommands.down(intakeSubsystem));*/
       driveController.a().onTrue(Commands.runOnce(
         () -> m_swerve.resetHeading(),
         m_swerve));
