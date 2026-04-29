@@ -67,6 +67,7 @@ public class RobotContainer {
       NamedCommands.registerCommand("brakeLauncher", LauncherCommands.launcherBreak(launcherSubsystem)); 
       NamedCommands.registerCommand("deployIntake", autonomusCommands.timedIntakeDeploy()); 
       NamedCommands.registerCommand("undeployIntake", autonomusCommands.timedIntakeUndeploy()); 
+      NamedCommands.registerCommand("sayHello",autonomusCommands.logCommand("Hello World"));
     }
 
 
@@ -98,7 +99,7 @@ public class RobotContainer {
         configureButtonBindings();
 
         configureNamedAutoCommands();
-        autoChooser = AutoBuilder.buildAutoChooser("MoveForwardAuto");
+        autoChooser = AutoBuilder.buildAutoChooser("LauncherTest");
         SmartDashboard.putData("Auto Chooser", autoChooser);
     } 
 
