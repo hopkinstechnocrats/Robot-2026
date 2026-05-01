@@ -1,5 +1,12 @@
 package frc.robot.swerve;
 
+import java.util.Optional;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -12,6 +19,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -19,12 +27,14 @@ import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.networktables.DoubleEntry;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 
 public class Swervedrive extends SubsystemBase{
-    
+    RobotConfig pathPlannerConfig;
+
     SwerveDriveKinematics m_swerveKinematics;
     Translation2d m_frontLeftPosition;
     Translation2d m_frontRightPosition;
@@ -185,5 +195,54 @@ public class Swervedrive extends SubsystemBase{
                 poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
             }
         }
+    }
+
+    public void resetOdometry(Pose2d pose) {
+        m_poseEstimator.resetPosition(gyro.getRotation(), this.getModulePositions(), pose);
+        ChassisSpeeds robotRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(new ChassisSpeeds(0, 0, 0), gyro.getRotation());
+        m_swerveKinematics.toSwerveModuleStates(robotRelativeSpeeds);
+    }
+    
+    public SwerveModulePosition[] getModulePositions(){
+        SwerveModulePosition[] positions = new SwerveModulePosition[]{
+            fL.getModulePosition(),
+            fR.getModulePosition(),
+            bL.getModulePosition(),
+            bR.getModulePosition()
+        };
+
+        return positions;
+    }
+
+    public void setupAutoBuilder(){
+        try{
+            //TODO: check that the main/deploy/pathplanner/settings.json file exists and has up to date info. 
+            //It should be created/updated by filling out the pathplanner GUI.
+            pathPlannerConfig = RobotConfig.fromGUISettings();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        AutoBuilder.configure(
+            ()->m_poseEstimator.getEstimatedPosition(),// Robot pose supplier
+            (Pose2d pose)->resetOdometry(pose), // Method to reset odometry
+            ()->m_speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE.
+            (m_speeds, feedforwards) -> Drive(m_speeds), // Method that will drive the robot said ChassisSpeeds
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path follower
+            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            ),
+            pathPlannerConfig,// The robot configuration 
+            ()->{
+                Optional<Alliance> alliance = DriverStation.getAlliance();
+                if(alliance.isPresent()){
+                    /*If our robot is on the red alliance, then return true to flip our auto's path 
+                      The Origin remains on the blue side.*/
+                    return alliance.get() == DriverStation.Alliance.Red;
+                }
+                return false;
+            },
+            this
+        );
     }
 }

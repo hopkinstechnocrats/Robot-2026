@@ -24,6 +24,7 @@ import frc.robot.commands.LauncherCommands;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.config.RobotConfig;
 
 public class RobotContainer {
     
@@ -34,11 +35,17 @@ public class RobotContainer {
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
+
     SendableChooser<Command> autoChooser;
+    RobotConfig roboConfig;
+
     Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
     
     public void setupAutos(){
+      
+      m_swerve.setupAutoBuilder();
+
       NamedCommands.registerCommand("runLauncher", LauncherCommands.launcher(launcherSubsystem));
       NamedCommands.registerCommand("brakeLauncher", LauncherCommands.launcherBreak(launcherSubsystem)); 
       
