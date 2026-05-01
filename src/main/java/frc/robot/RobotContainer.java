@@ -43,7 +43,7 @@ public class RobotContainer {
     Swervedrive m_swerve = new Swervedrive();
     
     public void setupAutos(){
-      
+
       m_swerve.setupAutoBuilder();
 
       NamedCommands.registerCommand("runLauncher", LauncherCommands.launcher(launcherSubsystem));
@@ -56,7 +56,7 @@ public class RobotContainer {
     public RobotContainer() {
         feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
-        m_chooser.setDefaultOption("1 second", auto.oneSecond(m_swerve, 4)); //spped x & y is meters/second
+        //m_chooser.setDefaultOption("1 second", auto.oneSecond(m_swerve, 4)); //spped x & y is meters/second
         m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),
                 ()->driveController.getRightTriggerAxis(), () -> driveController.getLeftTriggerAxis()) 
