@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -20,6 +21,8 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.commands.FeederCommands;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.commands.LauncherCommands;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 public class RobotContainer {
@@ -31,10 +34,18 @@ public class RobotContainer {
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
-    
+    SendableChooser<Command> autoChooser;
     Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
     
+    public void setupAutos(){
+      NamedCommands.registerCommand("runLauncher", LauncherCommands.launcher(launcherSubsystem));
+      NamedCommands.registerCommand("brakeLauncher", LauncherCommands.launcherBreak(launcherSubsystem)); 
+      
+      autoChooser = AutoBuilder.buildAutoChooser("LauncherTest");
+      SmartDashboard.putData("Auto Chooser", autoChooser);
+    }
+
     public RobotContainer() {
         feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
@@ -53,9 +64,6 @@ public class RobotContainer {
                     intakeSubsystem.intakeBrake();
                   }, intakeSubsystem
         ));
-        
-      NamedCommands.registerCommand("runLauncher", LauncherCommands.launcher(launcherSubsystem));
-      NamedCommands.registerCommand("brakeLauncher", LauncherCommands.launcherBreak(launcherSubsystem)); 
 
         hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
 
@@ -63,7 +71,8 @@ public class RobotContainer {
     } 
 
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+      setupAutos();
+      return autoChooser.getSelected();
     }
 
     private void configureButtonBindings() {
