@@ -43,9 +43,6 @@ public class RobotContainer {
     Swervedrive m_swerve = new Swervedrive();
     
     public void setupAutos(){
-      
-      m_swerve.setupAutoBuilder();
-
       NamedCommands.registerCommand("runLauncher", LauncherCommands.launcher(launcherSubsystem));
       NamedCommands.registerCommand("brakeLauncher", LauncherCommands.launcherBreak(launcherSubsystem)); 
       
