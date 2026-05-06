@@ -51,12 +51,22 @@ public class RobotContainer {
       NamedCommands.registerCommand("brakeFeeder", FeederCommands.setFeederSpeedOnce(feederSubsystem,0));
       NamedCommands.registerCommand("runLauncher", LauncherCommands.setlaunchSpeedOnce(launcherSubsystem,Constants.LauncherConstants.k_launchSpeedRPS));
       NamedCommands.registerCommand("brakeLauncher", LauncherCommands.setlaunchSpeedOnce(launcherSubsystem,0)); 
+      
       NamedCommands.registerCommand("stopEverything", Commands.sequence(
         LauncherCommands.setlaunchSpeedOnce(launcherSubsystem, 0),
         IntakeCommands.setIntakeSpeedOnce(intakeSubsystem, 0),
         HopperCommands.setHopperSpeedOnce(hopperSubsystem, 0),
         FeederCommands.setFeederSpeedOnce(feederSubsystem, 0)
       ));
+
+      NamedCommands.registerCommand("launchFuel", Commands.sequence(
+        LauncherCommands.setlaunchSpeedOnce(launcherSubsystem, Constants.IntakeConstants.k_intakeSpeedRPS),
+        Commands.waitSeconds(0.1),//TODO: update the delays between launcher/feeder/hopper.
+        FeederCommands.setFeederSpeedOnce(feederSubsystem, Constants.FeederConstants.k_feederSpeedRPS),
+        Commands.waitSeconds(0.1),
+        HopperCommands.setHopperSpeedOnce(hopperSubsystem, Constants.HopperConstants.k_hopperSpeedRPS)
+      ));
+
       NamedCommands.registerCommand("endAuto", Commands.runOnce(()->endAuto()));
       
       autoChooser = AutoBuilder.buildAutoChooser("LauncherTest");
@@ -64,6 +74,7 @@ public class RobotContainer {
     }
 
     public void endAuto(){
+      //a function to be run when all other auto commands are done. Not always at the end of auto.
         feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
         //m_chooser.setDefaultOption("1 second", auto.oneSecond(m_swerve, 4)); //spped x & y is meters/second
