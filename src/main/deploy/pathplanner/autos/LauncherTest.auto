@@ -11,6 +11,18 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "runFeeder"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "runHopper"
+          }
+        },
+        {
           "type": "wait",
           "data": {
             "waitTime": 2.0
@@ -19,7 +31,7 @@
         {
           "type": "named",
           "data": {
-            "name": "brakeLauncher"
+            "name": "stopEverything"
           }
         },
         {
