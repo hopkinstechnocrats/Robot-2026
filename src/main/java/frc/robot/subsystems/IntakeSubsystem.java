@@ -22,6 +22,7 @@ import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.TunableNumber;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase{
 
@@ -37,6 +38,9 @@ public class IntakeSubsystem extends SubsystemBase{
     //TunableNumber m_tunableIntakeP;
     //TunableNumber m_tunableIntakeI;
     //TunableNumber m_tunableIntakeD;
+    TunableNumber m_tunableDeployIntakeP;
+    TunableNumber m_tunableDeployIntakeI;
+    TunableNumber m_tunableDeployIntakeD;
     CANcoder m_intakeAbsoluteEncoder;
     CANcoderConfiguration m_intakeCanCoderConfig;
     //TalonFX m_intakeMotor;
@@ -48,6 +52,7 @@ public class IntakeSubsystem extends SubsystemBase{
     //final VelocityVoltage m_intakeRequest = new VelocityVoltage(0).withSlot(0);
     final PositionVoltage m_intakeDeployRequest = new PositionVoltage(0).withSlot(0);
     final DutyCycleOut m_intakeDeployDutyCycle = new DutyCycleOut(0);
+    double m_intakeSetpoint;
 
     PWMTalonFX m_PWMintakeMotor;
     PWMTalonFX m_PWMintakeFollowerMotor;
@@ -62,7 +67,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_intakeAbsoluteEncoder = new CANcoder(Constants.IntakeConstants.k_absEncoderPortIntake);
             m_intakeCanCoderConfig = new CANcoderConfiguration();
 
-            m_intakeCanCoderConfig.MagnetSensor.MagnetOffset = 0.536;
+            m_intakeCanCoderConfig.MagnetSensor.MagnetOffset = IntakeConstants.k_intakeDeployEncoderOffset;
 
             m_PWMintakeMotor = new PWMTalonFX(Constants.IntakeConstants.k_intakeMotorPWMPort); 
             m_PWMintakeFollowerMotor = new PWMTalonFX(Constants.IntakeConstants.k_intakeFollowerPWMPort);
@@ -77,6 +82,9 @@ public class IntakeSubsystem extends SubsystemBase{
             //m_tunableIntakeP = new TunableNumber("IntakeTuning/IntakeP", Constants.IntakeConstants.k_intakeP);
             //m_tunableIntakeI = new TunableNumber("IntakeTuning/IntakeI", Constants.IntakeConstants.k_intakeI);
             //m_tunableIntakeD = new TunableNumber("IntakeTuning/IntakeD", Constants.IntakeConstants.k_intakeD);
+            m_tunableDeployIntakeP = new TunableNumber("IntakeTuning/IntakeDeployP", Constants.IntakeConstants.k_intakeDeployP);
+            m_tunableDeployIntakeI = new TunableNumber("IntakeTuning/IntakeDeployI", Constants.IntakeConstants.k_intakeDeployI);
+            m_tunableDeployIntakeD = new TunableNumber("IntakeTuning/IntakeDeployD", Constants.IntakeConstants.k_intakeDeployD);
 
             //m_intakeConfig = new TalonFXConfiguration();
             m_deployConfig = new TalonFXConfiguration();
@@ -84,6 +92,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
             m_deployConfig.Feedback.RotorToSensorRatio = Constants.IntakeConstants.k_deployGearRatio; 
             m_deployConfig.Feedback.FeedbackRemoteSensorID = m_intakeAbsoluteEncoder.getDeviceID();
+            m_deployConfig.ClosedLoopGeneral.ContinuousWrap = false;
 
             //m_intakeConfig.Slot0.kP = Constants.IntakeConstants.k_intakeP;
             //m_intakeConfig.Slot0.kI = Constants.IntakeConstants.k_intakeI;
@@ -102,6 +111,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             m_deployConfig.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.k_deployGearRatio;
             m_deployConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.5;
+            m_deployConfig.CurrentLimits.StatorCurrentLimit = 15;
 
             //m_intakeMotor.getConfigurator().apply(m_intakeConfig);
             //m_intakeFollowerMotor.getConfigurator().apply(m_intakeConfig);
@@ -115,6 +125,8 @@ public class IntakeSubsystem extends SubsystemBase{
             DeployPIDDifference = table.getDoubleTopic("Deploy PID Difference").getEntry(0);
             DeployMotorFollowerVoltage = table.getDoubleTopic("Deploy Follower Motor Volated").getEntry(0);
             DeployPIDFollowerDifference = table.getDoubleTopic("Deploy Follower PID Difference").getEntry(0);
+
+            m_intakeSetpoint = m_intakeDeployMotor.getPosition().getValueAsDouble();
         }
     
 		@Override
@@ -157,7 +169,8 @@ public class IntakeSubsystem extends SubsystemBase{
         }
 
         public void intakeDeploy(double position){ // moves arm to specific pos
-            m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(position));
+            m_intakeSetpoint = position;
+            m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(m_intakeSetpoint));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
         public void intakeBrake(){ // holds arm in place?
