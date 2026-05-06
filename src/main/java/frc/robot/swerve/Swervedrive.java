@@ -228,6 +228,11 @@ public class Swervedrive extends SubsystemBase{
     }
 
     public void resetOdometry(Pose2d pose) {
+        if(pose == null){
+            /*If the target pose isn't real, don't 
+             * reset the odometry. */
+            return;
+        }
         m_poseEstimator.resetPosition(gyro.getRotation(), this.getModulePositions(), pose);
         ChassisSpeeds robotRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(new ChassisSpeeds(0, 0, 0), gyro.getRotation());
         m_swerveKinematics.toSwerveModuleStates(robotRelativeSpeeds);

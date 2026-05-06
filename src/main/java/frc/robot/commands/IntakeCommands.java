@@ -15,8 +15,8 @@ public class IntakeCommands extends Command {
         intake);
     }
 
-    public static Command setIntakeSpeed(IntakeSubsystem intake,double speed) {
-        return Commands.run(
+    public static Command setIntakeSpeedOnce(IntakeSubsystem intake,double speed) {
+        return Commands.runOnce(
             () -> {
                 intake.intake(speed);
             },

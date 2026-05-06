@@ -11,8 +11,16 @@ public class FeederCommands extends Command{
                 wheel.feeder(Constants.FeederConstants.k_feederSpeedRPS);
             },
         wheel);
-        
+    }    
+    
+    public static Command setFeederSpeedOnce(FeederSubsystem wheel,double speed) {
+        return Commands.run(
+            () -> {
+                wheel.feeder(speed);
+            },
+        wheel);
     }
+    
     public static Command unfeeder(FeederSubsystem wheel) {
         return Commands.run(
             () -> {
