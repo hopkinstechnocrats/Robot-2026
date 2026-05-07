@@ -113,13 +113,14 @@ public final class Constants{
         public static final double k_deployGearRatio = 20*(84/14);
     }
 
+
     public static final class LauncherConstants{
         public static final int k_launcherMotorCANID = 25;
         public static final int k_launcherMotorSecondCANID = 26;
-        public static double k_launchSpeedRPS = 75; //rotations per second, max ~80, 85 if you strain it
+        public static double k_launchSpeedRPS = 80; //rotations per second, max ~80, 85 if you strain it
         public static final double k_launcherBrakeSpeedRPS = 0;
-        public static final double k_launcherP = .25; 
-        public static final double k_launcherI = .1;
+        public static final double k_launcherP = 100;
+        public static final double k_launcherI = 0;
         public static final double k_launcherD = 0;
         public static final double k_launcherFeedForward = .12; 
     }
