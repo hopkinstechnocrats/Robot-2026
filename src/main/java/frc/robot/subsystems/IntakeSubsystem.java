@@ -111,7 +111,7 @@ public class IntakeSubsystem extends SubsystemBase{
             m_deployConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
             m_deployConfig.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
             m_deployConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-            m_deployConfig.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.k_deployGearRatio;
+            m_deployConfig.Feedback.SensorToMechanismRatio = 1;
             m_deployConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.5;
             m_deployConfig.CurrentLimits.StatorCurrentLimit = 15;
 
@@ -179,7 +179,7 @@ public class IntakeSubsystem extends SubsystemBase{
         public void intakeBrake(){ // holds arm in place?
         	//m_intakeMotor.setControl(m_intakeRequest.withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
             //m_intakeMotor.setControl(new Follower(m_intakeMotor.getDeviceID(), MotorAlignmentValue.Opposed));
-            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(0.02));
+            m_intakeDeployMotor.setControl(m_intakeDeployRequest.withPosition(m_intakeSetpoint));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
             m_PWMintakeMotor.set(0);
             m_PWMintakeFollowerMotor.set(0);
