@@ -163,7 +163,7 @@ public class IntakeSubsystem extends SubsystemBase{
         public void intakeBrake(){ // holds arm in place?
         	//m_intakeMotor.setControl(m_intakeRequest.withVelocity(Constants.IntakeConstants.k_intakeBrakeSpeedRPS));
             //m_intakeMotor.setControl(new Follower(m_intakeMotor.getDeviceID(), MotorAlignmentValue.Opposed));
-            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(0.02));
+            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(0.0));
             m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
             m_PWMintakeMotor.set(0);
             m_PWMintakeFollowerMotor.set(0);
