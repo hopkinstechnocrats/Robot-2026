@@ -125,5 +125,7 @@ public final class Constants{
         public static final double k_launcherFeedForward = .12; 
     }
 
+    public static final Pose2d k_blueHubPose = new Pose2d(4.6116, 4.0213, new Rotation2d());
+    public static final Pose2d k_redHubPose = new Pose2d(11.9014, 4.0213, new Rotation2d());
 
 }

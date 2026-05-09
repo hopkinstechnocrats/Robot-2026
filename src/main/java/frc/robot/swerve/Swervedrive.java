@@ -1,5 +1,7 @@
 package frc.robot.swerve;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -60,6 +62,9 @@ public class Swervedrive extends SubsystemBase{
 
     ChassisSpeeds m_speeds;
 
+    Pose2d curntHubPose;
+    boolean isAllianceBlue;
+
     public Swervedrive(){
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Swerve");
@@ -96,6 +101,13 @@ public class Swervedrive extends SubsystemBase{
         robotPosition = table.getStructTopic("Robot Position", Pose2d.struct).publish();
     }
 
+    public boolean checkIfAllianceBlue(){
+        boolean isAllianceBlue = true;
+        if(DriverStation.getAlliance().isPresent()){
+            isAllianceBlue = DriverStation.getAlliance().get() != Alliance.Red;
+        }
+        return isAllianceBlue;
+    }
 
     @Override
     public void periodic(){
@@ -115,6 +127,19 @@ public class Swervedrive extends SubsystemBase{
         blAnalog.set(bL.getAbsEncoderPositionRot());
         brAnalog.set(bR.getAbsEncoderPositionRot());
         robotPosition.set(m_pose);
+    }
+
+    public double distToHub(){
+        //updates the constant distFromHub to the distance the robot is from the hub in meters
+        Pose2d curntHubPose;
+        if(checkIfAllianceBlue()){
+            curntHubPose = Constants.k_blueHubPose;
+        }
+        else{
+            curntHubPose = Constants.k_redHubPose;
+        }
+
+        return Math.sqrt(curntHubPose.getX() - m_pose.getX()) * (curntHubPose.getX() - m_pose.getX()) + (curntHubPose.getY() - m_pose.getY()) * (curntHubPose.getY() - m_pose.getY());
     }
 
     public void Drive(ChassisSpeeds desiredState){
