@@ -10,7 +10,7 @@ public class IntakeCommands extends Command {
     public static Command intake(IntakeSubsystem intake) {
         return Commands.run(
             () -> {
-                intake.intake(Constants.IntakeConstants.k_intakeSpeedRPS);
+                intake.intake(0.5);
             },
         intake);
     }
@@ -18,7 +18,7 @@ public class IntakeCommands extends Command {
     public static Command outtake(IntakeSubsystem intake) {
         return Commands.run(
             () -> {
-                intake.intake(Constants.IntakeConstants.k_reverseIntakeSpeedRPS);
+                intake.intake(-0.5);
             },
         intake);
     }
