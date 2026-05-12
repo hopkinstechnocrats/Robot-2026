@@ -69,7 +69,7 @@ public class RobotContainer {
 
       NamedCommands.registerCommand("endAuto", Commands.runOnce(()->endAuto()));
       
-      autoChooser = AutoBuilder.buildAutoChooser("LauncherTest");
+      autoChooser = AutoBuilder.buildAutoChooser("BackUpAndShoot");
       SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
