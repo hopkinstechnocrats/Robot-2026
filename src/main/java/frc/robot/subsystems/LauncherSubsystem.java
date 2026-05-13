@@ -61,6 +61,9 @@ import frc.robot.TunableNumber;
             m_launcherOutputConfig.NeutralMode = NeutralModeValue.Coast;
             m_launcherOutputConfig.Inverted = InvertedValue.Clockwise_Positive;
             m_currentLimits.StatorCurrentLimit = 160;
+            m_currentLimits.SupplyCurrentLimit = 0; //burst
+            m_currentLimits.SupplyCurrentLowerLimit = 20; //ccontinued limit
+            m_currentLimits.SupplyCurrentLowerTime = 0; //time for the burst
 
             m_launcherMotor.setNeutralMode(NeutralModeValue.Brake);
             m_launcherMotorSecond.setNeutralMode(NeutralModeValue.Brake);
