@@ -61,9 +61,9 @@ import frc.robot.TunableNumber;
             m_launcherOutputConfig.NeutralMode = NeutralModeValue.Coast;
             m_launcherOutputConfig.Inverted = InvertedValue.Clockwise_Positive;
             m_currentLimits.StatorCurrentLimit = 160;
-            m_currentLimits.SupplyCurrentLimit = 0; //burst
-            m_currentLimits.SupplyCurrentLowerLimit = 20; //ccontinued limit
-            m_currentLimits.SupplyCurrentLowerTime = 0; //time for the burst
+            m_currentLimits.SupplyCurrentLimit = 60; //burst TODO set real number
+            m_currentLimits.SupplyCurrentLowerLimit = 20; //continued limit
+            m_currentLimits.SupplyCurrentLowerTime = 3; //time for the burst TODO set real number
 
             m_launcherMotor.setNeutralMode(NeutralModeValue.Brake);
             m_launcherMotorSecond.setNeutralMode(NeutralModeValue.Brake);
@@ -73,6 +73,7 @@ import frc.robot.TunableNumber;
             m_launcherMotorSecond.setNeutralMode(NeutralModeValue.Brake);
             m_launcherMotorSecond.getConfigurator().apply(m_launcherOutputConfig);
             m_launcherMotor.getConfigurator().apply(m_launcherConfig);
+            
 
             /*
 			LauncherMotorVoltage = table.getDoubleTopic("Motor Volated").getEntry(0);
