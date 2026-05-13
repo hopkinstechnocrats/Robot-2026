@@ -19,10 +19,11 @@ import frc.robot.commands.IntakeCommands;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.commands.FeederCommands;
 import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.MatchTimerSubsystem;
 import frc.robot.commands.LauncherCommands;
 
 public class RobotContainer {
-    
+    MatchTimerSubsystem matchTimerSubsystem;
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
     private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
@@ -33,9 +34,10 @@ public class RobotContainer {
     
     Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
-    MatchTimer matchTimerSubsystem = new MatchTimer();
+    
     
     public RobotContainer() {
+      matchTimerSubsystem = new MatchTimerSubsystem();
         feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
         m_chooser.setDefaultOption("1 second", auto.oneSecond(m_swerve, 4)); //spped x & y is meters/second

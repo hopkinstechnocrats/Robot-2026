@@ -6,7 +6,7 @@ public class MatchTimerSubsystem extends SubsystemBase{
 
     MatchTimer matchTimer;
 
-    MatchTimerSubsystem(){
+    public MatchTimerSubsystem(){
         matchTimer = new MatchTimer();
     }
 
