@@ -16,6 +16,7 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.commands.HopperCommands;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.commands.IntakeCommands;
+import frc.robot.commands.LaunchCommand;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.commands.FeederCommands;
 import frc.robot.subsystems.LauncherSubsystem;
@@ -33,6 +34,7 @@ public class RobotContainer {
     
     Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
+    LaunchCommand m_LaunchCommand = new LaunchCommand(hopperSubsystem, launcherSubsystem, feederSubsystem);
     
     public RobotContainer() {
         feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
@@ -74,8 +76,7 @@ public class RobotContainer {
       
       operatorController.x().whileTrue(HopperCommands.reverseHopper(hopperSubsystem));
       operatorController.y().whileTrue(FeederCommands.unfeeder(feederSubsystem)); 
-      operatorController.rightTrigger().whileTrue(LauncherCommands.launcher(launcherSubsystem).withTimeout(0.5)
-        .andThen(FeederCommands.feeder(feederSubsystem).alongWith(HopperCommands.hopper(hopperSubsystem).alongWith(LauncherCommands.launcher(launcherSubsystem)))));
+      operatorController.rightTrigger().whileTrue(m_LaunchCommand);
       operatorController.povLeft().whileTrue(LauncherCommands.inverseLauncher(launcherSubsystem));
     }
 }

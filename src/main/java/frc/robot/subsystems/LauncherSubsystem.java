@@ -43,6 +43,7 @@ import frc.robot.TunableNumber;
         TunableNumber kVInputLauncher;
 
         TunableNumber k_launchRPS;
+        double launcherSetpoint;
         
         final VelocityVoltage m_launcherRequest = new VelocityVoltage(0).withSlot(0);
         
@@ -124,13 +125,20 @@ import frc.robot.TunableNumber;
     	}
         
         public void launcher(double launcherSpeed){
+            launcherSetpoint = launcherSpeed;
         	m_launcherMotor.setControl(m_launcherRequest.withVelocity(launcherSpeed));
         	m_launcherMotorSecond.setControl(new Follower(m_launcherMotor.getDeviceID(), MotorAlignmentValue.Opposed));
         }
 
         public void launcherBrake(){
+            launcherSetpoint = 0;
             m_launcherMotor.setControl(new DutyCycleOut(0));
         	m_launcherMotorSecond.setControl(new Follower(m_launcherMotor.getDeviceID(), MotorAlignmentValue.Opposed));
+        }
+
+
+        public boolean atSpeed() {
+            return Math.abs(m_launcherMotor.getClosedLoopError().getValueAsDouble()) < 5;
         }
     }
 
