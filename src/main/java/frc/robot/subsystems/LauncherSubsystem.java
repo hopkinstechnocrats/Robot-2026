@@ -60,7 +60,7 @@ import frc.robot.TunableNumber;
 			m_launcherConfig.kV = Constants.LauncherConstants.k_launcherFeedForward;
             m_launcherOutputConfig.NeutralMode = NeutralModeValue.Coast;
             m_launcherOutputConfig.Inverted = InvertedValue.Clockwise_Positive;
-            m_currentLimits.StatorCurrentLimit = 80;
+            m_currentLimits.StatorCurrentLimit = 160;
 
             m_launcherMotor.setNeutralMode(NeutralModeValue.Brake);
             m_launcherMotorSecond.setNeutralMode(NeutralModeValue.Brake);
