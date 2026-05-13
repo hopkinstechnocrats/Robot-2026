@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Rotate"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "deployIntake"
