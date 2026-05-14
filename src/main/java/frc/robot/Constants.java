@@ -24,6 +24,7 @@ public final class Constants{
         public static final double k_driveKP = 0.3 ;
         public static final double k_driveKI = 0.0;
         public static final double k_driveKD = 0.0;
+        public static final double k_driveKV = 2.55;
 
         public static final double k_turnKP = 12.0;
         public static final double k_turnKI = 5;

@@ -85,6 +85,7 @@ public class SwerveModule extends SubsystemBase{
         m_driveConfig.Slot0.kP = Constants.SwerveConstants.k_driveKP;
         m_driveConfig.Slot0.kI = Constants.SwerveConstants.k_driveKI;
         m_driveConfig.Slot0.kD = Constants.SwerveConstants.k_driveKD;
+        m_driveConfig.Slot0.kV = Constants.SwerveConstants.k_driveKV;
 
         m_turnConfig.Slot0.kP = Constants.SwerveConstants.k_turnKP;
         m_turnConfig.Slot0.kI = Constants.SwerveConstants.k_turnKI;
