@@ -39,6 +39,12 @@
           "data": {
             "name": "brakeLauncher"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "endAuto"
+          }
         }
       ]
     }

@@ -37,6 +37,14 @@ public class IntakeCommands extends Command {
                 intake.intakeDeploy(Constants.IntakeConstants.k_intakeSetpointDeploy);
             },
         intake);
+    }    
+    
+    public static Command deployToSetpointOnce(IntakeSubsystem intake,double setpoint) {
+        return Commands.run(
+            () -> {
+                intake.intakeDeploy(setpoint);
+            },
+        intake);
     }
 /*
     public static Command deployBob(IntakeSubsystem deployBob) {

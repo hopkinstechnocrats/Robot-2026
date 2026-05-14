@@ -51,6 +51,8 @@ public class RobotContainer {
       NamedCommands.registerCommand("brakeFeeder", FeederCommands.setFeederSpeedOnce(feederSubsystem,0));
       NamedCommands.registerCommand("runLauncher", LauncherCommands.setlaunchSpeedOnce(launcherSubsystem,Constants.LauncherConstants.k_launchSpeedRPS));
       NamedCommands.registerCommand("brakeLauncher", LauncherCommands.setlaunchSpeedOnce(launcherSubsystem,0)); 
+      NamedCommands.registerCommand("deployIntake", IntakeCommands.deployToSetpointOnce(intakeSubsystem,Constants.IntakeConstants.k_intakeSetpointDeploy)); 
+      NamedCommands.registerCommand("retractIntake", IntakeCommands.deployToSetpointOnce(intakeSubsystem,Constants.IntakeConstants.k_intakeSetpointRetract)); 
       
       NamedCommands.registerCommand("stopEverything", Commands.sequence(
         LauncherCommands.setlaunchSpeedOnce(launcherSubsystem, 0),
