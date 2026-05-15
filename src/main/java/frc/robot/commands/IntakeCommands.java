@@ -55,6 +55,16 @@ public class IntakeCommands extends Command {
             intake);
     }
 
+    public static Command launching(IntakeSubsystem intake){
+        return Commands.run(
+            () -> {
+                intake.intakeDeploy(0.03);
+                intake.intake(0.3);
+            },
+            intake);
+    }
+
+
     public static Command down(IntakeSubsystem intake){
         return Commands.run(
             () -> {
