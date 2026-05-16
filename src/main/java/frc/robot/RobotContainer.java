@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.swerve.Swervedrive;
 import frc.robot.autos.Autos;
 import frc.robot.commands.TeleopDrive;
+import frc.robot.commands.TurretCommands;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.commands.HopperCommands;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -19,6 +20,7 @@ import frc.robot.commands.IntakeCommands;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.commands.FeederCommands;
 import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.commands.LauncherCommands;
 
 public class RobotContainer {
@@ -30,6 +32,7 @@ public class RobotContainer {
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
+    private final TurretSubsystem turretSubsystem = new TurretSubsystem();
     
     
       Command stopEverything(){
@@ -66,6 +69,8 @@ public class RobotContainer {
 
 
         launcherSubsystem.setDefaultCommand(LauncherCommands.launcherBreak(launcherSubsystem));
+
+        turretSubsystem.setDefaultCommand(TurretCommands.turretBrake(turretSubsystem));
         
 		    intakeSubsystem.setDefaultCommand(
             new RunCommand(
