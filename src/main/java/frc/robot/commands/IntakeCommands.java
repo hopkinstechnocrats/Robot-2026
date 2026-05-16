@@ -22,6 +22,13 @@ public class IntakeCommands extends Command {
             },
         intake);
     }
+    public static Command setIntakeSpeedOnce(IntakeSubsystem intake,double speed) {
+        return Commands.runOnce(
+            () -> {
+                intake.intake(speed);
+            },
+        intake);
+    }
 
     public static Command deploy(IntakeSubsystem intake) {
         return Commands.run(
@@ -64,6 +71,15 @@ public class IntakeCommands extends Command {
             intake);
     }
 
+    
+    public static Command launchingOnce(IntakeSubsystem intake){
+        return Commands.runOnce(
+            () -> {
+                intake.intakeDeploy(0.03);
+                intake.intake(0.3);
+            },
+            intake);
+    }
 
     public static Command down(IntakeSubsystem intake){
         return Commands.run(

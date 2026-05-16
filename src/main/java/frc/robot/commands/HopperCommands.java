@@ -6,7 +6,14 @@ import frc.robot.Constants;
 import frc.robot.subsystems.HopperSubsystem;
 
 public class HopperCommands extends Command {
-       
+    public static Command setHopperSpeedOnce(HopperSubsystem hoptest,double speed) {
+        return Commands.runOnce(
+            () -> {
+                hoptest.hopper(speed);
+            },
+        hoptest);
+    }
+
     public static Command hopper(HopperSubsystem hoptest) {
         return Commands.run(
             () -> {

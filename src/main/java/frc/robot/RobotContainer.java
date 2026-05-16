@@ -31,6 +31,26 @@ public class RobotContainer {
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
     
+    
+      Command stopEverything(){
+        return Commands.sequence(
+        IntakeCommands.setIntakeSpeedOnce(intakeSubsystem, 0),
+        LauncherCommands.setlaunchSpeedOnce(launcherSubsystem, 0),
+        HopperCommands.setHopperSpeedOnce(hopperSubsystem, 0),
+        FeederCommands.setFeederSpeedOnce(feederSubsystem, 0));
+      };
+
+      Command LaunchFuel(){
+        return Commands.sequence(
+          IntakeCommands.launchingOnce(intakeSubsystem),
+          //LauncherCommands.setlaunchSpeedOnce(launcherSubsystem, Constants.IntakeConstants.k_intakeSpeedRPS),
+          Commands.waitSeconds(0.3),//TODO: update the delays between launcher/feeder/hopper.
+          FeederCommands.setFeederSpeedOnce(feederSubsystem, Constants.FeederConstants.k_feederSpeedRPS),
+          Commands.waitSeconds(0.1),
+          HopperCommands.setHopperSpeedOnce(hopperSubsystem, Constants.HopperConstants.k_hopperSpeedRPS)
+        );
+     }
+
     Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
     
@@ -38,10 +58,10 @@ public class RobotContainer {
         feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
         m_chooser.setDefaultOption("1 second", auto.oneSecond(m_swerve, 4)); //spped x & y is meters/second
-        m_swerve.setDefaultCommand(
+        /*m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),
                 ()->driveController.getRightTriggerAxis(), () -> driveController.getLeftTriggerAxis()) 
-        );
+        );*/
 
 
         launcherSubsystem.setDefaultCommand(LauncherCommands.launcherBreak(launcherSubsystem));
@@ -60,7 +80,14 @@ public class RobotContainer {
     } 
 
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+        return Commands.sequence(
+          LaunchFuel(),
+          Commands.waitSeconds(3),          
+          stopEverything(),
+
+          TeleopDrive.autoExecute(-1,0,0,m_swerve)
+
+          );
     }
 
     private void configureButtonBindings() {

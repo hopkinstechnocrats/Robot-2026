@@ -5,6 +5,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.swerve.Swervedrive;
 import java.util.function.DoubleSupplier;
@@ -22,7 +23,7 @@ public class TeleopDrive extends Command{
     private double m_yOut;
     private double m_omegaOut;
 
-    private double invert = 1;
+    public double invert = 1;
 
     public TeleopDrive(Swervedrive swervedrive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier omega, DoubleSupplier fastMode, DoubleSupplier bumpMode){
         m_swerve = swervedrive;
@@ -69,6 +70,31 @@ public class TeleopDrive extends Command{
         //ChassisSpeeds speeds = new ChassisSpeeds(m_xOut, m_yOut, m_omegaOut);
 
         m_swerve.Drive(speeds);
+    }
+
+    
+    public static Command autoExecute(double X, double Y, double omega, Swervedrive m_swerve){
+        /*if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red){
+            invert = -1;
+        }
+        if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue){
+            invert = 1;
+        }*/
+        return Commands.run(()->{
+           double m_xOut =X;
+        double m_yOut = Y;
+        double m_omegaOut = omega;
+
+        m_xOut *= 2.57; // none
+        m_yOut *= 2.57;
+
+        m_omegaOut *= Constants.SwerveConstants.k_maxAngularSpeedRadPerSec;
+
+        ChassisSpeeds speeds = new ChassisSpeeds(m_xOut , m_yOut, m_omegaOut);
+        //ChassisSpeeds speeds = new ChassisSpeeds(m_xOut, m_yOut, m_omegaOut);
+
+        m_swerve.Drive(speeds);
+    });
     }
 
     @Override
