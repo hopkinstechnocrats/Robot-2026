@@ -44,9 +44,9 @@ public final class Constants{
         public static final double k_blAbsEncoderOffset = 0.325;
         public static final double k_brAbsEncoderOffset = 0.221;
 
-        public static final double k_maxLinearSpeedMeterPerSecond = 18;
-        public static final double k_slowMaxLinearSpeenMetersPerSecond = 8;
-        public static final double k_bumpMaxLinearSpeenMetersPerSecond = 12;
+        public static final double k_maxLinearSpeedMeterPerSecond = 20;
+        public static final double k_slowMaxLinearSpeenMetersPerSecond = 10;
+        public static final double k_bumpMaxLinearSpeenMetersPerSecond = 14;
         public static final double k_maxAngularSpeedRadPerSec = 10.0 * Math.PI;  //old value of 8*pi
 
         public static final double k_driveGearRatio = 6.03;
@@ -78,6 +78,14 @@ public final class Constants{
         public static final double k_feederI = 0;
         public static final double k_feederD = 0;
         public static final double k_feederFeedForward = 0; 
+    }
+    public static final class TurretConstants{
+        public static final int k_turretMotorCANID = 24;
+        public static final double k_turretP = 0.3; 
+        public static final double k_turretI = 0;
+        public static final double k_turretD = 0;
+        public static final double k_turretFeedForward = 0; 
+
     }
     public static final class HopperConstants{
         public static final int k_hopperMotorCANID = 17;
