@@ -46,7 +46,7 @@ public class RobotContainer {
       Command LaunchFuel(){
         return Commands.sequence(
           IntakeCommands.launchingOnce(intakeSubsystem),
-          LauncherCommands.setlaunchSpeedOnce(launcherSubsystem, Constants.LauncherConstants.k_launchSpeedRPS),
+          LauncherCommands.setlaunchSpeedOnce(launcherSubsystem, Constants.LauncherConstants.k_launchSpeedRPS*0.8),
           //LauncherCommands.setlaunchSpeedOnce(launcherSubsystem, Constants.IntakeConstants.k_intakeSpeedRPS),
           Commands.waitSeconds(0.3),//TODO: update the delays between launcher/feeder/hopper.
           FeederCommands.setFeederSpeedOnce(feederSubsystem, Constants.FeederConstants.k_feederSpeedRPS),
