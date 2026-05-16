@@ -80,7 +80,7 @@ public class TeleopDrive extends Command{
         if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue){
             invert = 1;
         }*/
-        return Commands.run(()->{
+        return Commands.runOnce(()->{
            double m_xOut =X;
         double m_yOut = Y;
         double m_omegaOut = omega;
@@ -95,6 +95,12 @@ public class TeleopDrive extends Command{
 
         m_swerve.Drive(speeds);
     });
+    }
+
+    Command waitTillInPosition(){
+        return Commands.waitUntil(()->{
+            return true;
+        });
     }
 
     @Override

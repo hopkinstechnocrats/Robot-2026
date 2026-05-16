@@ -80,13 +80,14 @@ public class RobotContainer {
     } 
 
     public Command getAutonomousCommand() {
+      //The entirity of our auto.
         return Commands.sequence(
           LaunchFuel(),
           Commands.waitSeconds(3),          
           stopEverything(),
-
-          TeleopDrive.autoExecute(-1,0,0,m_swerve)
-
+          TeleopDrive.autoExecute(0,-1,0,m_swerve),
+          Commands.waitSeconds(3),
+          TeleopDrive.autoExecute(0,0,0,m_swerve)
           );
     }
 
