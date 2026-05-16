@@ -85,7 +85,7 @@ public class IntakeCommands extends Command {
     public static Command down(IntakeSubsystem intake){
         return Commands.run(
             () -> {
-                intake.intakeDeploy(0.005);
+                intake.intakeDeploy(0.01);
             },
             intake);
     }
