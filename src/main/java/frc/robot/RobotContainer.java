@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -33,7 +37,8 @@ public class RobotContainer {
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
     private final TurretSubsystem turretSubsystem = new TurretSubsystem();
-    
+    Rotation2d initialPose;
+
     
       Command stopEverything(){
         return Commands.sequence(
@@ -58,6 +63,20 @@ public class RobotContainer {
     Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
     
+     public Command orientRobot(){
+      //rotate the robot 90 degrees.
+      return Commands.sequence(
+        Commands.runOnce(()->
+        initialPose = m_swerve.m_pose.getRotation()
+        ),
+        TeleopDrive.autoExecute(0, 0, 0.5, m_swerve),
+        Commands.waitUntil(
+          ()->m_swerve.m_pose.getRotation().minus(initialPose).getRotations() > -0.25
+        ),
+        TeleopDrive.autoExecute(0, 0, 0, m_swerve)
+      );
+     }
+
     public void restoreDefaults(){
         feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
@@ -89,7 +108,8 @@ public class RobotContainer {
     } 
 
     public Command getAutonomousCommand() {
-      //The entirity of our auto.
+      //return orientRobot();
+      //*The entirity of our auto.
         return Commands.sequence(
           LaunchFuel(),
           Commands.waitSeconds(5),          
@@ -98,6 +118,7 @@ public class RobotContainer {
           Commands.waitSeconds(10),
           TeleopDrive.autoExecute(0,0,0,m_swerve)
           );
+          //*/
     }
 
     private void configureButtonBindings() {

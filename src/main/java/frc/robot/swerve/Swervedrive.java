@@ -31,7 +31,7 @@ public class Swervedrive extends SubsystemBase{
     Translation2d m_backLeftPosition;
     Translation2d m_backRightPosition;
 
-    Pose2d m_pose;
+    public Pose2d m_pose;
     SwerveDrivePoseEstimator m_poseEstimator;
     
     NetworkTableInstance inst;
