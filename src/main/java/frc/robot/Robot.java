@@ -7,15 +7,18 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private Command m_teleopInitCommand;
 
   private RobotContainer m_robotContainer;
 
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
+    m_teleopInitCommand = Commands.runOnce(()->m_robotContainer.restoreDefaults());
   }
 
   @Override
@@ -51,6 +54,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
+      CommandScheduler.getInstance().schedule(m_teleopInitCommand);
     }
   }
 

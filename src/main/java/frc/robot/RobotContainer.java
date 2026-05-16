@@ -35,7 +35,7 @@ public class RobotContainer {
       Command stopEverything(){
         return Commands.sequence(
         IntakeCommands.setIntakeSpeedOnce(intakeSubsystem, 0),
-        LauncherCommands.setlaunchSpeedOnce(launcherSubsystem, 0),
+        LauncherCommands.launcherBreakOnce(launcherSubsystem),
         HopperCommands.setHopperSpeedOnce(hopperSubsystem, 0),
         FeederCommands.setFeederSpeedOnce(feederSubsystem, 0));
       };
@@ -43,6 +43,7 @@ public class RobotContainer {
       Command LaunchFuel(){
         return Commands.sequence(
           IntakeCommands.launchingOnce(intakeSubsystem),
+          LauncherCommands.setlaunchSpeedOnce(launcherSubsystem, Constants.LauncherConstants.k_launchSpeedRPS),
           //LauncherCommands.setlaunchSpeedOnce(launcherSubsystem, Constants.IntakeConstants.k_intakeSpeedRPS),
           Commands.waitSeconds(0.3),//TODO: update the delays between launcher/feeder/hopper.
           FeederCommands.setFeederSpeedOnce(feederSubsystem, Constants.FeederConstants.k_feederSpeedRPS),
@@ -54,14 +55,14 @@ public class RobotContainer {
     Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
     
-    public RobotContainer() {
+    public void restoreDefaults(){
         feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
         m_chooser.setDefaultOption("1 second", auto.oneSecond(m_swerve, 4)); //spped x & y is meters/second
-        /*m_swerve.setDefaultCommand(
+        m_swerve.setDefaultCommand(
             new TeleopDrive(m_swerve, () -> driveController.getLeftY(), () -> driveController.getLeftX(), () -> driveController.getRightX(),
                 ()->driveController.getRightTriggerAxis(), () -> driveController.getLeftTriggerAxis()) 
-        );*/
+        );
 
 
         launcherSubsystem.setDefaultCommand(LauncherCommands.launcherBreak(launcherSubsystem));
@@ -75,6 +76,9 @@ public class RobotContainer {
         
 
         hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
+    }
+
+    public RobotContainer() {
 
         configureButtonBindings();
     } 
@@ -83,10 +87,10 @@ public class RobotContainer {
       //The entirity of our auto.
         return Commands.sequence(
           LaunchFuel(),
-          Commands.waitSeconds(3),          
+          Commands.waitSeconds(5),          
           stopEverything(),
-          TeleopDrive.autoExecute(0,-1,0,m_swerve),
-          Commands.waitSeconds(3),
+          TeleopDrive.autoExecute(0,1,0,m_swerve),
+          Commands.waitSeconds(10),
           TeleopDrive.autoExecute(0,0,0,m_swerve)
           );
     }

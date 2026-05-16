@@ -21,6 +21,13 @@ public class LauncherCommands extends Command {
             },
             wheel);
     }
+     public static Command launcherBreakOnce(LauncherSubsystem wheel){
+        return Commands.runOnce(
+            () -> {
+                wheel.launcherBrake();
+            },
+            wheel);
+    }
 
     public static Command setlaunchSpeedOnce(LauncherSubsystem launcherSubsystem, double speed){
         return Commands.runOnce(
