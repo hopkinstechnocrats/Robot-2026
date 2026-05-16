@@ -11,6 +11,7 @@ public class IntakeCommands extends Command {
         return Commands.run(
             () -> {
                 intake.intake(0.5);
+                intake.intakeDeploy(0.005);
             },
         intake);
     }
