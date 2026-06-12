@@ -74,7 +74,7 @@ public final class Constants{
         public static final double k_feederSpeedRPS = -95;
         public static final double k_reverseFeederSpeedRPS = 40;
         public static final double k_feederBreakSpeedRPS = 0;
-        public static final double k_feederP = 0.3; 
+        public static final double k_feederP = 0.3; hcjukchjgejcdukeyceycik
         public static final double k_feederI = 0;
         public static final double k_feederD = 0;
         public static final double k_feederFeedForward = 0; 
