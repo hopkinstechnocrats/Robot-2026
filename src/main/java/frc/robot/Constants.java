@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.ctre.phoenix6.signals.RGBWColor;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
@@ -128,4 +130,8 @@ public final class Constants{
     }
 
 
+    public static final class LEDConstants{
+        public static final int k_CANdleCANID = 0; //tbd
+        public static final RGBWColor k_Green = new RGBWColor(0, 255, 0);
+    }
 }
