@@ -103,7 +103,7 @@ public final class Constants{
         public static final int k_intakeDeployMotorCANID = 18;
         public static final int k_intakeDeployMotorFollowerCANID = 16;
         public static final int k_absEncoderPortIntake = 40;
-        public static final double k_intakeDeployEncoderOffset = .55; 
+        public static final double k_intakeDeployEncoderOffset = .09; 
         public static final double k_intakeDeployP = 60;
         public static final double k_intakeDeployI = 0;
         public static final double k_intakeDeployD = 0;
