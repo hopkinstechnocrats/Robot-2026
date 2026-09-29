@@ -11,7 +11,7 @@ public class IntakeCommands extends Command {
         return Commands.run(
             () -> {
                 intake.intake(0.5);
-                intake.intakeDeploy(0.005);
+                //intake.intakeDeploy(0.);
             },
         intake);
     }
@@ -24,13 +24,13 @@ public class IntakeCommands extends Command {
         intake);
     }
 
-    public static Command deploy(IntakeSubsystem intake) {
-        return Commands.run(
-            () -> {
-                intake.intakeDeploy(Constants.IntakeConstants.k_intakeSetpointDeploy);
-            },
-        intake);
-    }
+    // public static Command deploy(IntakeSubsystem intake) {
+    //     return Commands.run(
+    //         () -> {
+    //             intake.intakeDeploy(Constants.IntakeConstants.k_intakeSetpointDeploy);
+    //         },
+    //     intake);
+    // }
 /*
     public static Command deployBob(IntakeSubsystem deployBob) {
         return Commands.run(
@@ -40,21 +40,21 @@ public class IntakeCommands extends Command {
         deployBob);
     }
 */
-    public static Command undeploy(IntakeSubsystem intake) {
-        return Commands.run(
-            () -> {
-                intake.intakeDeploy(Constants.IntakeConstants.k_intakeSetpointRetract);
-            },
-        intake);
-    }
+    // public static Command undeploy(IntakeSubsystem intake) {
+    //     return Commands.run(
+    //         () -> {
+    //             intake.intakeDeploy(Constants.IntakeConstants.k_intakeSetpointRetract);
+    //         },
+    //     intake);
+    // }
 
-    public static Command up(IntakeSubsystem intake){
-        return Commands.run(
-            () -> {
-                intake.intakeDeploy(0.14);
-            },
-            intake);
-    }
+    // public static Command up(IntakeSubsystem intake){
+    //     return Commands.run(
+    //         () -> {
+    //             intake.intakeDeploy(0.14);
+    //         },
+    //         intake);
+    // }
 
     public static Command launching(IntakeSubsystem intake){
         return Commands.run(
@@ -63,14 +63,14 @@ public class IntakeCommands extends Command {
                 intake.intake(0.3);
             },
             intake);
-    }
+    }}
 
 
-    public static Command down(IntakeSubsystem intake){
-        return Commands.run(
-            () -> {
-                intake.intakeDeploy(0.005);
-            },
-            intake);
-    }
-}
+//     public static Command down(IntakeSubsystem intake){
+//         return Commands.run(
+//             () -> {
+//                 intake.intakeDeploy(0.005);
+//             },
+//             intake);
+//     }
+// }

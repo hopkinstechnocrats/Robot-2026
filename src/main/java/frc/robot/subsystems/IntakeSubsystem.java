@@ -186,14 +186,14 @@ public class IntakeSubsystem extends SubsystemBase{
 
         }
 
-        public void intakeUp(){ // moves arm up?
-            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(0.12));
-            m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
-        }
+        // public void intakeUp(){ // moves arm up?
+        //     m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(0.12));
+        //     m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
+        // }
 
-        public void intakeDown(){
-            m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(-0.07));
-            m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
-        }
+        // public void intakeDown(){
+        //     m_intakeDeployMotor.setControl(m_intakeDeployDutyCycle.withOutput(-0.07));
+        //     m_intakeDeployMotorFollower.setControl(new Follower(m_intakeDeployMotor.getDeviceID(), MotorAlignmentValue.Opposed));
+        // }
 
 }
