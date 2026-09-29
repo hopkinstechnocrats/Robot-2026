@@ -47,7 +47,7 @@ public final class Constants{
         public static final double k_maxLinearSpeedMeterPerSecond = 18;
         public static final double k_slowMaxLinearSpeenMetersPerSecond = 8;
         public static final double k_bumpMaxLinearSpeenMetersPerSecond = 12;
-        public static final double k_maxAngularSpeedRadPerSec = 10.0 * Math.PI;  //old value of 8*pi
+        public static final double k_maxAngularSpeedRadPerSec = 5.0 * Math.PI;  //old value of 8*pi
 
         public static final double k_driveGearRatio = 6.03;
         public static final double k_turnGearRatio = 287/11;
@@ -55,7 +55,7 @@ public final class Constants{
 
         public static final Pose2d k_startPose = new Pose2d(0, 0, new Rotation2d(0));
         //1 for inverted turning, -1 for non inverted
-        public static final double k_blaireMode = 1;
+        public static final double k_blaireMode = -1;
     }
  
  
