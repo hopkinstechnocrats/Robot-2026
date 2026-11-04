@@ -48,6 +48,7 @@ public class RobotContainer {
 
       NamedCommands.registerCommand("runLauncher", LauncherCommands.launcher(launcherSubsystem));
       NamedCommands.registerCommand("brakeLauncher", LauncherCommands.launcherBreak(launcherSubsystem)); 
+      NamedCommands.registerCommand("TYSMDarren", getAutonomousCommand());
       
       autoChooser = AutoBuilder.buildAutoChooser("LauncherTest");
       SmartDashboard.putData("Auto Chooser", autoChooser);
