@@ -11,12 +11,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "BackupToMiddle"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "deployIntake"
@@ -25,19 +19,19 @@
         {
           "type": "named",
           "data": {
-            "name": "runIntake"
+            "name": "runLauncher"
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "yoink"
+            "waitTime": 5.0
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "brakeIntake"
+            "name": "brakeLauncher"
           }
         }
       ]

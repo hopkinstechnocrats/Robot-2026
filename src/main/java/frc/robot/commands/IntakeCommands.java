@@ -15,14 +15,6 @@ public class IntakeCommands extends Command {
         intake);
     }
 
-    public static Command setIntakeSpeedOnce(IntakeSubsystem intake,double speed) {
-        return Commands.runOnce(
-            () -> {
-                intake.intake(speed);
-            },
-        intake);
-    }
-
     public static Command outtake(IntakeSubsystem intake) {
         return Commands.run(
             () -> {
@@ -35,14 +27,6 @@ public class IntakeCommands extends Command {
         return Commands.run(
             () -> {
                 intake.intakeDeploy(Constants.IntakeConstants.k_intakeSetpointDeploy);
-            },
-        intake);
-    }    
-    
-    public static Command deployToSetpointOnce(IntakeSubsystem intake,double setpoint) {
-        return Commands.run(
-            () -> {
-                intake.intakeDeploy(setpoint);
             },
         intake);
     }
@@ -66,7 +50,7 @@ public class IntakeCommands extends Command {
     public static Command up(IntakeSubsystem intake){
         return Commands.run(
             () -> {
-                intake.intakeDeploy(0.14);
+                intake.intakeUp();
             },
             intake);
     }
@@ -74,7 +58,7 @@ public class IntakeCommands extends Command {
     public static Command down(IntakeSubsystem intake){
         return Commands.run(
             () -> {
-                intake.intakeDeploy(0.005);
+                intake.intakeDown();
             },
             intake);
     }

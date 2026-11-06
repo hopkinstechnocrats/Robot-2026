@@ -24,7 +24,6 @@ public final class Constants{
         public static final double k_driveKP = 0.3 ;
         public static final double k_driveKI = 0.0;
         public static final double k_driveKD = 0.0;
-        public static final double k_driveKV = 2.55;
 
         public static final double k_turnKP = 12.0;
         public static final double k_turnKI = 5;
@@ -103,28 +102,26 @@ public final class Constants{
         public static final int k_intakeDeployMotorCANID = 18;
         public static final int k_intakeDeployMotorFollowerCANID = 16;
         public static final int k_absEncoderPortIntake = 40;
-        public static final double k_intakeDeployEncoderOffset = .55; 
-        public static final double k_intakeDeployP = 60;
+        public static final double k_intakeDeployP = 20;
         public static final double k_intakeDeployI = 0;
         public static final double k_intakeDeployD = 0;
         public static final double k_intakeDeployS = 0;
-        public static final double k_intakeDeployG = 0.25;
+        public static final double k_intakeDeployG = 0;
         public static final double k_intakeDeployFeedForeward = 0;
-        public static final double k_intakeSetpointDeploy = 0.04;
+        public static final double k_intakeSetpointDeploy = 0.0;
         public static final double k_intakeSetpointRetract = 0.1625/2;
         public static final double k_deployGearRatio = 20*(84/14);
     }
 
-
     public static final class LauncherConstants{
         public static final int k_launcherMotorCANID = 25;
         public static final int k_launcherMotorSecondCANID = 26;
-        public static double k_launchSpeedRPS = 80; //rotations per second, max ~80, 85 if you strain it
+        public static double k_launchSpeedRPS = 90; //rotations per second
         public static final double k_launcherBrakeSpeedRPS = 0;
-        public static final double k_launcherP = 100;
-        public static final double k_launcherI = 0;
+        public static final double k_launcherP = 0.3; 
+        public static final double k_launcherI = 0.1;
         public static final double k_launcherD = 0;
-        public static final double k_launcherFeedForward = .12; 
+        public static final double k_launcherFeedForward = 1.2/10; 
     }
 
 

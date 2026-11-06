@@ -31,7 +31,7 @@ public class RobotContainer {
     CommandXboxController driveController = new CommandXboxController(Constants.ControlConstants.k_driverPort);
     CommandXboxController operatorController = new CommandXboxController(Constants.ControlConstants.k_operatorXboxControllerPort);
     private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
-    //private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final LauncherSubsystem launcherSubsystem = new LauncherSubsystem();
@@ -39,44 +39,22 @@ public class RobotContainer {
     SendableChooser<Command> autoChooser;
     RobotConfig roboConfig;
 
-    //Autos auto = new Autos();
+    Autos auto = new Autos();
     Swervedrive m_swerve = new Swervedrive();
     
-    private void setupAutos(){      
-      NamedCommands.registerCommand("runIntake", IntakeCommands.setIntakeSpeedOnce(intakeSubsystem,Constants.IntakeConstants.k_intakeSpeedRPS));
-      NamedCommands.registerCommand("brakeIntake", IntakeCommands.setIntakeSpeedOnce(intakeSubsystem,0));
-      NamedCommands.registerCommand("runHopper", HopperCommands.setHopperSpeedOnce(hopperSubsystem,Constants.HopperConstants.k_hopperSpeedRPS));
-      NamedCommands.registerCommand("brakeHopper", HopperCommands.setHopperSpeedOnce(hopperSubsystem,0));
-      NamedCommands.registerCommand("runFeeder", FeederCommands.setFeederSpeedOnce(feederSubsystem,Constants.FeederConstants.k_feederSpeedRPS));
-      NamedCommands.registerCommand("brakeFeeder", FeederCommands.setFeederSpeedOnce(feederSubsystem,0));
-      NamedCommands.registerCommand("runLauncher", LauncherCommands.setlaunchSpeedOnce(launcherSubsystem,Constants.LauncherConstants.k_launchSpeedRPS));
-      NamedCommands.registerCommand("brakeLauncher", LauncherCommands.setlaunchSpeedOnce(launcherSubsystem,0)); 
-      NamedCommands.registerCommand("deployIntake", IntakeCommands.deployToSetpointOnce(intakeSubsystem,Constants.IntakeConstants.k_intakeSetpointDeploy)); 
-      NamedCommands.registerCommand("retractIntake", IntakeCommands.deployToSetpointOnce(intakeSubsystem,Constants.IntakeConstants.k_intakeSetpointRetract)); 
-      
-      NamedCommands.registerCommand("stopEverything", Commands.sequence(
-        LauncherCommands.setlaunchSpeedOnce(launcherSubsystem, 0),
-        IntakeCommands.setIntakeSpeedOnce(intakeSubsystem, 0),
-        HopperCommands.setHopperSpeedOnce(hopperSubsystem, 0),
-        FeederCommands.setFeederSpeedOnce(feederSubsystem, 0)
-      ));
+    public void setupAutos(){
 
-      NamedCommands.registerCommand("launchFuel", Commands.sequence(
-        LauncherCommands.setlaunchSpeedOnce(launcherSubsystem, Constants.IntakeConstants.k_intakeSpeedRPS),
-        Commands.waitSeconds(0.1),//TODO: update the delays between launcher/feeder/hopper.
-        FeederCommands.setFeederSpeedOnce(feederSubsystem, Constants.FeederConstants.k_feederSpeedRPS),
-        Commands.waitSeconds(0.1),
-        HopperCommands.setHopperSpeedOnce(hopperSubsystem, Constants.HopperConstants.k_hopperSpeedRPS)
-      ));
+      m_swerve.setupAutoBuilder();
 
-      NamedCommands.registerCommand("endAuto", Commands.runOnce(()->endAuto()));
+      NamedCommands.registerCommand("runLauncher", LauncherCommands.launcher(launcherSubsystem));
+      NamedCommands.registerCommand("brakeLauncher", LauncherCommands.launcherBreak(launcherSubsystem)); 
+      NamedCommands.registerCommand("TYSMDarren", getAutonomousCommand());
       
       autoChooser = AutoBuilder.buildAutoChooser("LauncherTest");
       SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
-    public void endAuto(){
-      //a function to be run when all other auto commands are done. Not always at the end of auto.
+    public RobotContainer() {
         feederSubsystem.setDefaultCommand(FeederCommands.brakeFeeder(feederSubsystem));
 
         //m_chooser.setDefaultOption("1 second", auto.oneSecond(m_swerve, 4)); //spped x & y is meters/second
@@ -96,13 +74,8 @@ public class RobotContainer {
         ));
 
         hopperSubsystem.setDefaultCommand(HopperCommands.brake(hopperSubsystem));
-    }
-
-    public RobotContainer() {
-
 
         configureButtonBindings();
-        setupAutos();
     } 
 
     public Command getAutonomousCommand() {
@@ -111,8 +84,8 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-      operatorController.a().onTrue(LauncherCommands.launcher(launcherSubsystem));
-      operatorController.b().onTrue(LauncherCommands.launcherBreak(launcherSubsystem));
+      operatorController.a().whileTrue(IntakeCommands.intake(intakeSubsystem));
+      operatorController.b().whileTrue(IntakeCommands.outtake(intakeSubsystem));
       operatorController.povUp().whileTrue(IntakeCommands.up(intakeSubsystem));
       operatorController.povRight().whileTrue(IntakeCommands.down(intakeSubsystem));
       driveController.a().onTrue(Commands.runOnce(

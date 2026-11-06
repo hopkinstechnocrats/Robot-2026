@@ -104,36 +104,6 @@ public class Swervedrive extends SubsystemBase{
         brAnalog = table.getDoubleTopic("BR Absolute Encoder").getEntry(0);
 
         robotPosition = table.getStructTopic("Robot Position", Pose2d.struct).publish();
-
-        try{
-            //TODO: check that the main/deploy/pathplanner/settings.json file exists and has up to date info. 
-            //It should be created/updated by filling out the pathplanner GUI.
-            pathPlannerConfig = RobotConfig.fromGUISettings();
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-
-        AutoBuilder.configure(
-            ()->m_poseEstimator.getEstimatedPosition(),// Robot pose supplier
-            (Pose2d pose)->resetOdometry(pose), // Method to reset odometry
-            ()->m_speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE.
-            (m_speeds, feedforwards) -> Drive(m_speeds), // Method that will drive the robot said ChassisSpeeds
-            new PPHolonomicDriveController( // PPHolonomicController is the built in path follower
-            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-            ),
-            pathPlannerConfig,// The robot configuration 
-            ()->{
-                Optional<Alliance> alliance = DriverStation.getAlliance();
-                if(alliance.isPresent()){
-                    /*If our robot is on the red alliance, then return true to flip our auto's path 
-                      The Origin remains on the blue side.*/
-                    return alliance.get() == DriverStation.Alliance.Red;
-                }
-                return false;
-            },
-            this
-        );
     }
 
 
@@ -228,11 +198,6 @@ public class Swervedrive extends SubsystemBase{
     }
 
     public void resetOdometry(Pose2d pose) {
-        if(pose == null){
-            /*If the target pose isn't real, don't 
-             * reset the odometry. */
-            return;
-        }
         m_poseEstimator.resetPosition(gyro.getRotation(), this.getModulePositions(), pose);
         ChassisSpeeds robotRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(new ChassisSpeeds(0, 0, 0), gyro.getRotation());
         m_swerveKinematics.toSwerveModuleStates(robotRelativeSpeeds);
@@ -247,5 +212,37 @@ public class Swervedrive extends SubsystemBase{
         };
 
         return positions;
+    }
+
+    public void setupAutoBuilder(){
+        try{
+            //TODO: check that the main/deploy/pathplanner/settings.json file exists and has up to date info. 
+            //It should be created/updated by filling out the pathplanner GUI.
+            pathPlannerConfig = RobotConfig.fromGUISettings();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        AutoBuilder.configure(
+            ()->m_poseEstimator.getEstimatedPosition(),// Robot pose supplier
+            (Pose2d pose)->resetOdometry(pose), // Method to reset odometry
+            ()->m_speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE.
+            (m_speeds, feedforwards) -> Drive(m_speeds), // Method that will drive the robot said ChassisSpeeds
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path follower
+            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            ),
+            pathPlannerConfig,// The robot configuration 
+            ()->{
+                Optional<Alliance> alliance = DriverStation.getAlliance();
+                if(alliance.isPresent()){
+                    /*If our robot is on the red alliance, then return true to flip our auto's path 
+                      The Origin remains on the blue side.*/
+                    return alliance.get() == DriverStation.Alliance.Red;
+                }
+                return false;
+            },
+            this
+        );
     }
 }

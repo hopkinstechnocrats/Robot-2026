@@ -71,8 +71,6 @@ public class TeleopDrive extends Command{
         m_swerve.Drive(speeds);
     }
 
-
-    
     @Override
     public void end(boolean interrupted){}
 
