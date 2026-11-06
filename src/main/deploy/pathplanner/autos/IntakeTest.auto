@@ -7,7 +7,19 @@
         {
           "type": "named",
           "data": {
-            "name": "sayHello"
+            "name": "runIntake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "brakeIntake"
           }
         }
       ]

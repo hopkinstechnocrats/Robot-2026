@@ -11,15 +11,33 @@
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 5.0
+            "name": "runFeeder"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "brakeLauncher"
+            "name": "runHopper"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopEverything"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "endAuto"
           }
         }
       ]

@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Rotate"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "deployIntake"
@@ -32,6 +38,12 @@
           "type": "named",
           "data": {
             "name": "brakeLauncher"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "endAuto"
           }
         }
       ]
